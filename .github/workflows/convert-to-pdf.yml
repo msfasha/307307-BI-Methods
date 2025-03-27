@@ -1,0 +1,53 @@
+name: Convert Modified Notebooks to PDF
+
+on:
+  push:
+    paths:
+      - '**/*.ipynb'
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Ensures full git history is available for diff
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install nbconvert
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex pandoc
+
+      - name: Get modified notebooks
+        id: get_notebooks
+        run: |
+          git fetch origin main
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '.ipynb$' || true)
+          echo "$CHANGED_FILES" > changed_files.txt
+          cat changed_files.txt
+
+      - name: Convert notebooks to PDF into /pdfs/
+        run: |
+          mkdir -p pdfs
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
+              echo "Converting $file to PDF"
+              output_dir="pdfs/$(dirname "$file")"
+              mkdir -p "$output_dir"
+              jupyter nbconvert --to pdf "$file" --output-dir "$output_dir"
+            fi
+          done < changed_files.txt
+
+      - name: Upload PDFs as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: notebook-pdfs
+          path: pdfs/
