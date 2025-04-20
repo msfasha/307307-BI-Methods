@@ -1,0 +1,582 @@
+---
+title: "6.1 Introduction to Survey Design"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+A survey is a systematic method of collecting information from individuals to gain insights into opinions, behaviors, or characteristics. Surveys are essential in fields such as market research, social sciences, healthcare, and customer feedback analysis. A well-designed survey is crucial for ensuring the reliability, validity, and usefulness of the collected data.
+
+------------------------------------------------------------------------
+
+## Principles of Good Survey Design
+
+1.  **Clear Objectives**
+    -   Define the purpose of your survey and the specific data you aim to collect.
+2.  **Know Your Audience**
+    -   Understand the demographic and cultural context of your respondents to ensure relevance and clarity.
+3.  **Question Clarity**
+    -   Use simple, unambiguous language.
+    -   Avoid leading or double-barreled questions that may confuse respondents or bias their answers.
+4.  **Survey Length**
+    -   Keep it concise to maintain engagement while ensuring comprehensive data collection.
+
+------------------------------------------------------------------------
+
+## Types of Surveys
+
+Surveys can be categorized based on their method, purpose, or frequency:
+
+### A. By Data Collection Method
+
+1.  **Online Surveys**
+    -   Distributed via email, social media, or platforms like Google Forms.
+    -   **Advantages**: Cost-effective, scalable, and fast.
+2.  **Paper Surveys**
+    -   Suitable for populations with limited internet access.
+    -   **Use Case**: Rural or underconnected regions.
+3.  **Telephone Surveys**
+    -   Effective for quick responses but prone to low response rates.
+4.  **Face-to-Face Interviews**
+    -   Provide in-depth insights but are time-intensive and costly.
+
+### B. By Purpose
+
+1.  **Descriptive Surveys**
+    -   Describe characteristics or opinions of a population.
+    -   **Example**: Customer satisfaction surveys.
+2.  **Analytical Surveys**
+    -   Explore relationships between variables.
+    -   **Example**: Surveys linking exercise habits to mental health.
+3.  **Exploratory Surveys**
+    -   Generate ideas or gather initial insights.
+    -   **Example**: Brainstorming new product features.
+
+### C. By Frequency
+
+1.  **Cross-sectional Surveys**
+    -   Conducted at a single point in time to capture a snapshot of opinions or behaviors.
+    -   **Example**: Dietary habits survey among college students during one semester.
+    -   **Purpose**: Understand behaviors at a specific time.
+2.  **Longitudinal Surveys**
+    -   Repeatedly conducted over time to track changes or trends.
+    -   **Example**: Annual health studies tracking exercise habits.
+    -   **Purpose**: Capture trends and behavioral evolution.
+
+------------------------------------------------------------------------
+
+## Types of Questions
+
+1.  **Open-ended Questions**
+    -   Allow respondents to answer in their own words, providing detailed insights.
+2.  **Closed-ended Questions**
+    -   Include multiple-choice, yes/no, or ranking formats.
+3.  **Rating Scales**
+    -   Commonly use Likert scales (e.g., strongly agree to strongly disagree).
+
+------------------------------------------------------------------------
+
+### **Effective vs. Ineffective Question Design**
+
+In survey design, the way questions are crafted directly impacts the quality, accuracy, and reliability of the data collected. Well-designed questions minimize bias, ambiguity, and confusion, enabling respondents to provide meaningful answers. This section explores the principles of effective question design and highlights common pitfalls in ineffective question formulation.
+
+------------------------------------------------------------------------
+
+#### **1. Principles of Effective Question Design**
+
+1.  **Clarity and Simplicity**\
+    Effective questions are straightforward and easy to understand. They avoid complex language, jargon, or technical terms unfamiliar to the respondent.
+    -   Example (Effective): *"How often do you use public transportation?"*\
+    -   Example (Ineffective): *"Can you enumerate the frequency with which you avail yourself of municipal conveyance systems?"*
+2.  **Focus on One Concept at a Time**\
+    Effective questions address a single idea or topic, reducing the cognitive burden on respondents and ensuring clear data.
+    -   Example (Effective): *"How satisfied are you with the cleanliness of the park?"*\
+    -   Example (Ineffective): *"What do you think about the park?"* (Too broad)
+3.  **Neutrality**\
+    Effective questions avoid leading or loaded language that may influence respondents' answers. Neutrality ensures data reflects genuine opinions.
+    -   Example (Effective): *"What is your opinion on the proposed policy?"*\
+    -   Example (Ineffective): *"Don’t you agree that the proposed policy will benefit everyone?"*
+4.  **Answerability**\
+    Effective questions ensure respondents have the knowledge or experience required to answer. Avoid questions based on assumptions or speculation.
+    -   Example (Effective): *"Have you used our product in the last six months?"*\
+    -   Example (Ineffective): *"How would you rate our service improvements over the last five years?"* (Assumes detailed knowledge)
+5.  **Balanced Options**\
+    Response options must reflect a balanced spectrum to avoid biasing results.
+    -   Example (Effective): *"How do you feel about our customer service? (Very Satisfied, Satisfied, Neutral, Dissatisfied, Very Dissatisfied)"*\
+    -   Example (Ineffective): *"How amazing is our customer service? (Great, Excellent, Perfect)"*
+
+------------------------------------------------------------------------
+
+#### **2. Pitfalls in Ineffective Question Design**
+
+1.  **Double-Barreled Questions**\
+    These combine multiple questions into one, making it unclear how to respond.
+    -   Example: *"Do you find the staff helpful and friendly?"*\
+        (What if the staff is helpful but not friendly?)\
+    -   Fix: Split into two questions:\
+        *"Do you find the staff helpful?"*\
+        *"Do you find the staff friendly?"*
+2.  **Leading or Biased Questions**\
+    These suggest a preferred answer, leading to skewed data.
+    -   Example: *"Most people love this product. How much do you like it?"*\
+    -   Fix: Use neutral wording: *"What is your opinion of this product?"*
+3.  **Vague or Ambiguous Questions**\
+    These lack specificity, leading to inconsistent interpretations.
+    -   Example: *"Do you shop often?"*\
+    -   Fix: Add specificity: *"How many times per month do you shop for groceries?"*
+4.  **Overly Complex or Lengthy Questions**\
+    These overwhelm respondents or make it difficult to discern the main point.
+    -   Example: *"Considering the various benefits and challenges of recycling, what are your thoughts on how communities might address waste management issues?"*\
+    -   Fix: Simplify: *"What are your thoughts on improving waste management in your community?"*
+5.  **Hypothetical or Unrealistic Questions**\
+    These ask respondents to speculate, leading to unreliable or irrelevant answers.
+    -   Example: *"If you had unlimited money, what car would you buy?"*\
+    -   Fix: Avoid or reframe: *"What car brand do you prefer?"*
+
+------------------------------------------------------------------------
+
+#### **3. Enhancing Question Design: Practical Tips**
+
+-   **Pre-Test Questions**: Conduct a pilot test with a small sample of your target audience to identify issues in clarity or interpretation. This feedback is invaluable for refining your survey.
+-   **Use Appropriate Scales**: For rating or numerical responses, ensure the scale is logical, balanced, and easy to understand.
+    -   Example: A 5-point Likert scale with options like "Strongly Agree" to "Strongly Disagree" is commonly used for opinions.
+-   **Avoid Making Assumptions**: Avoid assuming respondents have specific knowledge or experiences. Use qualifying questions when needed.
+    -   Example: *"Have you heard of Product X? If yes, how would you rate it?"*
+-   **Consider Cultural Sensitivity**: Be mindful of language, context, and phrasing that may be culturally inappropriate or offensive to any segment of your audience.
+-   **Limit Open-Ended Questions**: While open-ended questions can provide rich insights, they are harder to analyze. Use them sparingly and when deeper understanding is required.
+
+------------------------------------------------------------------------
+
+#### **4. Why Effective Question Design Matters**
+
+Effective question design is crucial because it directly influences the quality of the data collected. Poorly designed questions can result in:\
+- **Response Bias**: When questions lead or push respondents toward specific answers.\
+- **Non-Response or Dropouts**: If questions are too confusing, respondents may skip them or abandon the survey altogether.\
+- **Inaccurate Data**: Ambiguous or complex questions may lead to misinterpretations, rendering the data unreliable.
+
+By adhering to the principles of effective question design, survey creators ensure that the collected data accurately reflects respondents' true opinions, experiences, and behaviors.
+
+------------------------------------------------------------------------
+
+## Sampling Methods
+
+### **Probability Sampling Methods**
+
+1.  **Simple Random Sampling (SRS)**
+    -   **Description**: Every individual has an equal chance of being selected.
+    -   **Purpose**: To obtain an unbiased sample when the population is homogeneous, or when there is a list of all members.
+    -   **Examples**:
+        -   **Example 1**: A university selects 100 students from its 5,000 students to evaluate library services. Each student is randomly selected using a random number generator, ensuring an unbiased representation of the student body with equal chances for everyone to be included.
+        -   **Example 2**: A company selects 50 customers from its database of 10,000 for a survey about product satisfaction. The random selection ensures the sample represents the entire customer base fairly without favoring any specific group.
+2.  **Systematic Sampling**
+    -   **Description**: Every nth individual is selected from a list after choosing a random starting point. The interval (k) is determined by dividing the population size by the desired sample size.
+    -   **Purpose**: To simplify the sampling process when the population list is ordered and random sampling is not feasible.
+    -   **Examples**:
+        -   **Example 1**: A university surveys students about campus facilities by selecting every 20th student from an alphabetical list of enrolled students, starting at the 5th student. This method simplifies the selection process while maintaining objectivity, as it ensures coverage across the list.
+        -   **Example 2**: An HR team surveys employees about job satisfaction by selecting every 10th employee from the payroll database, starting at the 7th employee. By following a systematic approach, the sample is distributed evenly across the workforce.
+3.  **Stratified Sampling**
+    -   **Description**: The population is divided into mutually exclusive subgroups (strata), and a random sample is taken from each stratum.
+    -   **Purpose**: To ensure that specific subgroups are proportionally represented, especially when the population is heterogeneous.
+    -   **Examples**:
+        -   **Example 1**: Students are divided into strata based on their year of study (freshman, sophomore, junior, senior). A random sample of 50 students is taken from each group to ensure the survey reflects the opinions of all academic levels proportionally.
+        -   **Example 2**: A company surveys employees by dividing them into job roles (managers, developers, sales representatives) and randomly selects employees from each role. This ensures feedback from every job category, representing the diversity of roles within the organization.
+4.  **Cluster Sampling**
+    -   **Description**: The population is divided into clusters (often based on geography or other natural groupings), and a random sample of clusters is selected.
+    -   **Purpose**: To reduce costs and logistical challenges when the population is large and dispersed over a wide area, making individual selection impractical.
+    -   **Examples**:
+        -   **Example 1**: A university wants to evaluate dormitory services. It randomly selects 3 dorm buildings (clusters) and surveys all students living in those buildings, saving time and effort by focusing on specific, representative clusters rather than the entire campus.
+        -   **Example 2**: A retail chain randomly selects 5 store locations (clusters) and surveys all employees working in those stores. This approach reduces logistical challenges while still capturing data from diverse locations.
+5.  **Multistage Sampling**
+    -   **Description**: Combines various sampling techniques. For example, it may involve cluster sampling at the first stage, followed by simple random or stratified sampling in subsequent stages.
+    -   **Purpose**: To handle large and geographically dispersed populations by breaking down the sampling process into manageable stages.
+    -   **Examples**:
+        -   **Example 1**: A university with multiple campuses selects 2 campuses (clusters) randomly, then randomly selects 3 departments from each campus, and finally surveys students from those departments. This layered approach ensures both cost efficiency and representative data.
+        -   **Example 2**: A multinational company selects 5 countries (clusters), then randomly selects 2 regional offices in each country, and finally surveys employees in those offices. This method balances practicality and accurate representation across global operations.
+6.  **Proportional vs. Equal Allocation in Stratified Sampling**
+    -   **Description**:
+        -   **Proportional Allocation**: The sample size from each stratum is proportional to the stratum’s size in the population.\
+        -   **Equal Allocation**: The same sample size is taken from each stratum, regardless of its size in the population.
+    -   **Purpose**: To ensure accurate or balanced subgroup representation based on the survey objectives.
+    -   **Examples**:
+        -   **Proportional Allocation**:
+            -   **Example 1**: A university surveys students from three faculties (Arts, Engineering, and Medicine) where Arts has 50%, Engineering 30%, and Medicine 20% of students. The sample sizes are proportionally allocated to ensure the survey reflects the actual distribution of students.\
+            -   **Example 2**: A company surveys customers from three regions (North, South, West), ensuring the sample reflects the percentage of customers in each region to accurately gauge regional satisfaction levels.\
+        -   **Equal Allocation**:
+            -   **Example 1**: A university collects equal numbers of survey responses from students in three different faculties, regardless of their actual size, to ensure each faculty’s perspectives are equally prioritized.\
+            -   **Example 2**: A company surveys 50 employees from each job department, even if some departments are larger than others, to equally emphasize the experiences of all departments.
+
+### **Non-Probability Sampling Methods**
+
+1.  **Convenience Sampling**
+    -   **Description**: Participants are selected based on their availability or ease of access.
+    -   **Examples**:
+        -   **Example 1**: A researcher surveys students passing by a university library about their study habits, as these students are easy to access and engage on the spot.
+        -   **Example 2**: A business surveys customers visiting its flagship store about their shopping experience, as these customers are readily available and willing to provide feedback.
+2.  **Snowball Sampling**
+    -   **Description**: A technique where participants are recruited through referrals from initial subjects, often used in hard-to-reach populations.
+    -   **Examples**:
+        -   **Example 1**: A sociologist interviews one international student and asks them to refer other international students for a study on cultural adaptation, leveraging their networks to reach participants who may otherwise be difficult to contact.
+        -   **Example 2**: A consultant interviews one startup founder and uses their network to recruit other startup founders for a study on entrepreneurship challenges, relying on personal connections within the community to access additional participants.
+
+------------------------------------------------------------------------
+
+## Common Survey Biases
+
+### **1. Response Bias**
+
+Response bias occurs when respondents provide answers that they believe are socially desirable, expected, or acceptable rather than being truthful, leading to inaccurate data.
+
+-   Examples:
+    1.  Students report studying more hours per week than they actually do in a survey on academic habits.\
+    2.  Participants understate how often they consume junk food in a nutrition study.\
+    3.  Employees claim they are fully satisfied with their work environment, even if they have complaints, out of fear of repercussions.\
+    4.  Parents exaggerate their involvement in their children’s homework during a school feedback survey.\
+    5.  Customers overstate their preference for sustainable products in a survey about shopping habits.
+
+### **2. Selection Bias**
+
+Selection bias occurs when the sample does not adequately represent the target population, leading to skewed or non-generalizable results.
+
+-   Examples:
+    1.  A university survey about dorm satisfaction only includes students living in new dorms, excluding older dorm residents.\
+    2.  A study on internet usage only samples urban residents, leaving out rural areas where internet access is less common.\
+    3.  A company’s employee engagement survey includes only full-time employees, ignoring part-time and contract workers.\
+    4.  A political poll is conducted via landline phones, excluding younger populations who primarily use mobile phones.\
+    5.  A fitness app survey targets premium users only, overlooking free users with potentially different habits.
+
+### **3.Non-response Bias**
+
+Non-response bias happens when certain groups of the population do not participate in a survey, causing their perspectives to be underrepresented.
+
+-   Examples:
+    1.  A workplace satisfaction survey receives responses mostly from employees who are content, as dissatisfied employees avoid participating.\
+    2.  A customer feedback survey sent via email has low responses from older adults who are less familiar with technology.\
+    3.  A university professor’s end-of-course survey is filled out primarily by students who enjoyed the class, ignoring those who disliked it.\
+    4.  A healthcare study on exercise habits receives few responses from participants with sedentary lifestyles.\
+    5.  A political candidate’s survey conducted in person gets minimal participation from busy working-class individuals.
+
+### **4. Acquiescence Bias**
+
+Acquiescence bias refers to the tendency of respondents to agree with statements, regardless of their true opinions or feelings.
+
+-   Examples:
+    1.  Respondents agree with statements in a customer satisfaction survey without reading the questions carefully.\
+    2.  Students participating in a feedback form select “strongly agree” for all statements to finish the survey quickly.\
+    3.  Employees agree with all statements in a workplace culture survey because they assume this is what management expects.\
+    4.  Participants in a product feedback survey select positive responses due to the presence of the company’s representative.\
+    5.  Patients agree with statements about a treatment’s effectiveness even if they have doubts, fearing it might reflect poorly on their healthcare provider.
+
+### 5. Strategies to Minimize Biases
+
+-   Conduct pilot testing to identify and address potential biases before the main survey.\
+-   Use clear and neutral instructions to avoid influencing responses.\
+-   Offer incentives to encourage participation, reducing non-response bias.\
+-   Randomize question order to minimize acquiescence bias.\
+-   Ensure the sample is representative by carefully selecting participants to avoid selection bias.
+
+------------------------------------------------------------------------
+
+## Ethical Considerations
+
+1.  **Informed Consent**
+    -   Ensure participants understand the survey's purpose and data usage.
+2.  **Confidentiality**
+    -   Protect respondents’ identities and sensitive information.
+3.  **Voluntary Participation**
+    -   Make it clear that participation is optional, and respondents may skip questions if desired.
+
+------------------------------------------------------------------------
+
+## Tools for Survey Creation
+
+-   **Google Forms**\
+-   **Microsoft Forms**\
+-   **Survey Monkey**\
+-   **Quadratics**
+
+**Features:**\
+- Customization templates, real-time analytics, and easy sharing.
+
+## Microsoft Forms
+
+Microsoft forms provide several tools for capturing user input, this includes:
+
+### 1. **Choice**
+
+-   **Description**: Offers multiple options for respondents to select from.
+-   **Features**:
+    -   Supports single or multiple selections.
+    -   Can include images or videos.
+-   **Use Cases**:
+    -   Polls or surveys (e.g., "What is your favorite color?")
+    -   Quiz questions with predefined answers.
+    -   Collecting feedback (e.g., "Select all features you use frequently.")
+
+### 2. **Text**
+
+-   **Description**: Allows respondents to provide freeform text responses.
+-   **Features**:
+    -   Can be short answer (single line) or long answer (paragraph).
+-   **Use Cases**:
+    -   Open-ended feedback (e.g., "What can we improve?")
+    -   Collecting detailed opinions or explanations.
+    -   Gathering short data (e.g., names, email addresses).
+
+### 3. **Rating**
+
+-   **Description**: Collects feedback on a numerical or star-based scale.
+-   **Features**:
+    -   Scale range: 1–10.
+    -   Customizable labels for highest and lowest values.
+-   **Use Cases**:
+    -   Measuring satisfaction (e.g., "Rate your experience from 1 to 5 stars.")
+    -   Evaluating performance or preferences.
+    -   Simple feedback on events or products.
+
+### 4. **Date**
+
+-   **Description**: Captures date inputs.
+-   **Features**:
+    -   Users select a specific date from a calendar picker.
+-   **Use Cases**:
+    -   Scheduling appointments (e.g., "What date works best for you?")
+    -   Tracking dates of events or occurrences.
+    -   Collecting birthdates or deadlines.
+
+### 5. **Ranking**
+
+-   **Description**: Lets respondents prioritize items by ranking them in order of preference.
+-   **Features**:
+    -   Respondents drag and drop options to reorder.
+-   **Use Cases**:
+    -   Prioritizing features (e.g., "Rank these features from most to least important.")
+    -   Determining preferences for events or products.
+    -   Assessing priorities in team projects.
+
+### 6. **Likert**
+
+-   **Description**: Measures attitudes or opinions across a multi-point scale.
+-   **Features**:
+    -   Customizable columns for agreement, frequency, or satisfaction scales.
+-   **Use Cases**:
+    -   Surveying satisfaction (e.g., "How strongly do you agree with the following statements?")
+    -   Assessing opinions on multiple topics simultaneously.
+    -   Employee or customer engagement surveys.
+
+### 7. **Net Promoter Score (NPS)**
+
+-   **Description**: Measures the likelihood of recommending a product or service.
+-   **Features**:
+    -   A scale from 0 (Not Likely) to 10 (Extremely Likely).
+-   **Use Cases**:
+    -   Tracking customer loyalty (e.g., "How likely are you to recommend us?")
+    -   Comparing satisfaction levels over time.
+    -   Benchmarking brand performance.
+
+### 8. **File Upload**
+
+-   **Description**: Allows respondents to upload files as part of their response.
+-   **Features**:
+    -   File size and format restrictions can be set.
+    -   Files are stored in OneDrive.
+-   **Use Cases**:
+    -   Collecting resumes or portfolios (e.g., job applications).
+    -   Submitting project documents.
+    -   Gathering supporting evidence for reports or claims.
+
+### 9. **Choice with Dropdown**
+
+-   **Description**: A dropdown list that provides a compact way for respondents to select an option.
+-   **Features**:
+    -   Works similarly to the choice question but appears as a dropdown menu.
+-   **Use Cases**:
+    -   Compact surveys with many options (e.g., "Select your department.")
+    -   Ensuring a clean interface for long lists.
+    -   Gathering data with predefined options (e.g., "Choose your country.")
+
+### 10. **Yes/No**
+
+-   **Description**: Simplified choice question offering only two options.
+-   **Features**:
+    -   Default "Yes" or "No" labels.
+-   **Use Cases**:
+    -   Simple binary decisions (e.g., "Do you agree?")
+    -   Quick feedback (e.g., "Was this session helpful?")
+    -   Confirming participation (e.g., "Will you attend the event?").
+
+### 11. **Number**
+
+-   **Description**: Collects numeric input from respondents.
+-   **Features**:
+    -   Allows only numbers, no text or special characters.
+-   **Use Cases**:
+    -   Collecting ages, quantities, or scores (e.g., "How many years of experience do you have?")
+    -   Budgeting or expense tracking surveys.
+    -   Asking for ratings that require manual input.
+
+### 12. **Time**
+
+-   **Description**: Collects specific time inputs (hours and minutes).
+-   **Features**:
+    -   24-hour or AM/PM format.
+-   **Use Cases**:
+    -   Scheduling (e.g., "What time works best for your meeting?")
+    -   Collecting appointment slots.
+    -   Tracking time-based events.
+
+### Summary Table of Question Types and Use Cases:
+
+| **Question Type** | **Use Case Examples** |
+|----|----|
+| **Choice** | Polls, quizzes, feedback surveys. |
+| **Text** | Open-ended feedback, collecting names or opinions. |
+| **Rating** | Satisfaction surveys, product evaluations. |
+| **Date** | Scheduling, tracking events. |
+| **Ranking** | Prioritizing features, determining preferences. |
+| **Likert** | Measuring attitudes or satisfaction across multiple items. |
+| **NPS** | Measuring loyalty and likelihood of recommendation. |
+| **File Upload** | Collecting resumes, project submissions, or evidence. |
+| **Dropdown Choice** | Selecting from a long list of options. |
+| **Yes/No** | Binary decisions or confirmations. |
+| **Number** | Collecting ages, quantities, or numeric ratings. |
+| **Time** | Scheduling meetings or collecting time-based data. |
+
+------------------------------------------------------------------------
+
+Each question type in Microsoft Forms is tailored to specific data collection needs, allowing you to build versatile surveys, quizzes, and forms effectively.
+
+### Difference Between **ranking**, **Net Promoter Score (NPS)**, and **Likert scale** question types
+
+While **ranking**, **Net Promoter Score (NPS)**, and **Likert scale** question types all capture numerical or ordinal data, they serve distinct purposes and collect information differently. Here's a breakdown of each:
+
+### 1. **Ranking**
+
+-   **Purpose**: Used to determine relative preferences or priorities among a set of options.
+-   **How It Works**: Respondents reorder or rank items in terms of importance, preference, or another criterion (e.g., 1 = most important, 5 = least important).
+-   **Key Feature**: Provides a **relative comparison** between options.
+-   **Data Type**: Ordinal; the result is a sequence (e.g., Item A \> Item B \> Item C), but the intervals between ranks are not meaningful.
+-   **Use Case**:
+    -   Prioritizing features in a product.
+    -   Ranking services by importance.
+
+### 2. **Net Promoter Score (NPS)**
+
+-   **Purpose**: Measures customer loyalty or satisfaction.
+-   **How It Works**: Respondents rate their likelihood to recommend a product, service, or organization on a **0–10 scale**, where:
+    -   0–6: Detractors
+    -   7–8: Passives
+    -   9–10: Promoters
+-   **Key Feature**: Focused on the likelihood to recommend, producing a **summary score** (%Promoters - %Detractors = NPS).
+-   **Data Type**: Interval; NPS assumes equal spacing between numbers for aggregate calculation.
+-   **Use Case**:
+    -   Customer feedback.
+    -   Tracking satisfaction trends over time.
+
+### 3. **Likert Scale**
+
+-   **Purpose**: Measures attitudes, opinions, or behaviors across a scale.
+-   **How It Works**: Respondents select from a set of **ordered options** (e.g., Strongly Agree to Strongly Disagree).
+-   **Key Feature**: Evaluates **intensity or frequency** of agreement, satisfaction, or sentiment.
+-   **Data Type**:
+    -   Ordinal: When analyzing individual responses.
+    -   Interval: When assuming equal distances between options for aggregate analysis (e.g., mean scores).
+-   **Use Case**:
+    -   Assessing opinions on a new policy.
+    -   Evaluating user satisfaction.
+
+### Key Differences
+
+| Feature | Ranking | NPS | Likert Scale |
+|----|----|----|----|
+| **Focus** | Relative importance/order | Recommendation likelihood | Agreement/intensity level |
+| **Response Format** | Reordering items | Numerical scale (0–10) | Ordered categories |
+| **Data Interpretation** | Ordinal (order matters) | Interval (summary score) | Ordinal or interval |
+| **Common Use** | Prioritization tasks | Customer satisfaction | Surveying opinions/attitudes |
+
+### Summary
+
+-   **Ranking** gives **relative** priorities.
+-   **NPS** captures a **summary score** for loyalty or satisfaction.
+-   **Likert scales** measure attitudes on a **range of agreement** or intensity.
+
+Each method is tailored for specific types of insights, despite the numerical or scale-based formats.
+
+------------------------------------------------------------------------
+
+# Design a Sample Survey
+
+Use Microsoft forms to design a survey that collects the following information and opinions .
+
+### Demographics
+
+-   Age
+-   Gender
+-   Current year of study
+-   Home distance from the University
+
+### Previous Education
+
+-   High School Degree (National Tawjihi, Internal)
+-   If Tawjihi, ask if Scientific or Non-Scientific.
+-   If International, Ask if SAT, IG, IB, Arabic Country
+-   High School Average
+
+### Academic Performance
+
+-   How many hours do you study in a week?
+-   What is your average daily sleep time?
+-   What was your score in MID exam?
+-   What is your current GPA?
+
+### Working while studying
+
+-   Ask if the student is working while he is studying
+-   If the student work, then ask the following questions:
+    -   Do you work full time or part time?
+    -   Are a business owner or employee?
+
+### Statisfaction
+
+-   How satisfied are you about your experience at the University of Petra? (Use a Likert Score)
+-   How satisfied are you about Business Intelligence Major? (Use a Likert Score)
+-   Will you recommend University of Petra to your colleagues? (Use Net Promoter Score)
+-   Will you recommend studying Business Intelligence at the University of Petra to your colleagues? (Use Net Promoter Score)
+-   Rank your top concerns about university life (e.g., tuition, faculty support, facilities, transportation, securing a job, quality of education).
+
+Here's a table listing each question, the appropriate question type in Microsoft Forms, and the reason for using that type:
+
+| **Question** | **Microsoft Forms Question Type** | **Reason for Using This Question Type** |
+|----|----|----|
+| **Demographics** |  |  |
+| Age | Text (Short Answer) | Allows respondents to input their exact age for precise data collection. |
+| Gender | Choice | Provides predefined options for efficient and structured data analysis. |
+| Current year of study | Choice (Dropdown) | Offers a compact format for selecting from a fixed list of years. |
+| Home distance from the University | Text (Short Answer) | Allows precise numerical or descriptive input about distance. |
+| Previous Education | Choice | Predefined options for structured responses and easier categorization. |
+| High School Degree (National Tawjihi, International) | Choice | Ensures structured responses with predefined categories for better analysis. |
+| If Tawjihi, ask if Scientific or Non-Scientific. | Choice | Simplifies follow-up question with predefined options. |
+| If International, Ask if SAT, IG, IB, Arabic Country | Choice (Dropdown) | Compact format for selecting from a fixed list of international education types. |
+| High School Average | Text (Short Answer) | Allows respondents to input specific numerical averages. |
+| **Academic Performance** |  |  |
+| How many hours do you study in a week? | Text (Short Answer) | Enables respondents to provide specific numerical answers for analysis. |
+| What is your average daily sleep time? | Text (Short Answer) | Allows precise input of numerical data, making it suitable for quantitative analysis. |
+| What was your score in MID exam? | Text (Short Answer) | Allows specific numeric responses, making the data easier to analyze. |
+| What is your current GPA? | Text (Short Answer) | Enables respondents to input exact GPA values. |
+| **Working While Studying** |  |  |
+| Ask if the student is working while he is studying | Yes/No | Simplifies the question to a binary answer for clarity and directness. |
+| If the student works, then ask the following questions: |  |  |
+| Do you work full time or part time? | Choice | Provides predefined categories to ensure consistency in responses. |
+| Are you a business owner or employee? | Choice | Structured options to simplify analysis of work type. |
+| **Student Satisfaction** |  |  |
+| How satisfied are you about your experience at the University of Petra? | Likert | Captures degrees of satisfaction, providing nuanced feedback. |
+| How satisfied are you about the Business Intelligence Major? | Likert | Measures specific satisfaction levels using a scale for detailed insights. |
+| Will you recommend the University of Petra to your colleagues? | Net Promoter Score (NPS) | Evaluates likelihood of recommendation, a standard metric for gauging loyalty or satisfaction. |
+| Will you recommend studying Business Intelligence at the University of Petra? | Net Promoter Score (NPS) | Assesses advocacy for the major, providing actionable insights. |
+| Rank your top concerns about university life (e.g., tuition, faculty support, facilities, transportation, university reputation, quality of education). | Ranking | Allows students to prioritize their concerns in order of importance, providing insights into priorities. |
+
+This table aligns each question with the best-suited Microsoft Forms question type to ensure efficient data collection and analysis.

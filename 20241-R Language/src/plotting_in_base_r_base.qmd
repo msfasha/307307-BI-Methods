@@ -1,0 +1,1125 @@
+---
+title: "1.4_Basic Plotting in R"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+## What do you want to Communicate?
+
+![](images/charts_categories.png)
+
+------------------------------------------------------------------------
+
+The figure above serves as a guide for selecting the appropriate visualizations in data analysis, summarized into four primary categories: Comparison, Composition, Distribution, and Relationship.
+
+Each category has a purpose and is best represented by certain types of charts and plots. Here’s a narrative that elaborates on the content of this image, which you could use in your lecture notes:
+
+**1- Comparison:** This category is about comparing values over time or across different categories.
+
+-   When we want to show trends over time, a Line Chart is very effective (e.g. sales over time).
+
+    ![](images/clipboard-3567870243.png)
+
+-   To compare quantities across categories, Column or Bar Charts serve well, allowing for easy visual comparison of magnitude (e.g. branches performance).
+
+    ![](images/clipboard-1101553949.png)
+
+-   A Data Table or Heat Map can be used when we have multiple variables to compare and wish to show the data's granularity (e.g. employees performance across departments).
+
+    ![](images/clipboard-4139370273.png)
+
+-   Radar Charts are beneficial for comparing multivariate data in the form of a two-dimensional chart, where three or more quantitative variables are represented on axes starting from the same point.
+
+    ![](images/clipboard-3964675777.png)
+
+-   Finally, Area Charts are useful for time series data, especially when we want to compare the cumulative effect.
+
+    ![](images/clipboard-4078822466.png)
+
+**2- Composition:** When the focus is on illustrating the parts of a whole, Composition visuals are chosen.
+
+-   Stacked Bar or Column Charts show the total and individual segment sizes, while Pie or Donut Charts are excellent for displaying percentage or proportional data.
+
+    ![](images/clipboard-2209828808.png)
+
+-   Pie Chart
+
+    ![](images/clipboard-4049204083.png)
+
+-   Stacked Area Charts are akin to time series versions of stacked bar charts.
+
+    ![](images/clipboard-3859128702.png)
+
+-   Waterfall Charts can be particularly illustrative for showing the cumulative effect of sequentially introduced positive or negative values, often used for financial data to understand profit and loss.
+
+    ![](images/clipboard-369852299.png)
+
+-   Funnel Charts and Tree Maps are used to represent stages in a process and hierarchies, respectively.
+
+    ![](images/clipboard-1667006335.png)
+
+**3- Distribution:** Distribution charts help us understand the frequency of values in a dataset and identify patterns such as normal distribution or outliers.
+
+-   Histograms are the go-to charts for showing frequency distribution of data.
+
+    ![](images/clipboard-305994702.png)
+
+-   Box & Whisker Plots or Boxplots show the distribution in terms of quartiles and outliers.
+
+    ![](images/clipboard-1009772392.png)
+
+-   Density Plots are similar to histograms but with a smooth curve drawn through the tops of each bar.
+
+    ![](images/clipboard-3789173664.png)
+
+-   Scatter Plots show the distribution of two variables and any possible correlation.
+
+    ![](images/clipboard-4212099845.png)
+
+-   For geographical data, Map/Choropleth visuals illustrate the distribution of data across geographical regions.
+
+    ![](images/clipboard-1405182372.png)
+
+**4- Relationship:** To identify if and how two or more variables relate to one another, we use Relationship charts.
+
+-   Scatter Plots are again relevant here for they show the correlation between two variables.
+
+    ![](images/clipboard-3425883776.png)
+
+-   Bubble Charts extend scatter plots by adding a third dimension (represented by the size of the bubbles).
+
+    ![](images/clipboard-3623818424.png)
+
+-   Heat Maps can represent correlation matrices, displaying the strength of the relationship between two variables.
+
+    ![](images/clipboard-1965201483.png)
+
+-   Correlation Matrix Charts use color coding to represent different correlation coefficients.
+
+    ![](images/clipboard-2943623741.png)
+
+**Important Notes**
+
+-   Remember, always try to “Keep it simple”, in most cases it is sufficient to use fundamental visualization types like bar charts, line charts, histograms, and scatter plots for their clarity and straightforwardness. While advanced charts offer nuanced insights, the basic types often tell the clearest story, making them a preferred starting point, especially for broader audiences.
+
+-   It is important to highlight that the choice of chart or plot depends on the story you want the data to tell and the ease with which the audience can understand that story. Each visualization type has its strengths and is suitable for different data analysis scenarios, and knowing when and how to use them is a critical skill in data analysis and reporting.
+
+------------------------------------------------------------------------
+
+## **Getting Started with Basic Plotting**
+
+#### **Load the Data**
+
+```{r}
+library(dplyr)
+library(readr)
+
+file_path <- "data\\superstore.csv"
+superstore <- read_csv(file_path, show_col_types = FALSE)
+```
+
+#### **Inspect the Data**
+
+Explore the first few rows and basic statistics of the dataset.
+
+```{r}
+head(superstore)
+str(superstore)
+```
+
+## **1- Comparing Data**
+
+### Comparing Data Using a Bar Plot
+
+Compare orders by segment using Bar Plots
+
+```{r}
+# Assuming 'superstore' dataset is already loaded and contains 'Segment' column
+# Calculate the number of orders per Segment
+order_counts <- table(superstore$Segment)
+
+# Find an appropriate offset for the labels
+# Here, I'm using 3% of the maximum count as an offset
+offset <- max(order_counts) * 0.03
+
+# Create the Bar Chart and store the midpoints of the bars in 'bp'
+bp <- barplot(order_counts,
+              col = c("blue", "orange", "green"),
+              main = "Number of Orders per Segment",
+              xlab = "Segment",
+              ylab = "Number of Orders",
+              border = "black",
+              ylim = c(0, max(order_counts) + 1000)) # Adjust the y-axis limit
+
+# Adding text labels on top of the bars for better visualization
+text(x = bp, # x positions are the midpoints of the bars
+     y = order_counts + offset, # Set y positions just above the bars with an offset
+     labels = order_counts, # Labels are the order counts
+     cex = 0.8, # Font size of text
+     pos = 3) # 'pos = 3' will position the text above the specified coordinates
+
+
+```
+
+This code does the following:
+
+-   Calculates the frequency of each Segment using **`table()`**, which effectively counts the number of orders in each segment.
+
+-   Plots a bar chart using **`barplot()`** with the calculated frequencies.
+
+-   **`main`** adds a title to the chart.
+
+-   **`xlab`** and **`ylab`** add labels to the x-axis and y-axis, respectively.
+
+-   **`col`** sets the color of the bars, and **`border`** sets the color of the border around the bars.
+
+### Comparing Data Using a Line Plot
+
+**Plotting supertore's monthly sales**
+
+First, let us prepare the data we want to plot
+
+```{r}
+library(dplyr)
+
+# Assuming the 'superstore' dataset is already loaded
+# Convert 'Order Date' to a Date object, assuming it's in the format 'mm/dd/yyyy'
+superstore$OrderDate <- as.Date(superstore$`Order Date`, format="%m/%d/%Y")
+
+# Filter the data for the 'Furniture' category and summarize sales by month and year
+furniture_sales <- superstore %>%
+  filter(Category == "Furniture") %>%
+  mutate(YearMonth = format(OrderDate, "%Y-%m")) %>%
+  group_by(YearMonth) %>%
+  summarize(TotalSales = sum(Sales, na.rm = TRUE)) %>%
+  arrange(YearMonth)
+
+print(furniture_sales)
+```
+
+Now we can use lines plots to plot our data
+
+```{r}
+# The command below ensures that YearMonth is in a date format for proper plotting because if furniture_sales$YearMonth remains as character strings, R doesn't inherently understand the chronological order of these dates because they're just text. Therefore, R can have difficulty setting appropriate limits and spacing on the x-axis, as it doesn't interpret these strings as date information but as categorical text data. We convert these strings back to date objects, and we append "-01" to each year-month string, turning them into a format that can be recognized as a date, specifically pointing to the first day of each month. When R plots these date objects, it understands the chronological order and spacing inherently associated with dates. This avoids issues with determining the limits and plotting the data correctly on the x-axis.
+furniture_sales$YearMonth <- as.Date(paste0(furniture_sales$YearMonth, "-01"))
+
+# Use base R to plot the line chart
+plot(furniture_sales$YearMonth, furniture_sales$TotalSales, type = "l",
+     xlab = "Month", ylab = "Total Sales", main = "Sales of Furniture Over Time",
+     col = "blue", lwd = 2, xaxt = "n")  # `xaxt = "n"` will remove default x-axis ticks
+
+# Custom x-axis with formatted dates
+axis(1, at = furniture_sales$YearMonth, labels = format(furniture_sales$YearMonth, "%b %Y"), cex.axis = 0.7, las = 2)
+
+# Optional: Adding a grid for better readability
+abline(h = seq(0, max(furniture_sales$TotalSales, na.rm = TRUE), by = 5000), col = "gray", lty = "dotted")
+```
+
+### **Explanation:**
+
+1.  **Data Conversion and Filtering**: The **`Order Date`** is first converted into a proper date format. The **`filter()`** function is then used to select only rows where the **`Category`** is "Furniture".
+
+2.  **Summarization**: The data is grouped by year and month (combined into a new column **`YearMonth`** using **`format()`**) and the sales are summed up for each period. This summarization is done within the **`summarize()`** function.
+
+3.  **Plotting**: Finally, a line chart is created using **`plot()`**.
+
+    The `plot` function in R is a versatile plotting tool that can create a variety of graph types depending on the options specified. Here's a detailed breakdown of the parameters used in our example to create a line plot of furniture sales over time:
+
+    ``` r
+    plot(furniture_sales$YearMonth, furniture_sales$TotalSales, type = "l",
+         xlab = "Month", ylab = "Total Sales", main = "Sales of Furniture Over Time",
+         col = "blue", lwd = 2, xaxt = "n")  # `xaxt = "n"` will remove default x-axis ticks
+    ```
+
+**Data Arguments**:
+
+-   `furniture_sales$YearMonth`: This is the x-variable and represents the dates of the furniture sales. It dictates the horizontal positioning of the data points in the plot.
+-   `furniture_sales$TotalSales`: This is the y-variable and represents the total sales amounts. It dictates the vertical positioning of the data points in the plot.
+-   **`type = "l"`**: This parameter specifies the type of plot. The "l" stands for "line," which means that data points will be connected by a straight line. This is ideal for showing trends over time, like sales data.
+-   **Axis Labels and Title**:
+    -   `xlab = "Month"`: This sets the label for the x-axis, which in this case is "Month," indicating that the x-axis represents different months over time.
+    -   `ylab = "Total Sales"`: This sets the label for the y-axis, representing the total sales values.
+    -   `main = "Sales of Furniture Over Time"`: This sets the main title of the plot, providing a description of what the graph represents.
+-   **Appearance Options**:
+    -   `col = "blue"`: This sets the color of the lines in the plot to blue, making the visual representation distinct and clear.
+    -   `lwd = 2`: This parameter stands for "line width" and sets the thickness of the line connecting the data points. A value of 2 makes the line moderately thick, enhancing visibility.
+-   **`xaxt = "n"`**: This argument controls the appearance of the x-axis ticks and labels. The "n" means "none," which tells R not to draw the default x-axis ticks and labels. This is useful when you want to customize the tick marks and labels, as done in your plot with the `axis` function to better handle the date formatting.
+
+By combining these parameters, the `plot` function generates a line chart that effectively visualizes how furniture sales vary over time. This kind of plot is particularly useful for identifying trends, such as seasonal effects or growth patterns in sales data.
+
+The `axis` function in R is used to add or customize axis ticks, labels, and appearance for plots generated using base R plotting functions. Here’s a breakdown of the components of the `axis` function as used in your code:
+
+Function Usage:
+
+``` r
+axis(1, at = furniture_sales$YearMonth, labels = format(furniture_sales$YearMonth, "%b %Y"), cex.axis = 0.7, las = 2)
+```
+
+1.  **`1`**: This specifies the side of the plot on which the axis is to be drawn. In base R, the numbers for the sides are 1 = bottom, 2 = left, 3 = top, and 4 = right. Here, `1` means the axis is drawn at the bottom of the plot.
+
+2.  **`at`**: This argument determines the points at which the tick marks and labels are placed. Here, `at = furniture_sales$YearMonth` sets the positions of the axis ticks at the dates stored in `furniture_sales$YearMonth`. These represent specific points on the time scale of the plot.
+
+3.  **`labels`**: This provides the text to be used at each tick mark specified by `at`. `labels = format(furniture_sales$YearMonth, "%b %Y")` formats the dates to display as abbreviated month names followed by the year (e.g., "Jan 2020"). This makes the axis labels more readable and appropriately formatted for displaying time series data.
+
+4.  **`cex.axis`**: This argument controls the character expansion factor for the axis labels, affecting their size. `cex.axis = 0.7` makes the labels smaller than the default size, which can help fit more labels or prevent them from overlapping, especially when dates are closely spaced.
+
+5.  **`las`**: This sets the style of axis label orientation. The `las = 2` parameter means that labels are perpendicular to the axis. This is particularly useful for date labels as it keeps the text from merging into one another and makes it easier to read, especially when the plot covers many time points.
+
+The use of the `axis` function in this context is crucial for enhancing the readability of the plot, ensuring that the timeline is clearly labeled with formatted dates. This customization helps users better interpret the trends shown in the line plot.
+
+### 2- Showing Composition of Data
+
+Pie charts could be used for comparisons particularly when we are comparing parts of a whole, which is a different type of comparison than what bar charts typically showcase.
+
+Pie charts are effective for displaying the relative proportions of categories, making it easy to see at a glance which categories are larger or smaller parts of the total.
+
+Here is a sample R code using the base plotting system to create a pie chart that compares the number of orders per 'Category':
+
+```{r}
+# Load necessary library
+library(RColorBrewer)
+
+category_counts <- table(superstore$Category)
+
+# Define colors using RColorBrewer
+colors <- brewer.pal(length(category_counts), "Set3")
+
+# Plotting the pie chart
+pie(category_counts, 
+    col = colors,
+    main = "Number of Orders per Category", 
+    labels = paste(names(category_counts), "\n", category_counts, sep=""))  
+
+# If you want to add a legend, you can uncomment the following line
+# legend("topright", legend = names(category_counts), fill = colors)
+```
+
+In this chart, each slice represents a Category and the size of the slice is proportional to the count of orders in that category. Here’s what each part of the code does:
+
+-   The **`table()`** function calculates the number of orders in each category.
+
+-   **`pie()`** is the function that creates the pie chart.
+
+-   **`main`** gives a title to the chart.
+
+-   **`col = rainbow(length(category_counts))`** assigns a unique color to each slice from a rainbow palette.
+
+-   **`labels = paste(names(category_counts), "\n", category_counts, sep="")`** adds labels to each slice, showing both the category name and the number of orders.
+
+**Adding Percentages**
+
+```{r}
+# Load necessary library
+library(RColorBrewer)
+
+# Calculate the number of orders per Category
+category_counts <- table(superstore$Category)
+
+# Calculate percentages
+category_percentages <- round(100 * category_counts / sum(category_counts), 1)
+
+# Define colors using RColorBrewer
+colors <- brewer.pal(length(category_counts), "Pastel1")
+
+# Plotting the pie chart
+pie(category_counts, 
+    main = "Number of Orders per Category", 
+    col = colors,
+    labels = paste(names(category_counts), "\n", category_percentages, "%", sep=""),
+    init.angle = 90)  # This rotates the pie chart to start from the top
+
+# If you want to add a legend, you can uncomment the following line
+legend("topright", legend = names(category_counts), fill = colors)
+```
+
+By displaying percentages, the pie chart will now communicate not just the raw counts but also the relative size of each category as part of the total. This additional information makes the chart more informative and valuable for decision-making or analysis discussions.
+
+In general, pie charts can instantly communicate which categories are contributing more or less to the total number of orders, making it useful for understanding market distribution or product popularity. However, it’s worth noting that pie charts can become difficult to read when there are many categories or when the size differences between slices are subtle. For a small number of categories with distinct differences, a pie chart can be an effective visual tool.
+
+**Side by Side Plots**
+
+Prepare the Data
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Assuming the 'superstore' dataset is named 'spc_tbl_'
+
+# First, you will want to aggregate the data to get total sales per category for each segment
+sales_by_category_segment <- superstore %>%
+  group_by(Category, Segment) %>%
+  summarize(TotalSales = sum(Sales, na.rm = TRUE)) %>%
+  ungroup()
+```
+
+Show the Plot
+
+```{r}
+# Create a side-by-side (dodged) bar chart
+ggplot(sales_by_category_segment, aes(x = Category, y = TotalSales, fill = Segment)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_minimal() +
+  labs(title = "Total Sales by Category and Segment",
+       x = "Category",
+       y = "Total Sales",
+       fill = "Segment")
+```
+
+Stacked Bars Plot
+
+```{r}
+# Create a stacked bar chart
+ggplot(sales_by_category_segment, aes(x = Category, y = TotalSales, fill = Segment)) +
+  geom_bar(stat = "identity", position = "stack") +
+  theme_minimal() +
+  labs(title = "Total Sales by Category and Segment",
+       x = "Category",
+       y = "Total Sales",
+       fill = "Segment")
+```
+
+### **3- Exploring the Distribution of Data**
+
+#### **Learning Objectives:**
+
+-   Understand the distribution of key variables.
+-   Identify outliers using histograms and boxplots.
+
+#### **Histogram of Sales**
+
+Analyze the sales distribution to understand typical sales values and variations.
+
+```{r}
+hist(superstore$Sales, breaks=50, main="Distribution of Sales", xlab="Sales", col="lightblue")
+```
+
+``` r
+```
+
+Limit the range of the histogram
+
+```{r}
+# Histogram with x-axis range from $0 to $1000
+hist(superstore$Sales, breaks=100, main="Distribution of Sales", xlab="Sales", col="lightblue", 
+     xlim=c(0, 5000))
+```
+
+Limit the data
+
+```{r}
+
+# Filtering and plotting within the pipeline using base R
+superstore %>%
+  filter(Sales < 1000) %>%
+  { hist(.$Sales, breaks=100, main="Distribution of Sales", xlab="Sales", col="lightblue", xlim=c(0, 1000)) }
+
+```
+
+The `.$Sales` notation is a way to reference columns in a data frame that's being manipulated inside a pipeline in R, especially when used within functions that don't natively support the `%>%` operator from the `dplyr` package or the tidyverse environment.
+
+Here's a detailed breakdown:
+
+-   **`.`** : In the context of a `dplyr` pipeline, the dot (`.`) represents the current data frame that results from the preceding steps in the pipeline. For example, if you filter or mutate a dataset within a pipeline, the dot will represent the dataset as it exists after those transformations.
+
+-   **`$Sales`** : This is a way to access the `Sales` column of the data frame. Normally, outside of a function or a pipeline, you would write something like `dataframe$Sales` to extract the `Sales` column from `dataframe`.
+
+-   **`.$Sales`** : When combined in a pipeline, it specifically tells R to take the current version of the data frame (represented by `.`) and select the `Sales` column from it. This is particularly useful when passing data to a function that does not naturally understand how to work directly with pipeline syntax.
+
+### Example Usage:
+
+Here's a simple example of how you might see this used:
+
+``` r
+library(dplyr)
+
+# Example data frame
+data <- data.frame(
+  Group = c("A", "B", "A", "B"),
+  Sales = c(100, 200, 150, 250)
+)
+
+# Suppose we want to calculate the mean of Sales for Group A only and use base R's mean function within a pipeline:
+mean_sales_A <- data %>%
+  filter(Group == "A") %>%
+  { mean(.$Sales) }  # Use .$Sales to specify 'Sales' column from the current data frame
+
+print(mean_sales_A)
+```
+
+In the above example, after filtering the data to include only those rows where `Group` is "A", the `{ mean(.$Sales) }` part calculates the mean of the `Sales` column from the filtered data frame.
+
+The use of `{}` (curly braces) allows us to include expressions that don’t directly fit into the `%>%` pipeline naturally, enabling the use of base R functions and other operations that expect a more traditional R syntax. This method is a powerful way to bridge non-tidyverse functions with `dplyr` workflows.
+
+#### **Exercise 5: Boxplot of Profits**
+
+Examine profit variability and potential outliers.
+
+``` r
+boxplot(data$Profit, horizontal=TRUE, main="Profit Distribution", col="salmon")
+```
+
+### **Module 3: Comparing Categories and Regions**
+
+#### **Learning Objectives:**
+
+-   Compare categorical data using bar plots and pie charts.
+-   Apply your skills to analyze sales by different categories and regions.
+
+#### **Exercise 6: Bar Plot of Sales by Category**
+
+Compare how different product categories contribute to overall sales.
+
+``` r
+sales_by_category <- aggregate(Sales ~ Category, data, sum)
+barplot(sales_by_category$Sales, names.arg=sales_by_category$Category, main="Sales by Category", col="lightgreen")
+```
+
+#### **Exercise 7: Pie Chart of Sales by Region**
+
+Understand the market share of each region in total sales.
+
+``` r
+sales_by_region <- aggregate(Sales ~ Region, data, sum)
+pie(sales_by_region$Sales, labels=sales_by_region$Region, main="Sales by Region", col=rainbow(length(sales_by_region$Sales)))
+```
+
+### **Module 4: Time Series Analysis**
+
+#### **Learning Objectives:**
+
+-   Plot time series data.
+-   Analyze trends in sales over time.
+
+#### **Exercise 8: Line Graph of Sales Over Time**
+
+Track how sales fluctuate over time to identify seasonal trends and growth.
+
+``` r
+data$Order.Date <- as.Date(data$Order.Date, format="%m/%d/%Y")
+sales_over_time <- aggregate(Sales ~ Order.Date, data, sum)
+plot(sales_over_time$Order.Date, sales_over_time$Sales, type="l", main="Sales Over Time", xlab="Date", ylab="Sales", col="blue")
+```
+
+### **Module 5: Advanced Plotting Techniques**
+
+#### **Learning Objectives:**
+
+-   Compare multiple series in a single plot.
+-   Learn to add elements like colors and legends to enhance plot readability.
+
+#### **Exercise 9: Multi-line Plot for Regional Sales Trends**
+
+Visualize and compare sales trends across different regions.
+
+``` r
+sales_by_date_and_region <- aggregate(Sales ~ Order.Date + Region, data, sum)
+plot(sales_by_date_and_region$Order.Date[sales_by_date_and_region$Region=="East"], sales_by_date_and_region$Sales[sales_by_date_and_region$Region=="East"], type="l", col="red", xlab="Date", ylab="Sales", main="Sales Trends by Region")
+lines(sales_by_date_and_region$Order.Date[sales_by_date_and_region$Region=="West"], sales_by_date_and_region$Sales[sales_by_date_and_region$Region=="West"], col="green")
+legend("topright", legend=c("East", "West"), col=c("red", "green"), lty=1)
+```
+
+### **Conclusion:**
+
+Throughout these modules, you've learned how to visualize data using base R's plotting capabilities. These skills are essential for exploring and communicating data insights effectively.
+
+------------------------------------------------------------------------
+
+This guide is designed to be self-contained and engaging for students, providing them with practical skills in data visualization using R.
+
+------------------------------------------------------------------------
+
+Based on the chart you've provided, which outlines the types of visual communications through comparisons, compositions, distributions, and relationships, here's a tailored educational guide with practical R examples using the Tableau Superstore dataset.
+
+### Data Visualization in R: Communicating with Charts
+
+**The aggregate function**
+
+Before we begin we need to talk about the aggregate function, this function in R is a powerful tool for data summary that is somewhat similar to creating pivot tables in spreadsheet software like Microsoft Excel. It is used to apply a function (often a summary or statistical function) across subsets of a dataset. The subsets are defined by one or more factors, often categorical variables.
+
+Here’s a general structure of how the `aggregate` function works in R:
+
+``` r
+aggregate(x ~ group, data = dataset, FUN = summaryFunction)
+```
+
+-   `x ~ group`: The formula where `x` is the numerical data to be aggregated, and `group` is the factor(s) by which you want to split the data.
+-   `data`: The dataset being used.
+-   `FUN`: The function to be applied to each subset of data.
+
+When you use the `aggregate` function, you get a summary of `x` for each level of `group`. The result is like a pivot table in that it lets you see aggregated data in a tabular form where rows correspond to group levels and columns correspond to the aggregated measurements.
+
+For example, let’s say you have a dataset with sales data and you want to find the average sales for each category:
+
+``` r
+aggregate(Sales ~ Category, data = yourData, FUN = mean)
+```
+
+This will give you a data frame where each row is a category and the corresponding average sales amount for that category—much like a pivot table would.
+
+In the context of the Superstore dataset, if you wanted to aggregate sales data by `Region` and `Category`, and sum the sales for each combination, it would look like this:
+
+``` r
+aggregate(Sales ~ Region + Category, data = superstoreData, FUN = sum)
+```
+
+This would provide a table with the total sales for each category within each region, essentially creating a summarized pivot of the detailed data.
+
+#### **Comparison**
+
+**Objective:** Compare values to identify trends and disparities.
+
+**Column/Bar Chart** Illustrate sales comparisons across product categories.
+
+``` r
+sales_by_category <- aggregate(Sales ~ Category, data, sum)
+barplot(sales_by_category$Sales, names.arg=sales_by_category$Category, col="lightblue", main="Sales by Category")
+```
+
+**Line Chart (Time Series)** Show sales trends over time.
+
+``` r
+data$Order.Date <- as.Date(data$Order.Date, format="%m/%d/%Y")
+sales_over_time <- aggregate(Sales ~ Order.Date, data, sum)
+plot(sales_over_time$Order.Date, sales_over_time$Sales, type="l", main="Sales Over Time", xlab="Date", ylab="Sales")
+```
+
+#### **Composition**
+
+**Objective:** Break down data to show the parts of a whole.
+
+**Stacked Bar/Column Chart** Display the proportion of sales by category within each region.
+
+``` r
+sales_by_category_region <- aggregate(Sales ~ Region + Category, data, sum)
+barplot(sales_by_category_region$Sales, names.arg=sales_by_category_region$Region, col=rainbow(3), main="Sales by Category and Region")
+```
+
+**Pie/Donut Chart** Visualize market share of each segment.
+
+``` r
+sales_by_segment <- aggregate(Sales ~ Segment, data, sum)
+pie(sales_by_segment$Sales, labels=sales_by_segment$Segment, main="Sales by Segment")
+```
+
+#### **Distribution**
+
+**Objective:** Show the spread and frequency of data.
+
+**Histogram** Understand the distribution of sales across the dataset.
+
+``` r
+hist(data$Sales, breaks=50, main="Sales Distribution", xlab="Sales", col="grey")
+```
+
+**Box & Whisker** Spot sales distribution and outliers by category.
+
+``` r
+boxplot(Sales ~ Category, data=data, main="Sales by Category", xlab="Category", ylab="Sales", col="tan")
+```
+
+#### **Relationship**
+
+**Objective:** Examine the relationship between multiple variables.
+
+**Scatter Plot** Analyze the correlation between sales and profit.
+
+``` r
+plot(data$Sales, data$Profit, main="Sales vs. Profit", xlab="Sales", ylab="Profit", pch=19, col=rgb(0, 1, 0, 0.5))
+```
+
+**Correlation Matrix** Examine the strength of relationships among sales, profit, and discount.
+
+``` r
+cor_matrix <- cor(data[c("Sales", "Profit", "Discount")], use="complete.obs")
+plot(as.dist((1-cor_matrix)/2), main="Correlation Matrix")
+```
+
+### Best Practices and Tips:
+
+-   **Keep It Simple:** Focus on using basic charts like bar plots, line graphs, histograms, and scatter plots which often communicate the clearest message.
+-   **Tell a Story:** Always look for the narrative behind the data. Ask yourself, "What is the data telling me? What is the insight I want to share?"
+-   **Focus on Clarity:** Make your visualizations easy to understand at a glance. Use titles, labels, and legends effectively.
+-   **Color with Purpose:** Use color to highlight key data points or to group related items, but don't let it distract from the main message
+
+**Introduction to ggplot2 in R**
+
+`ggplot2` is a powerful and widely used data visualization package in R.
+
+It stands out for its consistent syntax and layered approach to creating graphics, which allows users to build plots iteratively and with ease.
+
+Developed by Hadley Wickham, `ggplot2` is based on the Grammar of Graphics—a set of rules for constructing graphs—enabling users to create a wide range of highly customizable plots.
+
+The core concept behind `ggplot2` is the idea of mapping data to aesthetic attributes (aesthetics) of geometric objects (geoms).
+
+In `ggplot2`, you begin by defining a dataset and the mappings between variables in your data and visual properties of the plot, such as size, color, and position.
+
+Then you add layers of geoms, statistical transformations, scales, and other components to build up the visualization step by step.
+
+One of the strengths of `ggplot2` is its flexibility. With a comprehensive set of geoms and the ability to add multiple layers, users can create complex plots that are still rooted in a coherent system. Whether it's a simple scatter plot or a complex multi-panel graphic, `ggplot2` provides the tools to make it happen.
+
+Key Features of ggplot2:
+
+1.  **Layered Approach**: Build plots layer by layer, adding different elements with `+` operators.
+
+2.  **Aesthetic Mappings**: Define how data maps onto color, size, shape, and other visual properties.
+
+3.  **Geometric Objects**: Add various types of geometric objects (or "geoms") to visualize data.
+
+4.  **Scales**: Control the mapping between data and aesthetics with scales, allowing for fine-tuning of details like the color palette or axis breaks.
+
+5.  **Faceting**: Easily create multi-panel plots by dividing the data into subsets and displaying each subset in its own panel.
+
+6.  **Themes**: Modify the non-data parts of the plot to fine-tune the presentation, such as fonts, background colors, gridlines, and more.
+
+`ggplot2`'s syntax encourages the clear and concise expression of complex graphics, making it an essential tool for anyone looking to create informative and attractive visualizations in R.
+
+## **Getting Started with Basic Plotting**
+
+#### **Load the Data**
+
+```{r}
+library(dplyr)
+library(readr)
+
+file_path <- "data\\superstore.csv"
+superstore <- read_csv(file_path, show_col_types = FALSE)
+```
+
+#### **Inspect the Data**
+
+Explore the first few rows and basic statistics of the dataset.
+
+```{r}
+head(superstore)
+str(superstore)
+```
+
+## **1- Comparing Data**
+
+### Comparing Data Using a Bar Plot
+
+Compare orders by segment using Bar Plots
+
+```{r}
+library(ggplot2)
+
+# Create a simple count of each Segment
+superstore_counts <- superstore %>%
+  dplyr::count(Segment)
+
+superstore_counts
+
+# Use ggplot2 to create the bar chart
+ggplot(superstore_counts, aes(x = Segment, y = n, fill = Segment)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Count of Orders by Segment",
+       x = "Segment",
+       y = "Number of Orders") +
+  scale_fill_brewer(palette = "Set1")  # Adds a color palette to the bars
+```
+
+Here's what each part does:
+
+-   **`dplyr::count(Segment)`**: This counts the number of occurrences of each unique value in the **`Segment`** column, creating a data frame with two columns: **`Segment`** and **`n`** (the counts). The `dplyr::count()` function is a convenient way to count the occurrences of each unique value in a variable without explicitly using `group_by()`.
+
+    When you use `dplyr::count(Segment)` directly on the `superstore` dataset, it automatically groups the data by the variable you're counting, which in this case is `Segment`. This means that `count()` calculates the frequency of each unique value in the `Segment` column, treating each row in the dataset as a separate observation.
+
+    Therefore, even though you didn't explicitly use `group_by()`, the `dplyr::count()` function performs a similar grouping operation behind the scenes to calculate the counts for each segment, resulting in the correct counts without the need for explicit grouping.
+
+-   **`aes(x = Segment, y = n, fill = Segment)`**: Sets the aesthetics for the plot, specifying that **`Segment`** should be on the x-axis, **`n`** should be on the y-axis, and **`fill`** should be determined by the **`Segment`** column.
+
+-   **`geom_bar(stat = "identity")`**: Adds the bars to the plot, with **`stat = "identity"`** means that the heights of the bars should directly represent the values provided in the dataset, rather than being calculated by a statistical summary function like count or sum.
+
+    In other words, when you use `stat = "identity"`, each bar's height will correspond directly to the value of the `y` aesthetic (in this case, `n` column in the generated dplyr::count table), without any aggregation or transformation. This is useful when you already have the desired heights pre-calculated in your dataset and want to represent them as is in the plot.
+
+    In the provided code example, the n values in the `data` dataframe represent the exact counts of sales per Segment group, and specifying `stat = "identity"` ensures that the heights of the bars in the bar chart directly correspond to these percentages.
+
+-   **`theme_minimal()`**: Applies a minimal theme to the plot for a clean look.
+
+-   **`labs(...)`**: Sets the labels for the plot, including the title and axis labels.
+
+-   **`scale_fill_brewer(palette = "Set1")`**: Uses a ColorBrewer palette to color the bars, making the plot more visually appealing.
+
+We can directly pipe the output of the count operation into the ggplot function. We need to remove the data object from the aes parameter.
+
+```{r}
+library(ggplot2)
+
+# Create a simple count of each Segment
+superstore %>%
+  dplyr::count(Segment) %>% ggplot(aes(x = Segment, y = n, fill = Segment)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Count of Orders by Segment",
+       x = "Segment",
+       y = "Number of Orders") +
+  scale_fill_brewer(palette = "Set1")  # Adds a color palette to the bars
+```
+
+### Comparing Data using a Line Plot
+
+**Plotting Supertore's daily sales**
+
+In this example we will create a line plot using ggplot2 with the `superstore` dataset to visualize trends over time. For example, we can plot the total sales over time.
+
+```{r}
+library(ggplot2)
+
+# Convert 'Order Date' to Date format
+superstore$Order_Date <- as.Date(superstore$`Order Date`, format="%m/%d/%Y")
+
+# Summarize total sales by Order_Date
+sales_by_date <- superstore %>%
+  group_by(Order_Date) %>%
+  summarise(Total_Sales = sum(Sales))
+
+# Create line plot
+ggplot(sales_by_date, aes(x = Order_Date, y = Total_Sales)) +
+  geom_line(color = "blue") +
+  labs(title = "Total Sales Over Time",
+       x = "Order Date",
+       y = "Total Sales") +
+  theme_minimal()
+```
+
+Explanation:
+
+**`library(ggplot2)`:** This line loads the ggplot2 package, which is a powerful and widely-used package for creating data visualizations in R.
+
+1.  **`superstore$Order_Date <- as.Date(superstore$`Order Date`, format="%m/%d/%Y")`:** This line converts the 'Order Date' column in the `superstore` dataset to a Date format using the `as.Date` function. The `format` argument specifies the format of the dates in the original column, which is "%m/%d/%Y" (month/day/year).
+
+2.  **`sales_by_date <- superstore %>% group_by(Order_Date) %>% summarise(Total_Sales = sum(Sales))`:** This code calculates the total sales for each unique date in the 'Order_Date' column of the `superstore` dataset. It uses the `%>%` operator (also known as the pipe operator) to perform a series of data manipulation operations sequentially.
+
+    -   `group_by(Order_Date)`: Groups the data by the 'Order_Date' column.
+    -   `summarise(Total_Sales = sum(Sales))`: Calculates the total sales for each group of dates and creates a new column named 'Total_Sales' to store these sums.
+
+3.  **`ggplot(sales_by_date, aes(x = Order_Date, y = Total_Sales))`:** This initializes a ggplot object with the `sales_by_date` dataset and specifies the aesthetic mappings. 'Order_Date' is mapped to the x-axis and 'Total_Sales' is mapped to the y-axis.
+
+4.  **`geom_line(color = "blue")`:** This adds a line layer to the plot, which connects the points to visualize the trend of total sales over time. The `color = "blue"` argument specifies that the line should be blue.
+
+5.  **`labs(title = "Total Sales Over Time", x = "Order Date", y = "Total Sales")`:** This sets the plot title and axis labels.
+
+6.  **`theme_minimal()`:** This applies the 'minimal' theme to the plot, which removes background elements and reduces visual clutter while retaining essential elements.
+
+**Plotting Supertore's monthly sales**
+
+To create a line chart that compares the monthly sales of your `superstore` dataset using `ggplot2`, we need to preprocess our data to calculate the total sales per month.
+
+Here's a step-by-step guide on how to do it, along with the R code:
+
+1.  Convert `Order Date` to a Date object.
+2.  Extract the year and month from the `Order Date`.
+3.  Group the data by the extracted year and month and summarize the sales.
+4.  Plot the data using `ggplot2`.
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+
+# Convert 'Order Date' to Date object and extract Year-Month
+superstore <- superstore %>%
+  mutate(OrderDate = as.Date(`Order Date`, format = "%m/%d/%Y"),
+         YearMonth = floor_date(OrderDate, "month"))
+
+# Calculate monthly sales
+monthly_sales <- superstore %>%
+  group_by(YearMonth) %>%
+  summarize(TotalSales = sum(Sales, na.rm = TRUE)) %>%
+  ungroup()  # Ensure that the data is ungrouped for plotting
+```
+
+Now we can plot our new data
+
+```{r}
+# Plot the data using ggplot2
+ggplot(monthly_sales, aes(x = YearMonth, y = TotalSales)) +
+  geom_line(group=1, color="blue") +
+  geom_point(color="red") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  labs(title = "Monthly Sales Comparison",
+       x = "Date",
+       y = "Total Sales")
+```
+
+Code explanation:
+
+1.  **`ggplot(monthly_sales, aes(x = YearMonth, y = TotalSales))`:** This initializes a ggplot object with the `monthly_sales` dataset and specifies the aesthetic mappings. 'YearMonth' is mapped to the x-axis and 'TotalSales' is mapped to the y-axis.
+
+2.  **`geom_line(group=1, color="blue")`:** This adds a line layer to the plot, which connects the points to visualize the trend of total sales over time. The `group=1` argument ensures that all data points are treated as belonging to the same group, allowing them to be connected by the line. The `color="blue"` argument specifies that the line should be blue.
+
+3.  **`geom_point(color="red")`:** This adds point markers to the plot, which represent individual data points. The `color="red"` argument specifies that the points should be red.
+
+4.  **`scale_x_date(date_breaks = "1 month", date_labels = "%b %Y")`:** This customizes the x-axis scale for dates. It specifies that the breaks on the x-axis should occur every 1 month (`date_breaks = "1 month"`) and formats the date labels to display the month abbreviation and year (`date_labels = "%b %Y"`).
+
+5.  **`theme_minimal()`:** This applies the 'minimal' theme to the plot, which removes background elements and reduces visual clutter while retaining essential elements.
+
+6.  **`theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))`:** This customizes the appearance of the x-axis text labels. It rotates the text by 90 degrees (`angle = 90`), adjusts the vertical alignment of the text (`vjust = 0.5`), and adjusts the horizontal alignment of the text (`hjust=1`).
+
+7.  **`labs(title = "Monthly Sales Comparison", x = "Date", y = "Total Sales")`:** This sets the plot title and axis labels. The title is set to "Monthly Sales Comparison", the x-axis label is set to "Date", and the y-axis label is set to "Total Sales".
+
+### Comparing data using Side By Side plots
+
+**Prepare the Data**
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# First, we need to aggregate the data to get total sales per category for each segment
+sales_by_category_segment <- superstore %>%
+  group_by(Category, Segment) %>%
+  summarize(TotalSales = sum(Sales, na.rm = TRUE)) %>%
+  ungroup()
+```
+
+This code calculates the number of orders per category in the `superstore` dataset and creates additional columns to represent the proportion and percentage of each category. Let's break it down:
+
+1.  **`superstore %>% count(Category)`**:
+    -   The `%>%` operator, known as the pipe operator, is used to chain together multiple operations. It takes the output from the previous operation and passes it as the first argument to the next operation.
+    -   Here, `superstore %>% count(Category)` counts the number of occurrences of each unique category in the `Category` column of the `superstore` dataset.
+2.  **`mutate(prop = n / sum(n), label = scales::percent(prop))`**:
+    -   The `mutate()` function from the `dplyr` package is used to add new columns or modify existing columns in a dataset.
+    -   In this code, `mutate()` adds two new columns to the result of the previous operation:
+        -   `prop`: This column calculates the proportion of each category by dividing the count of orders (`n`) by the total count of orders (sum of `n`).
+        -   `label`: This column formats the proportion as a percentage using the `scales::percent()` function from the `scales` package. Each proportion value in the `prop` column is converted to a percentage and stored in the `label` column.
+
+So, `category_counts` is a data frame that contains the counts of orders per category (`n`), the proportion of orders per category (`prop`), and the corresponding percentage labels (`label`) for each category in the `superstore` dataset. This data frame can then be used to create visualizations, such as a pie chart, to compare the distribution of orders across different categories.
+
+Note:
+
+When we use the `count()` function in `dplyr`, it automatically groups the data by the variable you're counting. This means that `count()` calculates the frequency of each unique value in the specified variable, treating each row as a separate observation.
+
+On the other hand, when you use other summarization functions like `summarise()` or `mutate()` to calculate summary statistics or create new variables, you typically need to explicitly group the data using `group_by()` to specify which groups the summarization should be performed within. This allows you to calculate summary statistics separately for each group defined by the grouping variables.
+
+In summary: -
+
+Use `count()` when you want to count the frequency of unique values in a variable, and grouping is automatically applied. -
+
+Use `group_by()` followed by other summarization functions (e.g., `summarise()`, `mutate()`) when you want to perform calculations within specific groups defined by one or more variables.
+
+**Show the Plot**
+
+```{r}
+# Create a side-by-side (dodged) bar chart
+ggplot(sales_by_category_segment, aes(x = Category, y = TotalSales, fill = Segment)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_minimal() +
+  labs(title = "Total Sales by Category and Segment",
+       x = "Category",
+       y = "Total Sales",
+       fill = "Segment")
+```
+
+This code creates a side-by-side (dodged) bar chart to visualize the total sales by category and segment. Let's break it down:
+
+1.  **`ggplot(sales_by_category_segment, aes(x = Category, y = TotalSales, fill = Segment))`**:
+    -   This initializes a ggplot object and specifies the data frame `sales_by_category_segment` as the dataset.
+    -   The aesthetic mappings (`aes()`) define how variables from the dataset will be mapped to visual properties of the plot:
+        -   `x = Category`: Maps the 'Category' variable to the x-axis.
+        -   `y = TotalSales`: Maps the 'TotalSales' variable to the y-axis.
+        -   `fill = Segment`: Maps the 'Segment' variable to the fill color of the bars.
+2.  **`geom_bar(stat = "identity", position = "dodge")`**:
+    -   This adds the geometric object (`geom_bar`) to the plot.
+    -   `stat = "identity"` specifies that the heights of the bars represent the actual values of 'TotalSales' in the dataset without any transformation.
+    -   `position = "dodge"` places the bars for each 'Segment' side by side, creating a dodged bar chart.
+3.  **`theme_minimal()`**:
+    -   This applies the 'minimal' theme to the plot, which removes background elements and reduces visual clutter while retaining essential elements.
+4.  **`labs(title = "Total Sales by Category and Segment", x = "Category", y = "Total Sales", fill = "Segment")`**:
+    -   This sets the labels for the title, x-axis, y-axis, and legend:
+        -   `title = "Total Sales by Category and Segment"`: Sets the title of the plot.
+        -   `x = "Category"`: Sets the label for the x-axis.
+        -   `y = "Total Sales"`: Sets the label for the y-axis.
+        -   `fill = "Segment"`: Sets the legend title for the 'Segment' variable.
+
+Overall, this code generates a side-by-side bar chart that visualizes the total sales for each category, with bars grouped by segment, providing a clear comparison of sales performance across different categories and segments.
+
+### Comparing the data using Stacked Bars plot
+
+```{r}
+# Create a stacked bar chart
+ggplot(sales_by_category_segment, aes(x = Category, y = TotalSales, fill = Segment)) +
+  geom_bar(stat = "identity", position = "stack") +
+  theme_minimal() +
+  labs(title = "Total Sales by Category and Segment",
+       x = "Category",
+       y = "Total Sales",
+       fill = "Segment")
+```
+
+This R code creates a stacked bar chart to visualize the total sales by category and segment. Let's break down each part of the code:
+
+1.  **`ggplot(sales_by_category_segment, aes(x = Category, y = TotalSales, fill = Segment))`**:
+    -   This initializes a ggplot object and specifies the data frame `sales_by_category_segment` as the dataset.
+    -   The aesthetic mappings (`aes()`) define how variables from the dataset will be mapped to visual properties of the plot:
+        -   `x = Category`: Maps the 'Category' variable to the x-axis.
+        -   `y = TotalSales`: Maps the 'TotalSales' variable to the y-axis.
+        -   `fill = Segment`: Maps the 'Segment' variable to the fill color of the bars.
+2.  **`geom_bar(stat = "identity", position = "stack")`**:
+    -   This adds the geometric object (`geom_bar`) to the plot.
+    -   `stat = "identity"` specifies that the heights of the bars represent the actual values of 'TotalSales' in the dataset without any transformation.
+    -   `position = "stack"` stacks the bars for each 'Segment' on top of each other within each 'Category', creating a stacked bar chart.
+3.  **`theme_minimal()`**:
+    -   This applies the 'minimal' theme to the plot, which removes background elements and reduces visual clutter while retaining essential elements.
+4.  **`labs(title = "Total Sales by Category and Segment", x = "Category", y = "Total Sales", fill = "Segment")`**:
+    -   This sets the labels for the title, x-axis, y-axis, and legend:
+        -   `title = "Total Sales by Category and Segment"`: Sets the title of the plot.
+        -   `x = "Category"`: Sets the label for the x-axis.
+        -   `y = "Total Sales"`: Sets the label for the y-axis.
+        -   `fill = "Segment"`: Sets the legend title for the 'Segment' variable.
+
+Overall, this code generates a stacked bar chart that visualizes the total sales for each category, with bars stacked by segment within each category, providing a clear comparison of sales performance across different categories and segments.
+
+### 2- Showing Composition of Data
+
+Pie charts could be used for comparisons particularly when we are comparing parts of a whole, which is a different type of comparison than what bar charts typically showcase.
+
+Pie charts are effective for displaying the relative proportions of categories, making it easy to see at a glance which categories are larger or smaller parts of the total.
+
+Creating pie charts with `ggplot2` involves using `geom_bar()` (or `geom_col()`) with `coord_polar()` to transform it into a pie chart. Here's how you can create a pie chart comparing the number of orders per 'Category' in the `superstore` dataset:
+
+**Prepare our data**
+
+```{r}
+# Calculate the number of orders per Category
+category_counts <- superstore %>%
+  count(Category) %>%
+  mutate(prop = n / sum(n),
+         label = scales::percent(prop))  # Creates a percentage label for each slice
+```
+
+This code calculates the number of orders per category in the `superstore` dataset and creates additional columns to represent the proportion and percentage of each category. Let's break it down:
+
+1.  Here, `superstore %>% count(Category)` counts the number of occurrences of each unique category in the `Category` column of the `superstore` dataset.
+2.  **`mutate(prop = n / sum(n), label = scales::percent(prop))`**:
+    -   The `mutate()` function from the `dplyr` package is used to add new columns or modify existing columns in a dataset.
+    -   In this code, `mutate()` adds two new columns to the result of the previous operation:
+        -   `prop`: This column calculates the proportion of each category by dividing the count of orders (`n`) by the total count of orders (sum of `n`).
+        -   `label`: This column formats the proportion as a percentage using the `scales::percent()` function from the `scales` package. Each proportion value in the `prop` column is converted to a percentage and stored in the `label` column.
+
+So, `category_counts` is a data frame that contains the counts of orders per category (`n`), the proportion of orders per category (`prop`), and the corresponding percentage labels (`label`) for each category in the `superstore` dataset. This data frame can then be used to create visualizations, such as a pie chart, to compare the distribution of orders across different categories.
+
+**Create the pie chart**
+
+```{r}
+library(ggplot2)
+
+# Create the pie chart using ggplot2
+ggplot(category_counts, aes(x = "", y = prop, fill = Category)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +  # This transforms the bar chart into a pie chart
+  geom_text(aes(label = label, y = prop / 2), position = position_stack(vjust = 0.5), color = "white") +
+  labs(fill = "Category", 
+       title = "Number of Orders per Category",
+       x = NULL, 
+       y = NULL) +  # Remove axis labels
+  theme_void() +  # Removes background, gridlines, and labels
+  theme(legend.position = "right")  # Places the legend to the right
+
+```
+
+Here's a breakdown of what the code does:
+
+-   We calculate the count of orders for each **`Category`** in the **`superstore`** dataset using **`count()`** from **`dplyr`**.
+
+-   We then calculate the proportion of each category and convert it to a percentage using **`mutate()`**.
+
+-   This results in a data frame (**`category_counts`**) with columns for **`Category`**, **`n`** (count of orders), **`prop`** (proportion), and **`label`** (percentage label).
+
+-   We use **`ggplot()`** to specify the data frame **`category_counts`** and map **`fill`** to **`Category`**.
+
+-   **`geom_bar(stat = "identity", width = 1)`** creates the pie chart by mapping **`prop`** to the y-axis and setting the width of each slice to 1.
+
+-   In the context of **`ggplot2`**, the **`stat`** parameter within **`geom_bar()`** specifies the statistical transformation to apply to the data before plotting the bars. The value **`"identity"`** for the **`stat`** parameter means that the height of each bar should correspond directly to the values provided in the data frame, without any transformation.
+
+    When **`stat = "identity"`**, **`geom_bar()`** expects a dataset where the y-values (heights) of the bars are explicitly defined in the data. This is useful when you want to create a bar chart where the heights of the bars represent actual values rather than counts or densities.
+
+    In the pie chart example provided, **`geom_bar(stat = "identity")`** is used to create the pie chart by mapping the proportion (**`prop`**) of each category directly to the y-axis. This results in bars (or slices in the pie chart) whose heights are determined by the proportions of each category, as specified in the **`prop`** column of the **`category_counts`** data frame.
+
+    In summary, **`stat = "identity"`** tells **`ggplot2`** to use the raw values provided in the dataset for plotting the bars, without any additional statistical transformation. This is often used when you already have pre-summarized data and want to directly represent those values in the plot.
+
+-   **`coord_polar(theta = "y")`** transforms the bar chart into a pie chart.
+
+-   **`geom_text()`** adds labels to each slice of the pie chart. We specify the label aesthetics and use **`position_stack(vjust = 0.5)`** to stack the labels vertically and adjust their positions.
+
+-   **`labs()`** sets the labels for the legend, title, and axes.
+
+-   **`theme_void()`** removes the background, gridlines, and labels, creating a clean pie chart.
+
+-   **`theme(legend.position = "right")`** places the legend to the right of the plo
+
+### **3- Exploring the Distribution of Data**
+
+#### **Learning Objectives:**
+
+-   Understand the distribution of key variables.
+-   Identify outliers using histograms and boxplots.
+
+#### **Histogram of Sales**
+
+We can create a histogram to visualize the distribution of sales in the `superstore` dataset using ggplot2:
+
+```{r}
+library(ggplot2)
+
+# Create a histogram of sales distribution
+ggplot(superstore, aes(x = Sales)) +
+  geom_histogram(binwidth = 100, fill = "skyblue", color = "black") +
+  theme_minimal() +
+  labs(title = "Distribution of Superstore Sales",
+       x = "Sales",
+       y = "Frequency")
+
+ggplot(superstore, aes(x = Sales)) +
+  geom_histogram(binwidth = 100, fill = "skyblue", color = "black") +
+  theme_minimal() +
+  scale_x_continuous(limits = c(0, 5000)) +  # Limit x-axis values from 0 to 5000
+  labs(title = "Distribution of Superstore Sales",
+       x = "Sales",
+       y = "Frequency")
+```
+
+Explanation: -
+
+ggplot(superstore, aes(x = Sales))`: Initializes a ggplot object and specifies the`Sales\` column as the variable for the x-axis.
+
+geom_histogram(binwidth = 100, fill = "skyblue", color = "black")\`: Adds a histogram layer to the plot.
+
+binwidth`determines the width of the bins in the histogram.`fill`sets the color of the bars, and`color\` sets the color of the borders of the bars.
+
+scale_x_continuous(limits = c(0, 5000)): Modifies the x-axis scale. The limits parameter specifies the range of values that should be displayed on the x-axis. In this case, it limits the x-axis values from 0 to 5000, ensuring that only sales values up to 5000 are shown on the histogram.
+
+theme_minimal()\`: Applies the 'minimal' theme to the plot.
+
+labs(title = "Distribution of Superstore Sales", x = "Sales", y = "Frequency")\`: Sets the title and axis labels for the plot.
+
+Adjust the binwidth parameter to change the width of the bins in the histogram and adjust the granularity of the distribution.
+
+```{r}
+
+# Filtering and plotting within the pipeline using base R
+superstore %>%
+  filter(Sales < 1000) %>%
+  { hist(.$Sales, breaks=100, main="Distribution of Sales", xlab="Sales", col="lightblue", xlim=c(0, 1000)) }
+
+```
+
+The `.$Sales` notation is a way to reference columns in a data frame that's being manipulated inside a pipeline in R, especially when used within functions that don't natively support the `%>%` operator from the `dplyr` package or the tidyverse environment.
+
+Here's a detailed breakdown:
+
+-   **`.`** : In the context of a `dplyr` pipeline, the dot (`.`) represents the current data frame that results from the preceding steps in the pipeline. For example, if you filter or mutate a dataset within a pipeline, the dot will represent the dataset as it exists after those transformations.
+
+-   **`$Sales`** : This is a way to access the `Sales` column of the data frame. Normally, outside of a function or a pipeline, you would write something like `dataframe$Sales` to extract the `Sales` column from `dataframe`.
+
+-   **`.$Sales`** : When combined in a pipeline, it specifically tells R to take the current version of the data frame (represented by `.`) and select the `Sales` column from it. This is particularly useful when passing data to a function that does not naturally understand how to work directly with pipeline syntax.

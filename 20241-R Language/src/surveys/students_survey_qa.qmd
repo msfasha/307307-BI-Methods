@@ -1,0 +1,299 @@
+---
+title: "Students Survey"
+format: html
+editor: visual
+---
+
+To analyze your survey data in R, I will outline a few steps and provide sample code for each:
+
+1.  **Read and Inspect Data**: Import the data into R and take an initial look.
+2.  **Data Cleaning**: Handle missing values, rename columns, or adjust data types if necessary.
+3.  **Exploratory Data Analysis (EDA)**: Generate summary statistics and visualizations.
+4.  **Insights**: Answer specific questions such as GPA trends, work status impact, and satisfaction levels.
+
+Here's the R script to get started:
+
+### Step 1: Import Data
+
+```{r}
+# Load necessary library
+library(readr)
+library(ggplot2)
+library(dplyr)
+
+# Replace 'your_file.csv' with the actual CSV file path
+survey_data <- read_csv("students_survey_307307_20241_renamed.csv")
+
+
+```
+
+### Inspect Data
+
+```{r}
+# Inspect the data
+View(head(survey_data))
+```
+
+### Data Cleaning
+
+```{r}
+# Convert columns to appropriate data types
+survey_data$Gender <- as.factor(survey_data$Gender)
+survey_data$year <- as.factor(survey_data$year)
+```
+
+### Check for missing data
+
+```{r}
+# Check for missing values
+View(colSums(is.na(survey_data)))
+```
+
+### Numerical Variables:
+
+#### 1. Distribution patterns for numerical variables
+
+```{r}
+numerical_columns <- summary(survey_data[c("Age", "high_school_grade", "study_hours", "sleeping_hours", "mid_score", "recommend_university")])
+
+View(numerical_columns)
+```
+
+### 2. Outliers in numerical variables
+
+```{r}
+boxplot(survey_data$high_school_grade, main="High School Grade Outliers")
+boxplot(survey_data$study_hours, main="Study Hours Outliers")
+boxplot(survey_data$sleeping_hours, main="Sleeping Hours Outliers")
+
+```
+
+### 3. Correlation between study_hours and mid_score
+
+```{r}
+cor(survey_data$study_hours, survey_data$mid_score, use="complete.obs")
+```
+
+### 4. Age variation with high_school_grade or GPA
+
+```{r}
+# Assuming your data frame is called `survey_data`
+ggplot(survey_data, aes(x = Age, y = high_school_grade)) +
+  geom_point(color = "blue", size = 3) +  # Adds scatterplot points
+  labs(title = "Age vs High School Grade", x = "Age", y = "High School Grade") +
+  theme_minimal()  # Applies a clean minimal theme
+```
+
+```{r}
+ggplot(survey_data, aes(x = Age, y = gpa)) +
+  geom_point(color = "blue", size = 3) +  # Adds scatterplot points
+  labs(title = "Age vs GPA", x = "Age", y = "GPA") +
+  theme_minimal()  # Applies a clean minimal theme
+```
+
+### 5. University_satisfaction vs GPA, Is there a relation?
+
+```{r}
+ggplot(survey_data, aes(x = gpa, y = university_satisfaction)) +
+  geom_point(color = "blue", size = 3) +  # Scatterplot
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  # Add regression line
+  labs(title = "Correlation between GPA and University Satisfaction", 
+       x = "GPA", y = "University Satisfaction") +
+  theme_minimal()
+```
+
+```{r}
+# Ensure GPA and university_satisfaction are numeric
+survey_data$gpa <- as.numeric(as.character(survey_data$gpa))
+survey_data$university_satisfaction <- as.numeric(survey_data$university_satisfaction)
+
+# Calculate correlation
+correlation <- cor(survey_data$gpa, survey_data$university_satisfaction, use = "complete.obs")
+print(paste("Correlation between GPA and University Satisfaction: ", round(correlation, 2)))
+```
+
+### 6. Is there a correlation between sleeping_hours vs university_satisfaction?
+
+```{r}
+cor(survey_data$sleeping_hours, survey_data$university_satisfaction, use="complete.obs")
+```
+
+### 7. Trends between mid_score and recommend_university
+
+```{r}
+plot(survey_data$mid_score, survey_data$recommend_university, main="Mid Score vs Recommend University")
+```
+
+### Categorical Variables:
+
+#### 1. Distribution of categorical variables
+
+#### Gender Distribution
+
+```{r}
+table(survey_data$Gender)
+```
+
+#### Year Distribution
+
+```{r}
+table(survey_data$year)
+```
+
+#### Work Distribution
+
+```{r}
+table(survey_data$work)
+```
+
+### 2. University satisfaction across high_school_category
+
+```{r}
+
+# Calculate average university_satisfaction by high_school_category
+survey_data %>%
+  group_by(high_school_category) %>%
+  summarise(avg_university_satisfaction = mean(university_satisfaction, na.rm = TRUE)) %>%
+  arrange(desc(avg_university_satisfaction))  # Optional: Sort by descending satisfaction
+```
+
+The same result using aggregate method
+
+```{r}
+aggregate(university_satisfaction ~ high_school_category, data = survey_data, mean)
+```
+
+### 3. Distance_to_uni and recommend_university scores
+
+```{r}
+aggregate(recommend_university ~ distance_to_uni, data = survey_data, mean)
+```
+
+### 4. Business owners vs employees
+
+```{r}
+table(survey_data$business_owner)
+```
+
+```{r}
+table(survey_data$type_of_work)
+```
+
+### 5. Gender and work type on bida_satisfaction
+
+```{r}
+aggregate(bida_satisfaction ~ Gender + work, data = survey_data, mean)
+```
+
+### 6. top_concerns
+
+```{r}
+library(stringr)
+concerns <- unlist(strsplit(as.character(survey_data$top_concerns), ";"))
+
+View(table(concerns))
+```
+
+### 7. Recommend_bida by high_school_category
+
+```{r}
+  # Calculate average recommend_bida by high_school_category
+survey_data %>%
+  group_by(high_school_category) %>%
+  summarise(avg_recommend_bida = mean(recommend_bida, na.rm = TRUE)) %>%
+  arrange(desc(avg_recommend_bida))  # Optional: Sort by descending average
+```
+
+```{r}
+aggregate(recommend_bida ~ high_school_category, data = survey_data, mean)
+```
+
+### Mixed Analysis:
+
+### 1. Mid_score and GPA variation by year
+
+```{r}
+aggregate(mid_score ~ year, data = survey_data, mean)
+aggregate(as.numeric(as.character(gpa)) ~ year, data = survey_data, mean)
+```
+
+### 2. Mid_score by work status
+
+```{r}
+aggregate(mid_score ~ work, data = survey_data, mean)
+```
+
+### 3. Distance_to_uni and study_hours/sleeping_hours
+
+```{r}
+aggregate(study_hours ~ distance_to_uni, data = survey_data, mean)
+aggregate(sleeping_hours ~ distance_to_uni, data = survey_data, mean)
+```
+
+### 4. Gender and satisfaction levels
+
+```{r}
+aggregate(university_satisfaction ~ Gender, data = survey_data, mean)
+aggregate(bida_satisfaction ~ Gender, data = survey_data, mean)
+```
+
+### 5. High_school_category and GPA/mid_score
+
+```{r}
+aggregate(mid_score ~ high_school_category, data = survey_data, mean)
+aggregate(as.numeric(as.character(gpa)) ~ high_school_category, data = survey_data, mean)
+```
+
+### Practical Business Insights:
+
+### 1. Factors most associated with university satisfaction
+
+```{r}
+library(corrplot)
+numeric_cols <- survey_data[sapply(survey_data, is.numeric)]
+corrplot(cor(numeric_cols, use="complete.obs"), method="circle")
+```
+
+### 2. Feedback from recommend_university and recommend_bida
+
+```{r}
+summary(survey_data$recommend_university)
+```
+
+```{r}
+summary(survey_data$recommend_bida)
+```
+
+### 3. Working students vs non-working students satisfaction
+
+```{r}
+# Calculate average university_satisfaction by work status
+survey_data %>%
+  group_by(work) %>%
+  summarise(avg_university_satisfaction = mean(university_satisfaction, na.rm = TRUE)) %>%
+  arrange(desc(avg_university_satisfaction))  # Optional: Sort by descending satisfaction
+```
+
+```{r}
+aggregate(university_satisfaction ~ work, data = survey_data, mean)
+```
+
+### 4. Groups needing support based on GPA and satisfaction
+
+```{r}
+# Ensure GPA is numeric
+survey_data$gpa <- as.numeric(as.character(survey_data$gpa))
+
+# Calculate mean GPA and university satisfaction by year
+survey_data %>%
+  group_by(year) %>%
+  summarise(
+    avg_gpa = mean(gpa, na.rm = TRUE),
+    avg_university_satisfaction = mean(university_satisfaction, na.rm = TRUE)
+  ) %>%
+  arrange(desc(avg_gpa))  # Optional: Sort by GPA or satisfaction
+```
+
+```{r}
+aggregate(cbind(as.numeric(as.character(gpa)), university_satisfaction) ~ year, data = survey_data, mean)
+```

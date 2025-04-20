@@ -1,0 +1,55 @@
+id,start_time,end_time,academic_year,gender,age,distance,course_name,course_branch,high_school_category,national_high_school_category,hight_school_average,study_hours,sleep_hours,mid_exam_score,gpa,does_work,fulltime_parttime,private_employed,satisfaction_at_university
+2,2024-05-22T23:16:10Z,2024-05-22T23:18:15Z,3rd year student,Female,22,5-10km,BI Methods and Models,2,International - IG,adabi,80,1-3,6,26,2.41,No,Part-time job,Employed by others -,3
+3,2024-05-22T23:16:29Z,2024-05-22T23:19:15Z,2nd year student,Female,22,<5km,BI Methods and Models,2,"International - SAT, ACT",scientific,89,< 1,8,25,3.16,Yes,NA,Self employed -,4
+4,2024-05-22T23:18:12Z,2024-05-22T23:20:45Z,3rd year student,Female,20,10-20km,Special Topics,1,"International - SAT, ACT",scientific,92.1,< 1,9,29,3.48,Yes,Part-time job,Employed by others -,3
+5,2024-05-23T00:55:57Z,2024-05-23T00:57:20Z,3rd year student,Male,25,<5km,BI Methods and Models,1,Jordanian Tawjihi,scientific,63,< 1,6,25,2.7,No,NA,NA,5
+6,2024-05-23T00:56:33Z,2024-05-23T00:58:15Z,4th year student,Male,27,5-10km,Special Topics,1,Jordanian Tawjihi,adabi,82,< 1,8,30,3.67,Yes,Part-time job,Self employed -,4
+7,2024-05-23T03:54:34Z,2024-05-23T03:56:42Z,More than 4 years,Male,24,10-20km,BI Methods and Models,2,Jordanian Tawjihi,adabi,60.8,1-3,8,25.25,3.05,No,NA,NA,3
+8,2024-05-23T07:47:58Z,2024-05-23T07:49:47Z,4th year student,Female,22,5-10km,BI Methods and Models,1,International - IG,Other -,84.6,1-3,8,25.25,3.2,No,NA,NA,5
+9,2024-05-23T09:31:07Z,2024-05-23T09:33:16Z,3rd year student,Female,21,10-20km,BI Methods and Models,1,Jordanian Tawjihi,adabi,78,> 5,9,19,2.91,No,NA,NA,2
+10,2024-05-23T09:31:28Z,2024-05-23T09:33:39Z,More than 4 years,Female,23,>20km,BI Methods and Models,1,Jordanian Tawjihi,adabi,70,< 1,7,16,2.2,Yes,Part-time job,Self employed -,5
+11,2024-05-23T09:52:57Z,2024-05-23T09:53:52Z,3rd year student,Female,20,>20km,BI Methods and Models,1,Jordanian Tawjihi,scientific,84,< 1,10,22,3.7,No,NA,NA,4
+12,2024-05-23T13:42:34Z,2024-05-23T13:44:47Z,4th year student,Male,25,5-10km,BI Methods and Models,1,Jordanian Tawjihi,adabi,NA,1-3,5,30,3.71,Yes,Full-time job,Self employed -,2
+13,2024-05-23T14:16:19Z,2024-05-23T14:18:38Z,4th year student,Female,21,5-10km,BI Methods and Models,2,Jordanian Tawjihi,adabi,85,1-3,7,18,2.65,No,NA,NA,3
+14,2024-05-23T17:34:25Z,2024-05-23T17:40:01Z,2nd year student,Female,23,10-20km,Descriptive Statistics,NA,Jordanian Tawjihi,adabi,58,< 1,8,16,1.25,No,NA,NA,3
+15,2024-05-23T20:29:32Z,2024-05-23T20:31:36Z,4th year student,Male,22,>20km,BI Methods and Models,2,Jordanian Tawjihi,adabi,87.8,< 1,8,23,2.31,Yes,Part-time job,Self employed -,3
+16,2024-05-23T23:50:12Z,2024-05-23T23:52:59Z,4th year student,Male,24,5-10km,BI Methods and Models,2,Jordanian Tawjihi,adabi,62,1-3,6,25,2.4,No,NA,NA,5
+17,2024-05-24T11:47:13Z,2024-05-24T11:51:44Z,4th year student,Female,21,10-20km,BI Methods and Models,1,Jordanian Tawjihi,adabi,82,3-5,8,16.5,2.25,No,NA,NA,4
+18,2024-05-24T11:54:07Z,2024-05-24T11:56:45Z,4th year student,Male,23,<5km,BI Methods and Models,1,"International - SAT, ACT",scientific,87,1-3,7,29,2.55,Yes,Full-time job,Self employed -,4
+19,2024-05-24T12:16:33Z,2024-05-24T12:18:49Z,4th year student,Male,21,10-20km,BI Methods and Models,1,Jordanian Tawjihi,adabi,82,< 1,6,21,2.9,No,NA,NA,4
+20,2024-05-24T12:30:23Z,2024-05-24T12:32:39Z,4th year student,Female,21,5-10km,BI Methods and Models,1,"International - SAT, ACT",scientific,91,3-5,10,23,2.7,No,NA,NA,3
+21,2024-05-24T13:07:42Z,2024-05-24T13:11:20Z,3rd year student,Male,24,10-20km,BI Methods and Models,1,Jordanian Tawjihi,adabi,65,< 1,8,16,2.7,Yes,Full-time job,Employed by others -,4
+22,2024-05-24T14:26:03Z,2024-05-24T14:27:26Z,2nd year student,Female,20,5-10km,Descriptive Statistics,2,Jordanian Tawjihi,adabi,85,> 5,8,21,2.5,No,NA,NA,3
+23,2024-05-24T14:29:58Z,2024-05-24T14:32:10Z,3rd year student,Female,22,10-20km,Special Topics,1,Jordanian Tawjihi,scientific,64,1-3,8,24,2.32,No,NA,NA,3
+24,2024-05-24T14:34:23Z,2024-05-24T14:37:08Z,2nd year student,Female,20,5-10km,Descriptive Statistics,1,Jordanian Tawjihi,adabi,83,3-5,6.5,23,2.5,Yes,Part-time job,Employed by others -,5
+25,2024-05-24T14:38:33Z,2024-05-24T14:40:27Z,1st year student,Female,23,5-10km,Descriptive Statistics,1,Jordanian Tawjihi,adabi,70,3-5,7,22,3.25,No,NA,NA,3
+26,2024-05-24T15:08:49Z,2024-05-24T15:11:04Z,2nd year student,Male,21,10-20km,Descriptive Statistics,1,Jordanian Tawjihi,scientific,64,1-3,5,23,2.8,No,NA,NA,4
+27,2024-05-24T15:41:47Z,2024-05-24T15:44:20Z,4th year student,Male,22,5-10km,Special Topics,1,Jordanian Tawjihi,scientific,65.8,< 1,7,15,2.55,Yes,Full-time job,Employed by others -,4
+28,2024-05-24T16:31:05Z,2024-05-24T16:36:13Z,1st year student,Male,18,5-10km,Descriptive Statistics,2,Jordanian Tawjihi,adabi,80,3-5,10,26,3.25,No,NA,NA,2
+29,2024-05-24T19:32:30Z,2024-05-24T19:35:46Z,1st year student,Female,19,5-10km,Descriptive Statistics,1,Jordanian Tawjihi,adabi,74,1-3,10,13,2.83,No,NA,NA,4
+30,2024-05-24T20:37:43Z,2024-05-24T20:39:16Z,3rd year student,Female,21,10-20km,Special Topics,1,Jordanian Tawjihi,scientific,89,3-5,9,28,2.96,No,NA,NA,5
+31,2024-05-24T20:36:45Z,2024-05-24T20:40:06Z,4th year student,Male,21,10-20km,BI Methods and Models,2,Jordanian Tawjihi,scientific,78,1-3,7,29.25,3.14,No,NA,NA,3
+32,2024-05-24T21:27:05Z,2024-05-24T21:29:48Z,4th year student,Male,23,5-10km,BI Methods and Models,1,Jordanian Tawjihi,adabi,78,1-3,6,18,2.68,Yes,Part-time job,Employed by others -,3
+33,2024-05-24T22:23:31Z,2024-05-24T22:25:21Z,4th year student,Female,22,5-10km,BI Methods and Models,2,Jordanian Tawjihi,adabi,95,3-5,9,24,2.71,No,NA,NA,3
+34,2024-05-24T23:44:00Z,2024-05-24T23:45:48Z,3rd year student,Male,21,5-10km,Descriptive Statistics,2,Jordanian Tawjihi,adabi,70,1-3,7,22,2.24,No,NA,NA,5
+35,2024-05-25T12:41:41Z,2024-05-25T12:43:07Z,4th year student,Female,22,5-10km,Descriptive Statistics,2,Jordanian Tawjihi,adabi,84,1-3,6,20,2.6,Yes,Part-time job,Employed by others -,4
+36,2024-05-25T14:26:25Z,2024-05-25T14:29:47Z,4th year student,Male,22,10-20km,BI Methods and Models,1,Jordanian Tawjihi,scientific,85,1-3,8,20,3.02,Yes,Full-time job,Employed by others -,2
+37,2024-05-25T14:31:39Z,2024-05-25T14:33:54Z,3rd year student,Male,20,5-10km,BI Methods and Models,2,"International - SAT, ACT",Other -,81,3-5,4,29,2.7,Yes,Full-time job,Employed by others -,3
+38,2024-05-25T16:19:05Z,2024-05-25T16:26:45Z,1st year student,Female,19,5-10km,Descriptive Statistics,1,Jordanian Tawjihi,adabi,84,1-3,13,23,3.75,No,NA,NA,4
+39,2024-05-25T16:31:01Z,2024-05-25T16:32:39Z,1st year student,Male,19,10-20km,Descriptive Statistics,2,Jordanian Tawjihi,adabi,85,3-5,4,23,3.2,Yes,Full-time job,Self employed -,4
+40,2024-05-26T09:09:49Z,2024-05-26T09:11:57Z,3rd year student,Male,22,10-20km,BI Methods and Models,1,Jordanian Tawjihi,adabi,87.6,< 1,13,17,3.1,Yes,Full-time job,Employed by others -,5
+41,2024-05-26T09:10:21Z,2024-05-26T09:13:30Z,4th year student,Female,22,10-20km,BI Methods and Models,1,Jordanian Tawjihi,adabi,72,1-3,9.5,22,2.9,No,NA,NA,2
+42,2024-05-26T13:12:55Z,2024-05-26T13:13:49Z,3rd year student,Male,21,5-10km,BI Methods and Models,2,Jordanian Tawjihi,scientific,72,3-5,6,14,2,Yes,Part-time job,Employed by others -,3
+43,2024-05-26T13:13:02Z,2024-05-26T13:14:42Z,4th year student,Female,23,5-10km,BI Methods and Models,2,Jordanian Tawjihi,scientific,78.4,3-5,7,22,2.4,No,NA,NA,4
+44,2024-05-26T16:07:16Z,2024-05-26T16:08:51Z,2nd year student,Male,20,<5km,Descriptive Statistics,1,"Arabic country degree e.g. Saudi, Kuwait",scientific,98.5,3-5,9,23,2.5,No,NA,NA,5
+45,2024-05-26T22:05:23Z,2024-05-26T22:07:47Z,2nd year student,Female,21,<5km,Descriptive Statistics,2,Jordanian Tawjihi,adabi,88,3-5,9,22,3.49,No,NA,NA,3
+46,2024-05-27T08:31:13Z,2024-05-27T08:32:50Z,1st year student,Female,18,<5km,Descriptive Statistics,1,Jordanian Tawjihi,adabi,87,< 1,10,23,2.17,No,NA,NA,5
+47,2024-05-27T11:05:29Z,2024-05-27T11:06:57Z,4th year student,Female,26,10-20km,Special Topics,1,Jordanian Tawjihi,adabi,65,1-3,8,21,2.01,Yes,Full-time job,Employed by others -,4
+48,2024-05-27T11:04:14Z,2024-05-27T11:07:47Z,4th year student,Female,22,5-10km,Special Topics,1,Jordanian Tawjihi,adabi,91,< 1,6,30,2.6,No,NA,NA,4
+49,2024-05-28T01:52:57Z,2024-05-28T01:54:13Z,3rd year student,Male,21,10-20km,BI Methods and Models,1,Jordanian Tawjihi,adabi,86,1-3,6,19,2.7,Yes,Part-time job,Employed by others -,3
+50,2024-05-28T11:09:27Z,2024-05-28T11:10:59Z,2nd year student,Female,20,<5km,Descriptive Statistics,2,Jordanian Tawjihi,scientific,63.4,1-3,9,21,3.04,Yes,Full-time job,Employed by others -,5
+51,2024-05-28T11:10:51Z,2024-05-28T11:12:43Z,2nd year student,Female,21,10-20km,Descriptive Statistics,1,Jordanian Tawjihi,adabi,91,1-3,7,24,2.68,No,NA,NA,4
+52,2024-05-28T11:11:38Z,2024-05-28T11:13:00Z,2nd year student,Male,20,<5km,Descriptive Statistics,1,Jordanian Tawjihi,adabi,66.7,3-5,7-8,22,2.03,Yes,Full-time job,Self employed -,5
+53,2024-05-28T11:11:24Z,2024-05-28T11:13:21Z,3rd year student,Male,21,10-20km,Descriptive Statistics,1,Jordanian Tawjihi,adabi,76,3-5,8,23,1.98,Yes,Part-time job,Self employed -,4
+54,2024-05-28T11:12:33Z,2024-05-28T11:14:49Z,2nd year student,Female,20,5-10km,Descriptive Statistics,2,Jordanian Tawjihi,adabi,89,1-3,4,15,2.6,No,Part-time job,Self employed -,4
+55,2024-05-28T11:13:38Z,2024-05-28T11:15:18Z,2nd year student,Male,20,5-10km,Descriptive Statistics,1,International - IG,adabi,86.4,3-5,7,21,3,Yes,Part-time job,Employed by others -,4

@@ -1,0 +1,491 @@
+---
+title: "2.4 NBA Analysis"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+![](images/clipboard-3840450743.png)
+
+Create the matrix and load the data
+
+```{r}
+#Instructions for this dataset:
+# Simply select ALL the lines in this script by pressing 
+# CTRL+A on Windows or CMND+A on a Mac and execute them
+# Once you have executed the commands the following objects
+# will be created:
+# Matrices:
+# - FieldGoalAttempts
+# - FieldGoals
+# - Games
+# - MinutesPlayed
+# - Salary
+# Vectors:
+# - Players
+# - Seasons
+
+#Copyright: These datasets were prepared using publicly available data.
+#           However, theses scripts are subject to Copyright Laws. 
+#           If you wish to use these R scripts outside of the R Programming Course
+#           by Kirill Eremenko, you may do so by referencing www.superdatascience.com in your work.
+
+#Comments:
+#Seasons are labeled based on the first year in the season
+#E.g. the 2012-2013 season is preseneted as simply 2012
+
+#Notes and Corrections to the data:
+#Kevin Durant: 2006 - College Data Used
+#Kevin Durant: 2005 - Proxied With 2006 Data
+#Derrick Rose: 2012 - Did Not Play
+#Derrick Rose: 2007 - College Data Used
+#Derrick Rose: 2006 - Proxied With 2007 Data
+#Derrick Rose: 2005 - Proxied With 2007 Data
+
+#Seasons
+Seasons <- c("2005","2006","2007","2008","2009","2010","2011","2012","2013","2014")
+
+#Players
+Players <- c("KobeBryant","JoeJohnson","LeBronJames","CarmeloAnthony","DwightHoward","ChrisBosh","ChrisPaul","KevinDurant","DerrickRose","DwayneWade")
+
+#Salaries
+KobeBryant_Salary <- c(15946875,17718750,19490625,21262500,23034375,24806250,25244493,27849149,30453805,23500000)
+JoeJohnson_Salary <- c(12000000,12744189,13488377,14232567,14976754,16324500,18038573,19752645,21466718,23180790)
+LeBronJames_Salary <- c(4621800,5828090,13041250,14410581,15779912,14500000,16022500,17545000,19067500,20644400)
+CarmeloAnthony_Salary <- c(3713640,4694041,13041250,14410581,15779912,17149243,18518574,19450000,22407474,22458000)
+DwightHoward_Salary <- c(4493160,4806720,6061274,13758000,15202590,16647180,18091770,19536360,20513178,21436271)
+ChrisBosh_Salary <- c(3348000,4235220,12455000,14410581,15779912,14500000,16022500,17545000,19067500,20644400)
+ChrisPaul_Salary <- c(3144240,3380160,3615960,4574189,13520500,14940153,16359805,17779458,18668431,20068563)
+KevinDurant_Salary <- c(0,0,4171200,4484040,4796880,6053663,15506632,16669630,17832627,18995624)
+DerrickRose_Salary <- c(0,0,0,4822800,5184480,5546160,6993708,16402500,17632688,18862875)
+DwayneWade_Salary <- c(3031920,3841443,13041250,14410581,15779912,14200000,15691000,17182000,18673000,15000000)
+
+#Matrix
+Salary <- rbind(KobeBryant_Salary, JoeJohnson_Salary, LeBronJames_Salary, CarmeloAnthony_Salary, DwightHoward_Salary, ChrisBosh_Salary, ChrisPaul_Salary, KevinDurant_Salary, DerrickRose_Salary, DwayneWade_Salary)
+
+rm(KobeBryant_Salary, JoeJohnson_Salary, CarmeloAnthony_Salary, DwightHoward_Salary, ChrisBosh_Salary, LeBronJames_Salary, ChrisPaul_Salary, DerrickRose_Salary, DwayneWade_Salary, KevinDurant_Salary)
+
+colnames(Salary) <- Seasons
+rownames(Salary) <- Players
+
+#Games 
+KobeBryant_G <- c(80,77,82,82,73,82,58,78,6,35)
+JoeJohnson_G <- c(82,57,82,79,76,72,60,72,79,80)
+LeBronJames_G <- c(79,78,75,81,76,79,62,76,77,69)
+CarmeloAnthony_G <- c(80,65,77,66,69,77,55,67,77,40)
+DwightHoward_G <- c(82,82,82,79,82,78,54,76,71,41)
+ChrisBosh_G <- c(70,69,67,77,70,77,57,74,79,44)
+ChrisPaul_G <- c(78,64,80,78,45,80,60,70,62,82)
+KevinDurant_G <- c(35,35,80,74,82,78,66,81,81,27)
+DerrickRose_G <- c(40,40,40,81,78,81,39,0,10,51)
+DwayneWade_G <- c(75,51,51,79,77,76,49,69,54,62)
+
+#Matrix
+Games <- rbind(KobeBryant_G, JoeJohnson_G, LeBronJames_G, CarmeloAnthony_G, DwightHoward_G, ChrisBosh_G, ChrisPaul_G, KevinDurant_G, DerrickRose_G, DwayneWade_G)
+
+rm(KobeBryant_G, JoeJohnson_G, CarmeloAnthony_G, DwightHoward_G, ChrisBosh_G, LeBronJames_G, ChrisPaul_G, DerrickRose_G, DwayneWade_G, KevinDurant_G)
+
+colnames(Games) <- Seasons
+rownames(Games) <- Players
+
+#Minutes Played
+KobeBryant_MP <- c(3277,3140,3192,2960,2835,2779,2232,3013,177,1207)
+JoeJohnson_MP <- c(3340,2359,3343,3124,2886,2554,2127,2642,2575,2791)
+LeBronJames_MP <- c(3361,3190,3027,3054,2966,3063,2326,2877,2902,2493)
+CarmeloAnthony_MP <- c(2941,2486,2806,2277,2634,2751,1876,2482,2982,1428)
+DwightHoward_MP <- c(3021,3023,3088,2821,2843,2935,2070,2722,2396,1223)
+ChrisBosh_MP <- c(2751,2658,2425,2928,2526,2795,2007,2454,2531,1556)
+ChrisPaul_MP <- c(2808,2353,3006,3002,1712,2880,2181,2335,2171,2857)
+KevinDurant_MP <- c(1255,1255,2768,2885,3239,3038,2546,3119,3122,913)
+DerrickRose_MP <- c(1168,1168,1168,3000,2871,3026,1375,0,311,1530)
+DwayneWade_MP <- c(2892,1931,1954,3048,2792,2823,1625,2391,1775,1971)
+
+#Matrix
+MinutesPlayed <- rbind(KobeBryant_MP, JoeJohnson_MP, LeBronJames_MP, CarmeloAnthony_MP, DwightHoward_MP, ChrisBosh_MP, ChrisPaul_MP, KevinDurant_MP, DerrickRose_MP, DwayneWade_MP)
+
+rm(KobeBryant_MP, JoeJohnson_MP, CarmeloAnthony_MP, DwightHoward_MP, ChrisBosh_MP, LeBronJames_MP, ChrisPaul_MP, DerrickRose_MP, DwayneWade_MP, KevinDurant_MP)
+
+colnames(MinutesPlayed) <- Seasons
+rownames(MinutesPlayed) <- Players
+
+#Field Goals
+KobeBryant_FG <- c(978,813,775,800,716,740,574,738,31,266)
+JoeJohnson_FG <- c(632,536,647,620,635,514,423,445,462,446)
+LeBronJames_FG <- c(875,772,794,789,768,758,621,765,767,624)
+CarmeloAnthony_FG <- c(756,691,728,535,688,684,441,669,743,358)
+DwightHoward_FG <- c(468,526,583,560,510,619,416,470,473,251)
+ChrisBosh_FG <- c(549,543,507,615,600,524,393,485,492,343)
+ChrisPaul_FG <- c(407,381,630,631,314,430,425,412,406,568)
+KevinDurant_FG <- c(306,306,587,661,794,711,643,731,849,238)
+DerrickRose_FG <- c(208,208,208,574,672,711,302,0,58,338)
+DwayneWade_FG <- c(699,472,439,854,719,692,416,569,415,509)
+
+#Matrix
+FieldGoals <- rbind(KobeBryant_FG, JoeJohnson_FG, LeBronJames_FG, CarmeloAnthony_FG, DwightHoward_FG, ChrisBosh_FG, ChrisPaul_FG, KevinDurant_FG, DerrickRose_FG, DwayneWade_FG)
+
+rm(KobeBryant_FG, JoeJohnson_FG, LeBronJames_FG, CarmeloAnthony_FG, DwightHoward_FG, ChrisBosh_FG, ChrisPaul_FG, KevinDurant_FG, DerrickRose_FG, DwayneWade_FG)
+
+colnames(FieldGoals) <- Seasons
+rownames(FieldGoals) <- Players
+
+#Field Goal Attempts
+KobeBryant_FGA <- c(2173,1757,1690,1712,1569,1639,1336,1595,73,713)
+JoeJohnson_FGA <- c(1395,1139,1497,1420,1386,1161,931,1052,1018,1025)
+LeBronJames_FGA <- c(1823,1621,1642,1613,1528,1485,1169,1354,1353,1279)
+CarmeloAnthony_FGA <- c(1572,1453,1481,1207,1502,1503,1025,1489,1643,806)
+DwightHoward_FGA <- c(881,873,974,979,834,1044,726,813,800,423)
+ChrisBosh_FGA <- c(1087,1094,1027,1263,1158,1056,807,907,953,745)
+ChrisPaul_FGA <- c(947,871,1291,1255,637,928,890,856,870,1170)
+KevinDurant_FGA <- c(647,647,1366,1390,1668,1538,1297,1433,1688,467)
+DerrickRose_FGA <- c(436,436,436,1208,1373,1597,695,0,164,835)
+DwayneWade_FGA <- c(1413,962,937,1739,1511,1384,837,1093,761,1084)
+
+#Matrix
+FieldGoalAttempts <- rbind(KobeBryant_FGA, JoeJohnson_FGA, LeBronJames_FGA, CarmeloAnthony_FGA, DwightHoward_FGA, ChrisBosh_FGA, ChrisPaul_FGA, KevinDurant_FGA, DerrickRose_FGA, DwayneWade_FGA)
+
+rm(KobeBryant_FGA, JoeJohnson_FGA, LeBronJames_FGA, CarmeloAnthony_FGA, DwightHoward_FGA, ChrisBosh_FGA, ChrisPaul_FGA, KevinDurant_FGA, DerrickRose_FGA, DwayneWade_FGA)
+
+colnames(FieldGoalAttempts) <- Seasons
+rownames(FieldGoalAttempts) <- Players
+
+#Points
+KobeBryant_PTS <- c(2832,2430,2323,2201,1970,2078,1616,2133,83,782)
+JoeJohnson_PTS <- c(1653,1426,1779,1688,1619,1312,1129,1170,1245,1154)
+LeBronJames_PTS <- c(2478,2132,2250,2304,2258,2111,1683,2036,2089,1743)
+CarmeloAnthony_PTS <- c(2122,1881,1978,1504,1943,1970,1245,1920,2112,966)
+DwightHoward_PTS <- c(1292,1443,1695,1624,1503,1784,1113,1296,1297,646)
+ChrisBosh_PTS <- c(1572,1561,1496,1746,1678,1438,1025,1232,1281,928)
+ChrisPaul_PTS <- c(1258,1104,1684,1781,841,1268,1189,1186,1185,1564)
+KevinDurant_PTS <- c(903,903,1624,1871,2472,2161,1850,2280,2593,686)
+DerrickRose_PTS <- c(597,597,597,1361,1619,2026,852,0,159,904)
+DwayneWade_PTS <- c(2040,1397,1254,2386,2045,1941,1082,1463,1028,1331)
+
+#Matrix
+Points <- rbind(KobeBryant_PTS, JoeJohnson_PTS, LeBronJames_PTS, CarmeloAnthony_PTS, DwightHoward_PTS, ChrisBosh_PTS, ChrisPaul_PTS, KevinDurant_PTS, DerrickRose_PTS, DwayneWade_PTS)
+
+rm(KobeBryant_PTS, JoeJohnson_PTS, LeBronJames_PTS, CarmeloAnthony_PTS, DwightHoward_PTS, ChrisBosh_PTS, ChrisPaul_PTS, KevinDurant_PTS, DerrickRose_PTS, DwayneWade_PTS)
+
+colnames(Points) <- Seasons
+rownames(Points) <- Players
+```
+
+```{r}
+matplot(t(Salary), type = "l", lty = 1, col = 1:10, xaxt = "n",
+        xlab = "Season", ylab = "Salary in USD", main = "Salaries of NBA Players (2005-2014)")
+axis(1, at = 1:length(Seasons), labels = Seasons)
+legend("topleft", legend = Players, col = 1:10, lty = 1, cex = 0.8)
+```
+
+#### Get some info
+
+Extracting row and column names for reference
+
+```{r}
+rownames(Games)
+colnames(Games)
+```
+
+#### Extracting a specific value (for example, LeBron James in 2012)
+
+```{r}
+Games["LeBronJames", "2012"]
+```
+
+#### Extracting a specific value from FieldGoals
+
+```{r}
+FieldGoals["LeBronJames", "2012"]
+```
+
+#### Sub-Setting Matrices
+
+```{r}
+Games
+Games[1:3, 6:10]
+Games[c(1,10),]
+Games[,c("2008", "2009")]
+Games[1,]
+Games[1,5]
+
+# drop = F, Don't convert into a vactor, keep the matrix structre (don't drop the unnecessary dimension)
+Games[1,5, drop=F]
+
+is.matrix(Games[1,])
+is.vector(Games[1,])
+```
+
+#### Create plotting function
+
+```{r}
+
+# Version 1, legend as a table below chart
+myplot <- function(data, rows=1:10) {
+  # Subset the data
+  Data <- data[rows, , drop=FALSE]
+  
+  # Set up layout: 2 rows, 1 column
+  layout(matrix(c(1,2), 2, 1), heights = c(3,1)) 
+  
+  # Plot the main plot
+  par(mar=c(3, 5, 4, 2) + 0.1)  # Adjust margins to make space for the legend
+  matplot(t(Data), type="b", pch=15:18, col=c(1:4,6), 
+          main="Player Stats Over Years", xlab="", ylab="Values")
+  # Add custom x-axis labels
+  axis(1, at=1:ncol(data), labels=colnames(data))
+  
+  # Plot the legend
+  par(mar=c(0, 5, 0, 2) + 0.1)  # Adjust margins to make the legend plot
+  plot.new()
+  legend("center", legend=rownames(Data), col=c(1:4,6), pch=15:18, bty="n", cex=0.8, ncol=3)
+  
+  # Reset layout to default
+  layout(1)
+}
+
+
+# Version 2, new plot for the legend, legend within chart
+myplot <- function(data, rows=1:10) {
+  # Create the main plot
+  Data <- data[rows, , drop=F]
+  matplot(t(Data), type="b", pch=15:18, col=c(1:4,6), 
+          main="Player Stats Over Years", xlab="Years", ylab="Values")
+  
+    # Add custom x-axis labels
+  axis(1, at=1:ncol(data), labels=colnames(data))
+  
+  # Create a separate plot just for the legend
+  plot.new()
+  legend("bottomleft", legend=rownames(Data), col=c(1:4,6), pch=15:18, bty="n", cex=..8)
+}
+
+# Version 3, no new plot for the legend, legend within chart
+myplot <- function(data, rows=1:10) {
+  # Create the main plot
+  Data <- data[rows, , drop=F]
+  matplot(t(Data), type="b", pch=15:18, col=c(1:4,6), 
+          main="Player Stats Over Years", xlab="Years", ylab="Values")
+      # Add custom x-axis labels
+  axis(1, at=1:ncol(data), labels=colnames(data))
+  legend("topleft", legend=rownames(Data), col=c(1:4,6), pch=15:18, bty="n", cex=.8)}
+```
+
+## Data Analysis
+
+### Salary Analysis
+
+#### Plots the raw salary data for each player over the seasons.
+
+This helps visualize the trends in player salaries over time.
+
+Observation: Salaries tend to increase over time for most players, reflecting the general increase in NBA salaries over the years.
+
+There are noticeable peaks and troughs corresponding to contract renewals and injuries. For instance, **Kobe Bryant** and **Derrick Rose** show significant salary increases.
+
+| **Kobe Bryant**                      | **Derrick Rose**                     |
+|--------------------------------------|--------------------------------------|
+| ![](images/clipboard-2507376526.png) | ![](images/clipboard-4233333222.png) |
+
+```{r}
+myplot(Salary)
+
+myplot(Salary, c(1,9))
+```
+
+#### Plots the salary per game for each player.
+
+This normalization helps understand how much each player earns per game played.
+
+Observation: Salary per game highlights the cost-effectiveness of players in terms of game participation. Players like **Derrick Rose**, who played fewer games due to injuries, have a higher salary per game. Also, **Kobe Bryant** is being payed more per game because of injuries.
+
+```{r}
+myplot(Salary / Games)
+```
+
+#### Plots the salary per field goal.
+
+This normalization helps understand the cost of each field goal for each player.
+
+Observation: Salary per field goal shows the cost-effectiveness in terms of scoring.
+
+Players like **Dwight Howard**, who have fewer field goals, have a higher cost per field goal.
+
+![](images/clipboard-1182057222.png)
+
+```{r}
+myplot(Salary / FieldGoals)
+
+myplot(Salary / FieldGoals,c(-1,-9))
+```
+
+In general, visualizing salaries and in game statistics might not be informative as we might expect, because players being injured is a norm, yet the players are payed the same salary even if he is injured and does not play. So a better metrics would be to use in-game vs in-game metrics which might give us more accurate results. In other words, salaries are not affected by injuries while in game statistics are.
+
+### In-Game Metrics
+
+#### Plots the total minutes played each season.
+
+This helps visualize the total playing time of each player over the seasons.
+
+Observation: Total minutes played indicate overall player involvement.
+
+Peaks and troughs correspond to seasons with more or fewer games played due to injuries or other factors. For example, **Kevin Durant** shows high minutes played in peak seasons.
+
+![](images/clipboard-3708886154.png)
+
+```{r}
+myplot(MinutesPlayed)
+```
+
+#### Plot the total points scored each season
+
+This helps visualize the scoring performance of each player over the seasons.
+
+Observation: Total points scored reflect the scoring capability of players.
+
+Consistent high scores by players like **Carmelo Anthony** and **Dwyane Wade** indicate top performance, while drops may indicate injuries or decreased performance (**Kobe Bryant** and **Derrick Rose**).
+
+| **Carmelo Anthony**                  | **Dwyane Wade**                      |
+|--------------------------------------|--------------------------------------|
+| ![](images/clipboard-1660219318.png) | ![](images/clipboard-2886626444.png) |
+
+```{r}
+myplot(Points)
+
+myplot(Points, c(4,10))
+```
+
+So how do we take injuries into account while doing analysis. That is what we will do next by normalizing information by the number of games being played.
+
+### In-Game Metrics Normalized
+
+#### Plots the average field goals per game.
+
+This helps visualize the scoring consistency of each player, which mitigates the effect of injuries and stopping to play games during different periods of the contract.
+
+Observation: Average field goals per game show how regularly players score.
+
+Higher averages by players like **LeBron James** and **Kobe Bryant** indicate consistent performance.
+
+| **LeBron James** |  **Kobe Bryant** |
+|----|----|
+| ![](images/clipboard-3737293962.png){width="328" height="352"} | ![](images/clipboard-2711529862.png) |
+
+```{r}
+myplot(FieldGoals / Games)
+
+myplot(FieldGoals, c(1,3))
+
+myplot(FieldGoals / Games, c(1,3))
+```
+
+#### Plots the field goal accuracy (percentage of field goals made from attempts).
+
+This helps understand the shooting efficiency of each player.
+
+Observation: Field goal accuracy highlights shooting efficiency.
+
+Higher ratios by players like **Chris Paul** indicate better accuracy and scoring efficiency. Also, **Dwight Howard** has a high goals/attempts ratio.
+
+| **Chris Paul**                       | Col2                                 |
+|--------------------------------------|--------------------------------------|
+| ![](images/clipboard-3832951574.png) | ![](images/clipboard-3292632723.png) |
+
+```{r}
+myplot(FieldGoals / FieldGoalAttempts)
+```
+
+#### Plots the average field goal attempts per game.
+
+This helps visualize how often each player attempts to score.
+
+Observation: Average field goal attempts per game reflect player activity in trying to score.
+
+Higher numbers by players like **Kevin Durant** indicate more attempts to score.
+
+On the other hand, we see players like **Dwight Howard** has a low attempts/game ratio although the goals/attempts was high, but the player does not make many attempts per game and he does not score many points per game (becuase he has fewer attempts than others, may be his playing position does not give him the opportunity to make more attempts, may be he prefers team playing and passes the ball for better team member to make a score), this requires more domain knowledge to explain.
+
+| **Kevin Durant** | **Dwight Howard** |
+|----|----|
+| ![](images/clipboard-2321776338.png){width="339" height="390"} | ![](images/clipboard-3857999558.png) |
+
+```{r}
+myplot(FieldGoalAttempts / Games)
+```
+
+#### Plots the average points per game.
+
+This helps visualize the average scoring performance of each player.
+
+Observation: Average points per game show overall scoring effectiveness.
+
+Consistent high averages by players like **LeBron James** and **Dwyane Wade** indicate top performers.
+
+Also, we can see that **Dwight Howard** who has a low attempts/game ratio does not score many points per game.
+
+| **LeBron James** | **Dwyane Wade** | **Dwight Howard** |
+|----|----|----|
+| ![](images/clipboard-335305530.png) | ![](images/clipboard-642059218.png) | ![](images/clipboard-235127774.png){width="213" height="202"} |
+
+```{r}
+myplot(Points / Games)
+```
+
+### Interesting Observation
+
+#### Plots the average minutes played per game.
+
+This helps visualize the average playing time per game for each player.
+
+Observation: Average minutes per game reflect player usage and endurance.
+
+Overall, minutes per game for these top ten players has been slightly dropping with time! These players seem to play less minutes per game on average from earlier years to later years.
+
+Higher averages by players like **Joe Johnson** suggest players who are relied upon more heavily during games.
+
+![](images/clipboard-261503884.png)
+
+```{r}
+myplot(MinutesPlayed / Games)
+
+myplot(MinutesPlayed / Games,c(2))
+```
+
+#### Plots the number of games played each season.
+
+This helps visualize the participation of each player in terms of games played.
+
+Observation: The number of games played shows player availability and durability. In general, the tren is consistent for most players.
+
+Consistent participation by players like **Dwight Howard** indicates fewer injuries and reliable performance.
+
+```{r}
+myplot(Games)
+```
+
+## Time is Valuable
+
+let us examine who uses his time more efficiently, who scores more within the given time for playing.
+
+**Kevin Durant** goals per minutes play has been increasing in time, he is a young player and his performance is enhancing with time. He is using his time in the court valuablely (a rising start).
+
+![](images/clipboard-3995372223.png)
+
+```{r}
+myplot(FieldGoals / MinutesPlayed)
+```
+
+## Player Style
+
+We can see that some players (again **Kevin Durant**) style has been changing with time, he used to score more 2 points in the earlier years and now it seems he is score more 3 points that 2 points.
+
+So many players are showing changing style in playing throughout the years, and it will interesting and useful to try to understand the cause for this change in playing style.
+
+![](images/clipboard-2667679637.png)
+
+```{r}
+myplot(Points / FieldGoals)
+```

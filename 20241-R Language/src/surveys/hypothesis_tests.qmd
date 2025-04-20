@@ -1,0 +1,80 @@
+---
+title: "Student Survey Solution"
+format: html
+editor: visual
+---
+
+### **Inferential Statistics**
+
+### **Hypothesis Testing (T-Test)**
+
+``` r
+# GPA comparison between males and females
+t_test_result <- t.test(What.is.your.current.GPA. ~ Gender, data = students_data)
+print(t_test_result)
+```
+
+**ANOVA**
+
+``` r
+# Effect of year of study on GPA
+anova_result <- aov(What.is.your.current.GPA. ~ Year.of.Study, data = students_data)
+summary(anova_result)
+```
+
+**Chi-Square Test**
+
+``` r
+# Association between work status and satisfaction
+work_satisfaction_table <- table(students_data$Do.you.work.while.studying., students_data$How.satisfied.are.you.about.your.experience.at.the.University.of.Petra.)
+chi_square_result <- chisq.test(work_satisfaction_table)
+print(chi_square_result)
+```
+
+------------------------------------------------------------------------
+
+### **Regression Analysis**
+
+### **Simple Linear Regression**
+
+``` r
+# Predict GPA using mid-exam score
+lm_model <- lm(What.is.your.current.GPA. ~ What.was.your.score.in.MID.exam., data = students_data)
+summary(lm_model)
+```
+
+------------------------------------------------------------------------
+
+**Multiple Linear Regression**
+
+``` r
+# Predict GPA using multiple variables
+multi_lm_model <- lm(What.is.your.current.GPA. ~ What.was.your.score.in.MID.exam. +
+                     How.satisfied.are.you.about.your.experience.at.the.University.of.Petra. +
+                     How.satisfied.are.you.about.the.Business.Intelligence.major., data = students_data)
+summary(multi_lm_model)
+```
+
+**Logistic Regression**
+
+``` r
+# Logistic regression for recommendation likelihood
+students_data$Recommend <- ifelse(students_data$How.likely.are.you.to.recommend.the.University.of.Petra.to.a.friend.or.colleague. > 7, 1, 0)
+logistic_model <- glm(Recommend ~ How.satisfied.are.you.about.your.experience.at.the.University.of.Petra. +
+                      How.satisfied.are.you.about.the.Business.Intelligence.major. + Year.of.Study,
+                      family = binomial, data = students_data)
+summary(logistic_model)
+```
+
+**Clustering**
+
+``` r
+# K-means clustering
+set.seed(123)
+clustering_data <- students_data %>% select(What.is.your.current.GPA., What.was.your.score.in.MID.exam., How.satisfied.are.you.about.your.experience.at.the.University.of.Petra.)
+kmeans_result <- kmeans(clustering_data, centers = 3)
+students_data$Cluster <- kmeans_result$cluster
+print(table(students_data$Cluster))
+```
+
+------------------------------------------------------------------------

@@ -1,0 +1,145 @@
+---
+title: "6.4 Controlled Experiments and Inferring Causality"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+### **Controlled Experiments and Inferring Causality**
+
+#### **Introduction**
+
+Controlled experiments are the gold standard for understanding causal relationships. By systematically manipulating variables and controlling confounding factors, researchers can make reliable inferences about cause and effect.
+
+------------------------------------------------------------------------
+
+### **1. Controlled Experiments**
+
+#### **Definition**
+
+A controlled experiment is a study where one or more independent variables are deliberately manipulated to observe their effect on a dependent variable, while other variables are held constant.
+
+#### **Key Components**
+
+1.  **Independent Variable**: The variable that is manipulated.
+2.  **Dependent Variable**: The outcome being measured.
+3.  **Control Group**: A baseline group that does not receive the treatment.
+4.  **Treatment Group**: The group that receives the intervention or manipulation.
+5.  **Randomization**: Ensures participants are assigned to groups randomly, reducing bias.
+6.  **Blinding**:
+    -   **Single-Blind**: Participants do not know which group they are in.
+    -   **Double-Blind**: Both participants and researchers do not know group assignments.
+
+### **Types of Variables in Controlled Experiments**
+
+Understanding the types of variables is essential for designing and analyzing controlled experiments effectively:
+
+1.  **Independent Variable**: This is the variable that the researcher manipulates to observe its effect. For example, in a study on the effectiveness of a new drug, the drug dosage is the independent variable.
+
+2.  **Dependent Variable**: This is the outcome being measured, which is expected to change as a result of manipulating the independent variable. Continuing with the drug study, the improvement in patient health is the dependent variable.
+
+3.  **Control Variable**: These are variables that are kept constant to ensure that they do not influence the outcome. For instance, researchers may standardize the diet and activity levels of participants in a drug trial.
+
+4.  **Confounding Variable**: These are variables that can influence both the independent and dependent variables, potentially distorting the results. For example, in a study on exercise and weight loss, age could act as a confounder if not controlled, as it may affect both physical activity levels and metabolic rates.
+
+5.  **Random Variable**: These are variables whose outcomes are not fixed but instead vary unpredictably. For instance, environmental factors like daily temperature in a field experiment may act as random variables.
+
+By clearly defining and managing these variables, researchers can minimize bias, control for confounding influences, and accurately infer causal relationships.
+
+------------------------------------------------------------------------
+
+### **2. Inferring Causality**
+
+### **Correlation Does Not Imply Causation**
+
+One of the most important principles in inferring causality is that **correlation does not imply causation**. While two variables might show a strong relationship, this does not mean one causes the other. For example, there might be a high correlation between ice cream sales and drowning incidents, but this does not mean buying ice cream causes drowning. Instead, both are influenced by a third variable: warmer weather. Controlled experiments help resolve this issue by isolating the independent variable and ensuring that observed effects on the dependent variable are not due to confounding factors or coincidence. Without proper controls, relying solely on correlation can lead to flawed or misleading conclusions.
+
+#### **Causal Inference**
+
+Causality means that changes in the independent variable directly cause changes in the dependent variable. Controlled experiments allow us to establish this relationship by eliminating confounding variables.
+
+#### **Criteria for Causality (Bradford Hill Criteria)**
+
+1.  **Temporality**: Cause precedes the effect.
+2.  **Consistency**: Repeated observations in different settings.
+3.  **Specificity**: A specific cause leads to a specific effect.
+4.  **Strength of Association**: Strong correlations suggest causality.
+5.  **Plausibility**: A logical mechanism links cause and effect.
+
+------------------------------------------------------------------------
+
+### **3. Experiment Design**
+
+#### **Randomized Controlled Trials (RCTs)**
+
+-   Often used in medical and social sciences.
+-   Participants are randomly assigned to treatment and control groups.
+
+#### **Factorial Design**
+
+-   Multiple independent variables are tested simultaneously to observe interactions.
+
+#### **Quasi-Experiments**
+
+-   Used when randomization is not feasible. Relies on natural groups and attempts to control for confounders.
+
+------------------------------------------------------------------------
+
+### **4. Examples**
+
+#### **Medical Trials**
+
+-   Testing the efficacy of a drug by comparing outcomes between treated and placebo groups.
+
+#### **Business Applications**
+
+-   A/B testing in marketing to evaluate the effectiveness of two different advertisements.
+
+#### **Educational Interventions**
+
+-   Measuring the impact of a new teaching method on student performance.
+
+------------------------------------------------------------------------
+
+### **5. Challenges in Inferring Causality**
+
+1.  **Confounding Variables**: Factors that can influence both the independent and dependent variables.
+2.  **Bias**:
+    -   Selection Bias: Non-random assignment.
+    -   Measurement Bias: Inaccurate data collection.
+3.  **Ethical Concerns**: Some experiments cannot ethically manipulate variables.
+4.  **External Validity**: Results from controlled settings may not generalize to the real world.
+
+------------------------------------------------------------------------
+
+### **6. Data Analysis**
+
+#### **Statistical Techniques**
+
+-   **T-tests**: Compare means between two groups.
+-   **ANOVA**: Compare means across multiple groups.
+-   **Regression Analysis**: Model relationships between variables.
+
+#### **Confounder Adjustment**
+
+-   Use techniques like propensity score matching or instrumental variables to address confounding.
+
+------------------------------------------------------------------------
+
+### **7. Key Takeaways**
+
+1.  Controlled experiments are essential for inferring causality.
+2.  Randomization and control groups reduce bias and confounding.
+3.  Proper experimental design and statistical analysis ensure robust conclusions.
+
+------------------------------------------------------------------------
+
+### **Discussion Questions**
+
+1.  How do we handle ethical constraints in experiments?
+2.  What methods can we use when randomization isn’t possible?

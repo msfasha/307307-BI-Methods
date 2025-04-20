@@ -1,0 +1,276 @@
+---
+title: "Analyze Students Survey"
+format: html
+editor: visual
+---
+
+```{r}
+library (dplyr)
+library (readr)
+library (ggplot2)
+
+survey_data <- read_csv("data\\students_survey.csv")
+
+colnames(survey_data) <- c("id","start_time","end_time","academic_year","gender","age","distance","course_name","course_branch","high_school_category","national_high_school_category","hight_school_average","study_hours","sleep_hours","mid_exam_score","gpa","does_work","fulltime_parttime","private_employed","satisfaction_at_university")
+
+write_csv(survey_data,"students_survey.csv")
+```
+
+Display columns along with data types
+
+```{r}
+# Get column names and their types
+columns_info <- data.frame(
+  Column_Name = names(survey_data),
+  Data_Type = sapply(survey_data, class)
+)
+
+# Print the data frame
+print(columns_info)
+```
+
+### **Analyze Demographics - Gender**
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Load the data
+survey_data <- read.csv("students_survey.csv")
+
+# Summary of gender distribution
+gender_summary <- survey_data %>%
+  group_by(gender) %>%
+  summarise(count = n())
+
+print(gender_summary)
+```
+
+Show plots
+
+```{r}
+# Plot gender distribution with labels and colors
+ggplot(survey_data, aes(x = gender, fill = gender)) +
+  geom_bar() +
+  ggtitle("Gender Distribution") +
+  xlab("Gender") +
+  ylab("Count") +
+  geom_text(stat='count', aes(label=..count..), vjust=-0.5) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal()
+```
+
+### **Explanation:**
+
+The line **`geom_text(stat='count', aes(label=..count..), vjust=-0.5) +`** in the **`ggplot2`** code is used to add text labels on top of the bars in a bar plot. Here’s a breakdown of what each part of this line does:
+
+-   **`geom_text()`**: This is the function in **`ggplot2`** used to add text annotations to the plot.
+
+-   **`stat='count'`**: This specifies that the text annotations should be based on the count of occurrences (i.e., the number of observations) in each category. This is necessary because **`geom_text`** needs to know what summary statistic to use to place the labels. In the context of a bar plot, this usually means counting the number of observations in each bar.
+
+-   **`aes(label=..count..)`**: This is an aesthetic mapping inside **`geom_text`**. The **`label`** aesthetic is set to **`..count..`**, which is a special variable in **`ggplot2`** representing the count of observations in each bar. This tells **`ggplot2`** to use the count as the text label for each bar.
+
+-   **`vjust=-0.5`**: This is a vertical justification parameter that moves the text labels slightly above the top of the bars. The value **`-0.5`** means the text will be placed just above the bar, providing a bit of space so the text doesn't overlap with the bar itself.
+
+-   **Colors**: The **`scale_fill_brewer(palette = "Set3")`** function applies a predefined color palette from the ColorBrewer set. The **`fill = ..count..`** in the histogram uses the count of each bin to determine the fill color.
+
+-   **Themes**: The **`theme_minimal()`** function is used to give the plots a clean and minimalistic look.
+
+Show as a pie plot
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+
+# Assuming your data frame is named 'survey_data'
+# Calculate percentages for gender distribution
+gender_summary <- survey_data %>%
+  group_by(gender) %>%
+  summarise(count = n()) %>%
+  mutate(percentage = count / sum(count) * 100)
+
+# Create the pie chart
+ggplot(gender_summary, aes(x = "", y = percentage, fill = gender)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar(theta = "y") +
+  ggtitle("Gender Distribution") +
+  geom_text(aes(label = paste0(round(percentage, 1), "%")), position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_void() +  # Use theme_void for a cleaner look
+  theme(legend.position = "right")
+
+```
+
+### **Explanation:**
+
+-   **Calculating Percentages**: We group by **`gender`** and summarize the count, then calculate the percentage of each gender.
+
+-   **`geom_bar`** with **`coord_polar`**: We use **`geom_bar`** to create the bar chart and then transform it into a pie chart using **`coord_polar`**.
+
+-   **Labels with Percentages**: The **`geom_text`** function is used to add labels to the pie chart, displaying the percentage of each gender. The **`position = position_stack(vjust = 0.5)`** argument centers the labels inside each segment of the pie chart.
+
+-   **`theme_void`**: This theme removes the background, grid lines, and axes for a cleaner pie chart appearance.
+
+-   **`scale_fill_brewer`**: This applies a color palette from ColorBrewer for better visual appeal.
+
+This code will create a pie chart showing the gender distribution with percentage labels, making it visually informative and attractive. Adjust the color palette and other settings as needed to match your preferences.
+
+### **Analyze Demographics - Age**
+
+```{r}
+
+# Summary of age distribution
+age_summary <- survey_data %>%
+  summarise(
+    mean_age = mean(age, na.rm = TRUE),
+    median_age = median(age, na.rm = TRUE),
+    min_age = min(age, na.rm = TRUE),
+    max_age = max(age, na.rm = TRUE)
+  )
+
+print(age_summary)
+```
+
+Plot age distribution
+
+```{r}
+# Plot age distribution with colors
+ggplot(survey_data, aes(x = age, fill = ..count..)) +
+  geom_histogram(binwidth = 1, color = "black", fill = "skyblue") +
+  ggtitle("Age Distribution") +
+  xlab("Age") +
+  ylab("Count") +
+  theme_minimal()
+```
+
+### Boxplot for Age Distribution
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+
+# Assuming your data frame is named 'survey_data'
+# Create the boxplot
+ggplot(survey_data, aes(y = age)) +
+  geom_boxplot(fill = "skyblue", color = "black") +
+  ggtitle("Age Distribution") +
+  ylab("Age") +
+  theme_minimal()
+```
+
+### Explanation:
+
+-   **`geom_boxplot`**: This function creates the boxplot. The `fill` argument sets the color inside the boxplot, and the `color` argument sets the border color.
+-   **`aes(y = age)`**: This specifies that the age variable should be plotted on the y-axis. Since we are only interested in the distribution of a single variable, we don't need an x-axis variable.
+-   **`theme_minimal`**: This theme provides a clean and minimalistic look to the plot.
+
+### Adding More Information
+
+If you want to add more details, such as jittered points to show individual data points, you can use `geom_jitter`:
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+
+# Assuming your data frame is named 'survey_data'
+# Create a dummy variable for x
+survey_data$x_dummy <- "Age"
+
+# Create the boxplot with jittered points
+ggplot(survey_data, aes(x = x_dummy, y = age)) +
+  geom_boxplot(fill = "skyblue", color = "black", outlier.color = "red", outlier.shape = 16) +
+  geom_jitter(width = 0.1, alpha = 0.4) +
+  ggtitle("Age Distribution with Individual Data Points") +
+  xlab("") +
+  ylab("Age") +
+  theme_minimal()
+
+```
+
+### Explanation:
+
+-   **`survey_data$x_dummy <- "Age"`**: This creates a dummy variable with the same value ("Age") for all observations, providing a placeholder for the **`x`** aesthetic in the plot.
+
+-   **`aes(x = x_dummy, y = age)`**: This specifies the aesthetics for the boxplot, with **`x_dummy`** as the x-axis variable and **`age`** as the y-axis variable.
+
+-   **`xlab("")`**: This removes the x-axis label for a cleaner appearance.
+
+-   **`geom_jitter`**: This function adds jittered points to the plot. The `width` argument controls the amount of horizontal jittering, and `alpha` controls the transparency of the points.
+
+-   **`outlier.color` and `outlier.shape`**: These arguments in `geom_boxplot` customize the appearance of outliers in the boxplot.
+
+Using these codes, you can create informative and visually appealing boxplots to analyze the age distribution of your survey data. Adjust the colors and other aesthetics as needed to match your preferences.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Load the data
+survey_data <- read.csv("students_survey.csv")
+
+# Summary statistics by work status
+summary_stats <- survey_data %>%
+  group_by(fulltime_parttime) %>%
+  summarise(
+    mean_study_hours = mean(study_hours, na.rm = TRUE),
+    median_study_hours = median(study_hours, na.rm = TRUE),
+    mean_sleep_hours = mean(sleep_hours, na.rm = TRUE),
+    median_sleep_hours = median(sleep_hours, na.rm = TRUE),
+    mean_gpa = mean(gpa, na.rm = TRUE),
+    median_gpa = median(gpa, na.rm = TRUE)
+  )
+
+print(summary_stats)
+
+# Study hours boxplot
+ggplot(survey_data, aes(x = fulltime_parttime, y = study_hours, fill = fulltime_parttime)) +
+  geom_boxplot() +
+  ggtitle("Study Hours by Work Status") +
+  xlab("Work Status") +
+  ylab("Study Hours") +
+  scale_fill_brewer(palette = "Set3") +
+  theme_minimal()
+
+# Sleep hours boxplot
+ggplot(survey_data, aes(x = fulltime_parttime, y = sleep_hours, fill = fulltime_parttime)) +
+  geom_boxplot() +
+  ggtitle("Sleep Hours by Work Status") +
+  xlab("Work Status") +
+  ylab("Sleep Hours") +
+  scale_fill_brewer(palette = "Set3") +
+  theme_minimal()
+
+# GPA boxplot
+ggplot(survey_data, aes(x = fulltime_parttime, y = gpa, fill = fulltime_parttime)) +
+  geom_boxplot() +
+  ggtitle("GPA by Work Status") +
+  xlab("Work Status") +
+  ylab("GPA") +
+  scale_fill_brewer(palette = "Set3") +
+  theme_minimal()
+
+# Study hours vs. GPA
+ggplot(survey_data, aes(x = study_hours, y = gpa, color = fulltime_parttime)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Study Hours vs. GPA by Work Status") +
+  xlab("Study Hours") +
+  ylab("GPA") +
+  scale_color_brewer(palette = "Set3") +
+  theme_minimal()
+
+# Sleep hours vs. GPA
+ggplot(survey_data, aes(x = sleep_hours, y = gpa, color = fulltime_parttime)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Sleep Hours vs. GPA by Work Status") +
+  xlab("Sleep Hours") +
+  ylab("GPA") +
+  scale_color_brewer(palette = "Set3") +
+  theme_minimal()
+
+
+```

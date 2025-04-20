@@ -1,0 +1,218 @@
+---
+title: "5.2 ggplot exercises"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+```{r}
+library(readr)
+
+data_path = "data/superstore.csv"
+superstore <- read_csv(data_path, show_col_types = FALSE)
+```
+
+### **1. Q: Show the total sales per segment using a barplot.**
+
+**A:** We can use the `dplyr` package to summarize the total sales by segment and then plot it with `ggplot2`:
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### **2. Q: Display the average profit by category using a barplot.**
+
+**A:** Use `dplyr` to calculate the average profit for each category and then visualize it with a barplot:
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### **3. Q: Plot the distribution of sales using a histogram after filtering for sales greater than \$100.**
+
+**A:** Filter the dataset for sales greater than \$100 and then plot the distribution using a histogram:
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### **4. Q: Show the total profit for the top 5 cities by sales using a barplot.**
+
+**A:** First, find the top 5 cities by sales using `dplyr` and then plot the total profit for these cities:
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### **5. Q: Visualize the number of orders by region and segment using a grouped barplot.**
+
+**A:** You can count the number of orders for each region and segment, then use a grouped barplot:
+
+```{r}
+
+```
+
+Using a stacked bar plot
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### **6. Q: Show the relationship between sales and profit using a scatter plot.**
+
+**A:** Use `ggplot2` to create a scatter plot to visualize the relationship between sales and profit:
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### **7. Q: Plot the sales distribution by category using a boxplot after arranging the categories by median sales.**
+
+**A:** Arrange categories by median sales and then plot the distribution using a boxplot:
+
+```{r}
+
+```
+
+To make the box plot more visible when there are many outliers, you have a few options:
+
+1.  **Zoom in on the IQR (Interquartile Range)**: You can zoom in on the middle 50% of the data by adjusting the y-axis limits to focus on the interquartile range.
+
+2.  **Remove Outliers**: You can choose to remove outliers from the boxplot to better visualize the main distribution of the data.
+
+3.  **Log Transformation**: Applying a log transformation to the y-axis can help compress the range of the data, making the plot more interpretable.
+
+Here’s how you can apply each of these methods:
+
+### 1. **Zoom in on the IQR**
+
+```{r}
+
+```
+
+The line `Category = reorder(Category, Sales, FUN = median)` in the `mutate()` function is used to reorder the factor levels of the `Category` variable based on the median of the `Sales` within each category. Here's a breakdown of what this does:
+
+-   **`Category`**: This refers to the factor variable that you want to reorder. In this case, it's the `Category` column in the Superstore dataset.
+
+-   **`reorder(Category, Sales, FUN = median)`**:
+
+    -   **`reorder()`**: This function is used to reorder the levels of a factor based on the values of another variable.
+    -   **`Category`**: The factor variable you are reordering.
+    -   **`Sales`**: The numeric variable based on which the reordering is done.
+    -   **`FUN = median`**: This specifies that the factor levels should be reordered based on the median value of `Sales` for each `Category`.
+
+### What It Achieves:
+
+-   **Reordering**: After applying this, the categories (e.g., Office Supplies, Technology, Furniture) in the `Category` variable will be ordered by the median `Sales` value in each category.
+-   **Visual Impact**: When you plot the data, the categories will be displayed in this new order. This is particularly useful in plots like boxplots where you might want to see categories ordered by their central tendency (median in this case) rather than their original order.
+
+### Example:
+
+If the median sales for `Furniture` is higher than `Technology`, and `Technology` is higher than `Office Supplies`, the boxplot will display the categories in the following order: Furniture, Technology, Office Supplies.
+
+This ordering can help make plots more informative by highlighting trends or comparisons in a more logical sequence based on the data.
+
+### 2. **Remove Outliers by Zooming on the Y Axis**
+
+```{r}
+
+```
+
+### 3. **Log Transformation**
+
+```{r}
+ 
+```
+
+------------------------------------------------------------------------
+
+### **8. Q: Show the monthly sales trend over time using a line plot.**
+
+**A:** You can use the `mutate()` function to convert the `Order Date` into a proper date format and then group by month and year to visualize the sales trend:
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### **9. Q: Display the average profit margin by product sub-category using a barplot.**
+
+**A:** Calculate the average profit margin for each sub-category and visualize it using a barplot:
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### **10. Q: Show sales and profit by region using side-by-side bar plots.**
+
+**A:** Compare sales and profit across different regions using side-by-side bar plots:
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### **11. Q: Visualize the distribution of customer lifetime value (CLTV) using a histogram.**
+
+**A:** Calculate the lifetime value for each customer and plot the distribution using a histogram:
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### **12. Q: Analyze the effect of discounts on profitability using a scatter plot.**
+
+**A:** Plot a scatter plot to examine the relationship between discount and profit, including a trend line:
+
+```{r}
+
+```
+
+------------------------------------------------------------------------
+
+### Preparing Data for Market Basket Analysis Here's how you can prepare the Superstore data for market basket analysis:
+
+Group Items by Transaction (Order ID): You need to group the items by Order ID and then convert them into a list format where each list element contains all the items bought in that transaction.
+
+Convert to Transaction Format: The list of items per transaction can then be converted into a transaction object, which can be used for association rule mining with the arules package.
+
+```{r}
+
+```
+
+### Explanation:
+
+-   **Grouping**: The `group_by(Order ID)` groups all products under the same `Order ID`.
+
+-   **Collapse and Separate**: The `summarize()` with `paste()` concatenates all product names in a single transaction into one string. The `separate_rows()` function then separates these into individual rows within a transaction.
+
+-   **Convert to Transactions**: This prepares the data for the `apriori` function by converting the grouped items into a transaction object.
+
+-   **Association Rules**: Finally, the `apriori` algorithm is applied to find frequent itemsets and association rules.
+
+**Note**: Ensure that the `arules` and `arulesViz` packages are installed for running the market basket analysis.
+
+This process should help us to convert our Superstore dataset into a transaction format suitable for market basket analysis, enabling usto discover interesting product associations and co-purchase patterns.

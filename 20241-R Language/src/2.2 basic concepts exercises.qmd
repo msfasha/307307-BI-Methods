@@ -1,0 +1,184 @@
+---
+title: "2.2 Basic Concepts Exercises"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+### Exercise 1: Greeting Script in R
+
+**Question A:** Construct an R script that outputs the greeting "Hello, World!" Then, alter the script to replace "World" with your own name.
+
+**Solution A:**
+
+```{r}
+
+```
+
+**Question B:** Utilize the `cat()` function to display "Hello, World!" in the console. Observe and report any variations in the output compared to the `print()` function.
+
+**Solution B:**
+
+```{r}
+
+```
+
+### Exercise 2: Storing Personal Favorites
+
+Store your preferred number, color, and a boolean value that signifies your liking for pizza. Display these stored values.
+
+**Solution:**
+
+```{r}
+
+```
+
+### Exercise 3: Types and Collections
+
+**Question A:** Generate a vector with the numbers from 1 to 10. Determine and document the vector's type as well as the types of the elements within it.
+
+**Solution A:**
+
+```{r}
+
+```
+
+**Question B:** Form a list holding a numeric value, a character string, and a boolean value. Ascertain the list's type and the types of its individual elements.
+
+**Solution B:**
+
+```{r}
+
+```
+
+### Exercise 4: Checking Number Sign
+
+Compose a script that discerns whether a given number (hard-coded in the script) is positive, negative, or zero, and relays an appropriate message.
+
+**Solution:**
+
+```{r}
+
+```
+
+### Exercise 5: Iterative Loops
+
+**Question A:** Write a `for` loop that computes and exhibits the squares of numbers from 1 to 10.
+
+**Solution A:**
+
+```{r}
+
+```
+
+**Question B:** Implement a `while` loop to effectuate a countdown from 10 to 1, displaying each countdown step.
+
+**Solution B:**
+
+```{r}
+
+```
+
+### Exercise 6: Area Calculation Function
+
+Craft a function named `calculate_area` that accepts a circle's radius and returns its area. Check the function's accuracy with a variety of radii.
+
+**Solution:**
+
+```{r}
+
+```
+
+### Exercise 7: Vector Mathematics
+
+**Question A:** Form two vectors, `a` and `b`, each with 5 random numbers. Execute and print the results of element-wise addition, subtraction, multiplication, and division.
+
+**Solution A:**
+
+```{r}
+
+```
+
+**Question B:** Use comparison operators to compare the elements of `a` and `b` and communicate the outcomes.
+
+**Solution B:**
+
+```{r}
+
+```
+
+### Exercise 8: Working with Factors
+
+Institute a factor variable that delineates three kinds of fruit. Illustrate the factor variable, its levels, and transmute it into numerical values.
+
+**Solution:**
+
+```{r}
+
+```
+
+### Exercise 9: Data Frame Adjustments
+
+Forge a modest data frame that enlists student IDs, names, and scores. Accomplish these tasks:
+
+-   Select and unveil only the students' names and scores.
+-   Incorporate a column indicating if the student passed (score \>= 50).
+
+**Solution:**
+
+```{r}
+
+```
+
+### Exercise 10: Interactive User Query (Optional)
+
+Write code that asks the user to enter his name and age, then returns a message along with a mention of whether they are above the age of 18.
+
+**Solution:**
+
+```{r eval=FALSE}
+
+```
+
+#### Home Work
+
+**Scenario:** You are a Data Scientist working for a consulting firm. One of your colleagues from the Auditing department has asked you to help them assess the financial statement of organization X.
+
+You have been supplied with two vectors of data: monthly revenue and monthly expenses for the financial year in question. Your task is to calculate the following financial metrics:
+
+1.  **Profit for each month**: Calculate the profit for each month by subtracting expenses from revenue.
+
+2.  **Profit after tax for each month**: The tax rate is 30%. Calculate the profit after tax for each month.
+
+3.  **Profit margin for each month**: The profit margin is equal to the profit after tax divided by revenue, expressed as a percentage.
+
+4.  **Good months**: Identify the months where the profit after tax was greater than the mean profit after tax for the year.
+
+5.  **Bad months**: Identify the months where the profit after tax was less than the mean profit after tax for the year.
+
+6.  **The best month**: Identify the month where the profit after tax was maximum for the year.
+
+7.  **The worst month**: Identify the month where the profit after tax was minimum for the year.
+
+**Additional Requirements:**
+
+-   All results need to be presented as vectors.
+
+-   Results for dollar values need to be calculated with \$0.01 precision but presented in units of \$1,000 (i.e., 1k) with no decimal points.
+
+-   Results for the profit margin ratio need to be presented in units of percentage with no decimal points.
+
+-   Note: It is okay for tax for any given month to be negative (in accounting terms, negative tax translates into a deferred tax asset).
+
+    ```{r}
+    # Given data
+    revenue <- c(14574.49, 7606.46, 8611.41, 9175.41, 8058.65, 8105.44, 11496.28, 9766.09, 10305.32, 14379.96, 10713.97, 15433.50)
+    expenses <- c(12051.82, 5695.07, 12319.20, 12089.72, 8658.57, 840.20, 3285.73, 5821.12, 6976.93, 16618.61, 10054.37, 3803.96)
+
+
+    ```

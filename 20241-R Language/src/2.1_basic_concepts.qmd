@@ -1,0 +1,1220 @@
+---
+title: "2.1 Basic Concepts in R"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+## Hello World Program
+
+Write the "Hello World" program using both (1) R command prompt and (2) writing a script.
+
+## R Command Prompt
+
+Once you have R environment setup, then it’s easy to start your R command prompt by just typing the following command at your command prompt:
+
+`$ R`
+
+This will launch R interpreter and you will get a prompt \> where you can start typing your program as follows:
+
+```{r}
+myString <- "Hello, World!"
+print (myString)
+```
+
+Here first statement defines a string variable myString, where we assign a string “Hello, World!” and then next statement print() is being used to print the value stored in variable myString.
+
+Note
+
+:   The bracketed number \[1\] that appears before the output indicates that the line begins with the first value of the result. Some results may have multiple values that fill several lines, so this indicator is occasionally useful but can generally be ignored.
+
+## Writing R Script File
+
+Usually, you will do your programming by writing your programs in script files and then you execute those scripts at your command prompt with the help of R interpreter called Rscript.
+
+So let’s start with writing following code in a text file called test.R:
+
+```{r}
+# My first program in R Programming
+myString <- "Hello, World!"
+print ( myString)
+```
+
+Save the above code in a file test.R and execute it at Linux command prompt as given below.
+
+Even if you are using Windows or other system, syntax will remain same.
+
+`$ Rscript test.R`
+
+## Comments
+
+Comments are like helping text in your R program and they are ignored by the interpreter while executing your actual program. Single comment is written using \# in the beginning of the statement as follows:
+
+```{r}
+# My first program in R Programming
+```
+
+## Variables and Basic Data Types
+
+-   Generally, while doing programming in any programming language, you need to use various variables to store various information.
+
+-   Variables are reserved memory locations to store values. This means that, when you create a variable you reserve some space in memory.
+
+-   You may need to store information of various data types like character, wide character, integer, floating point, double floating point, Boolean etc.
+
+-   Based on the data type of a variable, the operating system allocates memory and decides what can be stored in the reserved memory.
+
+-   In contrast to other programming languages like C and java in R, the variables are not declared as some data type. The variables are assigned with R-Objects and the data type of the R-object becomes the data type of the variable. There are many types of R-objects.
+
+-   The frequently used ones are − ***Vectors Lists - Matrices - Arrays - Factors - Data Frames***
+
+## Numeric Variables
+
+Numeric variables are the most common type of variable and are used to store real numbers.
+
+-   **Integer**: A subtype of numeric that represents whole numbers.
+
+```{r}
+# Integer variable
+count <- 42L # The 'L' specifies it as an integer
+
+# Floating-point number
+weight <- 72.5
+```
+
+-   **Complex Numbers**: Numbers with a real and an imaginary part.
+
+```{r}
+# Complex number
+complex_num <- 3+4i
+```
+
+-   **Character Variables**
+
+Character variables store text and are enclosed in quotes.
+
+```{r}
+# Single character string
+name <- "Alice"
+
+# Multiple characters string
+sentence <- "Hello, World!"
+```
+
+-   **Logical Variables**
+
+Logical variables can only take two values: TRUE or FALSE. They are the result of conditions or logical operations.
+
+```{r}
+# Logical variable
+is_valid <- TRUE
+
+# Result of a logical operation
+test_result <- 5 > 3 # Returns TRUE
+
+a <- T
+b <- F
+
+a | b
+
+a & b
+```
+
+### R is Case Sensitive
+
+The R language is case-sensitive, so typing the command as Print( ) or PRINT( ) will simply produce an error.
+
+```{r error=T}
+age <- 25
+print(age)
+print(Age)
+Print(age) # P is capitalized in print
+```
+
+### Get Data Type of a Variable
+
+```{r}
+BMI <- data.frame(
+gender = c("Male", "Male","Female"),
+height = c(152, 171.5, 165),
+weight = c(81,93, 78),
+Age = c(42,38,26)
+)
+```
+
+```{r}
+print("The class of BMI is:")
+class(BMI)
+
+print("The type of BMI is:")
+typeof(BMI)
+
+print("The structure of BMI is:")
+str(BMI)
+```
+
+### Logical operators in R:
+
+|     |                       |
+|-----|-----------------------|
+| \<  | less than             |
+| \>  | great than            |
+| \<= | less than or equal    |
+| \>= | greater than or equal |
+| ==  | equal to              |
+| !=  | not equal to          |
+| \|  | or                    |
+| !   | not                   |
+| &   | and                   |
+
+## Complext Data Types and Data Structures
+
+### Vectors
+
+Vectors are one-dimensional arrays that can hold numeric, character, or logical values, but all elements must be of the same type.
+
+| Patient ID | Height (CM) | Weight (KG) | Systolic (mmHg) | Diastolic (mmHg) |
+|------------|-------------|-------------|-----------------|------------------|
+| 10200      | 165         | 71          | 120             | 80               |
+| 3600       | 180         | 92          | 110             | 85               |
+| 8437       | 172         | 76          | 118             | 82               |
+| 5911       | 167         | 82          | 115             | 78               |
+
+```{r}
+# Numeric vector
+ages <- c(25, 30, 45)
+
+# Character vector
+colors <- c("red", "green", "blue")
+
+# Logical vector
+answers <- c(TRUE, FALSE, TRUE)
+```
+
+### Creating Sequences in R
+
+Sequences are ordered sets of numbers that follow a specific pattern.
+
+In R, sequences are commonly used for tasks such as iteration in loops, subsetting data structures, and during plotting.
+
+R provides several functions to create sequences efficiently.
+
+#### Using the Colon Operator `:`
+
+The colon operator is the simplest way to create a sequence of numbers in R. It generates a sequence from a starting point to an endpoint with a step of 1.
+
+##### Syntax:
+
+``` r
+start:end
+```
+
+##### Example:
+
+Create a sequence from 1 to 10.
+
+```{r}
+seq_1_to_10 <- 1:10  
+print(seq_1_to_10)
+```
+
+#### The `seq()` Function
+
+The `seq()` function is more versatile than the colon operator and can create sequences with specified increments (the `by` argument) or of a specified length (the `length.out` argument).
+
+##### Syntax:
+
+``` r
+seq(from, to, by, length.out)`
+```
+
+##### Examples:
+
+-   Create a sequence from 1 to 10 with a step of 2:
+
+```{r}
+seq_by_2 <- seq(from = 1, to = 10, by = 2) 
+print(seq_by_2)
+```
+
+-   Create a sequence from 5 to 10, consisting of 3 equally spaced numbers:
+-   
+
+```{r}
+seq_length_out <- seq(from = 5, to = 10, length.out = 3) 
+print(seq_length_out)
+```
+
+#### The `rep()` Function
+
+The `rep()` function is used to replicate the values in x. It is a powerful function for repeating sequences.
+
+##### Syntax:
+
+``` r
+rep(x, times, each, length.out)
+```
+
+##### Examples:
+
+-   Repeat the sequence of numbers 1, 2, 3, three times:
+
+```{r}
+rep_times <- rep(x = 1:3, times = 3) 
+print(rep_times)
+```
+
+-   Repeat each number in the sequence 1, 2, 3, three times:
+
+```{r}
+rep_each <- rep(x = 1:3, each = 3) 
+print(rep_each)
+```
+
+#### Combining Sequences
+
+Sequences can be combined using the `c()` function to create longer and more complex sequences.
+
+##### Example:
+
+Combine two sequences into one.
+
+```{r}
+combined_seq <- c(seq(1, 5), seq(8, 10)) 
+print(combined_seq)
+```
+
+### Practice Vectors
+
+-   Create a vector that combines the numbers 1, 2, and 3 with the letters 'a', 'b', and 'c'.
+
+-   Create a vector containing the numbers 1 to 10, but only include every second number.
+
+<!-- -->
+
+-   Create a vector that contains the sequence 1, 2, 3, followed by the sequence 4, 5, 6, each sequence repeated twice.
+
+-   Create a vector that starts with the sequence 1, 2, 3 and then repeats the number 4 five times.
+
+-   Create a vector containing the first 10 even numbers.
+
+-   Create a vector containing the first 10 odd numbers.
+
+-   Create a vector that uses the `seq()` function to generate numbers from 1 to 10, but each number should appear twice.
+
+-   Create a vector that uses the `rep()` function to repeat the sequence 1, 2, 3, but the entire sequence should appear three times.
+
+### Accessing Elements in a Sequence Data Type e.g. Vector, Data Frame
+
+### Access Vector Elements
+
+Accessing elements from a vector in R is straightforward and can be achieved using indexing with square brackets `[ ]`.
+
+You can specify the index or indices of the elements you want to extract. Remember, R is 1-based indexing, meaning the first element of a vector has an index of 1.
+
+**Single Element Access**
+
+To access a single element from a vector, you provide its index within square brackets immediately following the vector name.
+
+```{r}
+# Creating a numeric vector
+numbers <- c(10, 20, 30, 40, 50)
+
+# Access the third element
+third_number <- numbers[3]
+print(third_number)  # Outputs 30
+```
+
+**Multiple Elements Access**
+
+To access multiple elements, you can pass a vector of indices inside the square brackets.
+
+```{r}
+# Access the first, third, and fifth elements
+selected_numbers <- numbers[c(1, 3, 5)]
+print(selected_numbers)  # Outputs 10, 30, 50
+```
+
+**Sequential Elements Access**
+
+R allows you to use the colon `:` operator to create a sequence, which can be used for accessing a range of elements.
+
+```{r}
+# Access the second to the fourth elements
+range_numbers <- numbers[2:4]
+print(range_numbers)  # Outputs 20, 30, 40
+```
+
+**Conditional Access**
+
+You can also access elements based on conditions. This method is useful for filtering elements.
+
+```{r}
+# Access elements greater than 25
+filtered_numbers <- numbers[numbers > 25]
+print(filtered_numbers)  # Outputs 30, 40, 50
+```
+
+**Find the Index of Matching Elements**
+
+```{r}
+which(numbers > 25)
+```
+
+**Excluding Elements**
+
+Adding a minus sign `-` before an index or a vector of indices tells R to exclude those elements.
+
+```{r}
+# Exclude the second element
+exclude_second <- numbers[-2]
+print(exclude_second)  # Outputs 10, 30, 40, 50
+
+# Exclude second to fourth elements
+exclude_range <- numbers[-(2:4)]
+print(exclude_range)  # Outputs 10, 50
+```
+
+**Named Vectors**
+
+For named vectors, you can access elements using their names in a similar manner.
+
+```{r}
+# Creating a named vector
+fruits <- c(apple = 10, banana = 5, cherry = 8)
+
+# Access the element named 'banana'
+banana_count <- fruits["banana"]
+print(banana_count)  # Outputs 5
+
+# Access multiple elements by name
+some_fruits <- fruits[c("apple", "cherry")]
+print(some_fruits)  # Outputs apple 10, cherry 8
+```
+
+### Basic Operations on Vectors
+
+-   Once you have a vector (or a list of numbers) in memory most basic operations are available.
+
+-   Most of the basic operations will act on a whole vector and can be used to quickly perform a large number of calculations with a single command.
+
+-   There is one thing to note, if you perform an operation on more than one vector it is often necessary that the vectors all contain the same number of entries.
+
+-   Here we first define a vector which we will call “a” and will look at how to add and subtract constant numbers from all of the numbers in the vector.
+
+-   First, the vector will contain the numbers 1, 2, 3, and 4.
+
+-   We then see how to add 5 to each of the numbers, subtract 10 from each of the numbers, multiply each number by 4, and divide each number by 5.
+
+```{r}
+a <- c(1,2,3,4)
+a
+a <- a + 5
+a
+a <- a - 10
+a
+a <- a / 5
+a
+```
+
+We can save the results in another vector called b:
+
+```{r}
+b <- a 
+b
+```
+
+If you want to raise to a power, take the square root, find e raised to each number, the logarithm, etc., then the usual commands can be used:
+
+```{r}
+a <- c(1,2,3,4)
+a ^ 2
+sqrt(a)
+exp(a)
+log(a)
+exp(log(a))
+
+```
+
+By combining operations and using parentheses you can make more complicated expressions:
+
+```{r}
+c <- (a + sqrt(a))/(exp(2)+1)
+c
+```
+
+Note that you can do the same operations with vector arguments.
+
+For example to add the elements in vector a to the elements in vector b use the following command:
+
+```{r}
+a + b
+```
+
+The operation is performed on an element by element basis.
+
+Note this is true for almost all of the basic functions.
+
+So you can bring together all kinds of complicated expressions:
+
+```{r}
+a*b
+a/b
+(a+3)/(sqrt(1-b)*2-1)
+```
+
+You need to be careful of one thing. When you do operations on vectors they are performed on an element by element basis. One ramification of this is that all of the vectors in an expression must be the same length. If the lengths of the vectors differ then you may get an error message, or worse, a warning message and unpredictable results:
+
+```{r, eval=FALSE}
+a <- c(1,2,3)
+b <- c(10,11,12,13)
+a+b
+```
+
+### Basic Numerical Descriptors
+
+The following commands can be used to get the mean, median, quantiles, minimum, maximum, variance, and standard deviation of a set of numbers:
+
+```{r}
+a <- 1:10
+mean(a)
+median(a)
+quantile(a)
+var(a)
+sd(a)
+min(a)
+max(a)
+```
+
+Finally, the summary command will print out the min, max, mean, median, and quantiles:
+
+```{r}
+summary(a)
+```
+
+The summary command is especially nice because if you give it a data frame it will print out the summary for every vector in the data frame:
+
+```{r}
+summary(mtcars)
+```
+
+### Sorting Vectors
+
+Here we look at some commonly used commands that perform operations on lists.
+
+The commands include the sort, min, max, and sum commands.
+
+First, the sort command can sort the given vector in either ascending or descending order:
+
+```{r}
+a = c(2,4,6,3,1,5)
+b = sort(a)
+c = sort(a,decreasing = TRUE)
+```
+
+### Speed of Vectorized Operations
+
+Using vectorization to multiply numbers vs using for loop
+
+```{r}
+N <- 100
+a <- rnorm(N)
+b <- rnorm(N)
+
+# Vectorized approach
+c <- a * b
+
+# De-vectorized approach
+d <- rep(NA, N)
+for(i in 1:N){
+  d[i] <- a[i] * b[i]
+}
+```
+
+```{r}
+N <- 100000000
+a <- rnorm(N)
+b <- rnorm(N)
+
+# Measure the time for the vectorized approach
+vectorized_time <- system.time({
+  c <- a * b
+})
+
+# Measure the time for the de-vectorized approach
+de_vectorized_time <- system.time({
+  d <- rep(NA, N)
+  for(i in 1:N){
+    d[i] <- a[i] * b[i]
+  }
+})
+
+# Print the timings
+print(vectorized_time)
+print(de_vectorized_time)
+```
+
+## Other Data Structures (Matrix, Array, List and Data frames)
+
+### Matrices
+
+Matrices are two-dimensional arrays that contain elements of the same type. They have rows and columns.
+
+```{r}
+# Matrix with 3 rows and 2 columns
+matrix_data <- matrix(1:6, nrow = 3, ncol = 2)
+```
+
+[Note: Check the NBA Example Quarto File]{.underline}
+
+### Arrays
+
+Arrays are similar to matrices but can have more than two dimensions.
+
+```{r}
+# 3-dimensional array
+array_data <- array(1:24, dim = c(3, 4, 2))
+```
+
+### Lists
+
+Lists can hold elements of different types, including numbers, strings, vectors, and even other lists.
+
+```{r}
+# List containing different types
+list_data <- list(name = "Alice", age = 25, scores = c(90, 80, 85))
+
+print(list_data[1])
+```
+
+### Data Frames
+
+Data frames are used to store tabular data. They are similar to matrices but can contain different types of variables.
+
+```{r}
+# Data frame
+df <- data.frame(
+  Name = c("Alice", "Bob"),
+  Age = c(25, 30),
+  Weight = c(55.5, 85.7)
+)
+```
+
+### Access Data Frame Elements
+
+#### R built-in datasets
+
+R provides several datasets that can be used for practice.
+
+Use the data() command to examine these datasets.
+
+```{r}
+#data()
+
+# we will use mtcars dataset for demonstration
+#?mtcars
+#View(trees)
+```
+
+**Using \$ to Access Columns**
+
+The **`$`** operator is used to access a column directly by its name, returning the column as a vector.
+
+```{r}
+miles_per_hour <- mtcars$mpg
+print(miles_per_hour)
+```
+
+**Using \[\] for Row and Column Indexing**
+
+The **`[ ]`** operator allows for more flexible sub-setting, including selecting rows, columns, or both, using numeric indexes or column names.
+
+-   **Select a single column by name**:
+
+```{r}
+miles_per_hour <- mtcars["mpg"]
+print(miles_per_hour)
+```
+
+**Select multiple columns by name**
+
+```{r}
+subset_df <- mtcars[c("mpg", "cyl")]
+print(subset_df)
+```
+
+```{r}
+# In R, rownames is a function that retrieves or sets the row names of a matrix or # data frame. 
+# rownames are essentially a character vector of unique identifiers that label the rows, similar to how column names label the columns.
+
+# Get all rownames
+car_names <- rownames(mtcars)
+print(car_names)
+
+# Get first rowname only
+first_car_name <- rownames(mtcars)[1]
+print(first_car_name)
+
+# Find record by rowname
+datsun_710 <- mtcars["Datsun 710", ]
+print(datsun_710)
+
+mtcars$car_brand <- rownames(mtcars)
+# rownames(mtcars) <- NULL
+head(mtcars)
+
+#View(mtcars)
+
+# select rows 5 to 7
+mtcars
+mtcars[5:7,]
+# select columns 2 to 9
+mtcars[2:9]
+mtcars[,2:9]
+mtcars[2,9]
+mtcars[2:9,]
+
+# select rows 20 to 30 and columns 8 to 10
+mtcars[c(20:30),c(8:10)]
+mtcars[20:30,8:10]
+
+
+# select row 5 only
+mtcars[5,]
+
+# select column 2 and 6 only
+mtcars[c(2,6)]
+mtcars[,c(2,6)]
+mtcars[c(2,6),]
+
+# select columns 2 to 6
+mtcars[2:6]
+
+# select all the cars that have 4 cylinders
+m <- mtcars[mtcars$cyl == 4,]
+length(m)
+length(mtcars[,1])
+nrow(mtcars)
+ncol(mtcars)
+
+# how many cars have automatic transmission
+nrow(mtcars[mtcars$am == 0,])
+
+# select "Fiat 128" row by its rowname
+# mtcars["Fiat 128"]
+mtcars["Fiat 128",]
+
+mean(c(40,60,40,60))
+mtcars[mtcars$mpg < mean(mtcars$mpg),]
+```
+
+Select a single row
+
+```{r}
+first_row <- mtcars[1, ]
+print(first_row)
+```
+
+Select a specific element
+
+```{r}
+# Accessing the Age of the second person
+mpg <- mtcars[2, "mpg"]
+print(mpg)
+```
+
+**Using `subset()` Function**
+
+The **`subset()`** function can be used for more complex subsetting based on conditions.
+
+-   **Select rows where Age is greater than 25**:
+
+    ```{r}
+    more_than_4_cyl <- subset(mtcars, cyl > 4)
+    print(more_than_4_cyl)
+    ```
+
+**Filtering data frames**
+
+```{r}
+# Example of creating a data.frame
+name <- c("John", "Alice", "Bob", "Eva")
+age <- c(23, 25, 30, 22)
+gender <- c("Male", "Female", "Male", "Female")
+
+# Combine vectors into a data.frame
+students <- data.frame(name, age, gender)
+
+# Display the data.frame
+print(students)
+
+# Accessing a column using $
+print(students$age)
+
+# Accessing a column using indexing
+print(students["gender"])
+
+# Access the element in the 2nd row, 1st column
+print(students[2, 1])
+
+# Access the entire 3rd row
+print(students[3, ])
+
+# Access the entire 2nd column
+print(students[, 2])
+
+# Filter rows where age is greater than 23
+older_students <- students[students$age > 23, ]
+
+# Display the filtered data.frame
+print(older_students)
+```
+
+## Miscellaneous Related Topics - مواضيع متفرقة ذات علاقة
+
+### Printing Output
+
+In R, you have several functions at your disposal to print output. Here are the most commonly used ones:
+
+1.  **`print()`** - This is the basic R function to print objects to the console. It's a generic function, which means that it can have different methods for different object types.
+
+    ```{r}
+    print("Hello, World!")
+    ```
+
+2.  **`cat()`** - Concatenates and prints objects. It is often used for printing character strings and does not automatically add a newline unless you specify it with `"\n"`.
+
+    ```{r}
+    cat("Hello,", "World!", "\n")
+    ```
+
+3.  The **`paste`** function in R is used to concatenate strings. Unlike `print` or `cat`, `paste` does not print to the console but returns a single string that is the concatenation of its arguments. The `paste` function is particularly useful when you want to combine strings and variables to create a new string.
+
+Here's a basic usage of `paste`:
+
+```{r}
+# This will not print to the console but will return a string.
+result <- paste("Hello", "World", sep = " ")
+
+# To print the result, you can use print() or cat()
+print(result)  # This will print "Hello World" to the console
+cat(result, "\n")  # This will also print "Hello World", followed by a new line
+```
+
+### Requesting user input
+
+Test this command in the console window not in quarto.
+
+```{r eval=FALSE}
+name <- readline("Please enter your name: ")
+cat("Your name is:", name)
+```
+
+### Values Assignments in R
+
+We can use different syntax to make an assignment in R.
+
+The preferred syntax is to use the Values Gets e.g. x \<- 10, which means x Gets the value 10.
+
+We can also use the conventional assignment operator.
+
+The Gets operator has the advantage of escaping the ambiguity of the assignment and equality operators = vs ==
+
+```{r error=T}
+x <- 1 # valid, x gets 1
+x
+1 -> x # valid, x gets 1
+x
+x = 1 # valid, x = 1
+x
+1 = x # invalid, x
+```
+
+### List Memory, Clean Memory
+
+```{r}
+# list variables 
+x <- 1 
+y <- 2 
+ls()  
+
+# clear specific values 
+rm(x,y) 
+ls()  
+
+# clear all values 
+rm(list = ls()) 
+ls()
+```
+
+-   We can also click on the "Broom" icon in the Environment tab to clear all objects.
+
+-   Alternatively, use the **`Session > Clear Workspace...`** menu option.
+
+-   Finally, restarting the R session is a surefire way to clear all objects and start fresh. In RStudio, you can do this via the menu **`Session > Restart R`** or by using the **`Ctrl+Shift+F10`** shortcut on Windows/Linux or **`Cmd+Shift+F10`** on macOS.
+
+## Flow of Control
+
+#### Repetition in R (Loops)
+
+Loops are fundamental constructs in programming that allow you to execute a block of code repeatedly. In R, the primary looping constructs are the `for` loop, the `while` loop, and the `repeat` loop. This section will guide you through the syntax and usage of each, with examples to illustrate how they can be used in data analysis tasks.
+
+#### The `for` Loop
+
+The `for` loop is used to iterate over a sequence or a vector and execute a block of code for each element.
+
+##### Syntax:
+
+```{r, eval=FALSE}
+for (variable in sequence) {
+  # Code to execute for each element of the sequence
+}
+```
+
+##### Example:
+
+Let's iterate over a vector of numbers and print each number squared.
+
+```{r}
+# Create a vector of numbers
+numbers <- 1:5
+
+# Use a for loop to iterate and print squares
+for (num in numbers) {
+  print(num^2)
+}
+```
+
+What are the correct values for the \*s in the code below so that it will iterate over all the items of x array?
+
+```{r, eval=FALSE}
+
+x <- 50:60
+for (i in *:*)
+{
+  print(x[i])
+}
+```
+
+In this example, the loop runs five times, squaring each number from 1 to 5.
+
+#### The `while` Loop
+
+The `while` loop continues to execute as long as a specified condition is true. It's useful when the number of iterations is not known beforehand.
+
+##### Syntax:
+
+```{r, eval=FALSE}
+while (condition) {
+  # Code to execute as long as the condition is true
+}
+```
+
+##### Example:
+
+We will use a `while` loop to simulate a countdown.
+
+```{r}
+# Set the starting point of the countdown
+countdown <- 5
+
+# Begin the while loop
+while (countdown > 0) {
+  print(paste("Counting down:", countdown))
+  countdown <- countdown - 1
+}
+
+# When the loop ends
+print("Lift off!")
+```
+
+This loop will run until `countdown` is no longer greater than 0.
+
+#### The `repeat` Loop
+
+The `repeat` loop executes an indefinite number of times until explicitly told to stop with a `break` statement. It's the most basic form of loop and is less commonly used than `for` and `while` loops due to its potential to create infinite loops if not handled carefully.
+
+##### Syntax:
+
+```{r, eval=FALSE}
+repeat {
+  # Code to execute indefinitely
+  if (stop_condition) {
+    break
+  }
+}
+```
+
+##### Example:
+
+Here's a `repeat` loop that finds the first number divisible by 13 greater than 100.
+
+```{r}
+# Initialize the number
+number <- 101
+
+# Start the repeat loop
+repeat {
+  # Check if the number is divisible by 13
+  if (number %% 13 == 0) {
+    print(paste("Found a number divisible by 13:", number))
+    break
+  }
+  # Increment the number
+  number <- number + 1
+}
+```
+
+The loop runs indefinitely, incrementing `number` until it finds one that satisfies the condition.
+
+#### Nested Loops
+
+Loops can be nested inside other loops, which is useful for iterating over multiple dimensions, such as rows and columns in a matrix.
+
+##### Example:
+
+```{r}
+# Create a 3x3 matrix
+my_matrix <- matrix(1:9, nrow = 3)
+
+# Iterate over each element of the matrix
+for (row in 1:nrow(my_matrix)) {
+  for (col in 1:ncol(my_matrix)) {
+    # Multiply each element by 2
+    my_matrix[row, col] <- my_matrix[row, col] * 2
+  }
+}
+print(my_matrix)
+```
+
+In this nested loop example, every element of `my_matrix` is doubled.
+
+### Conditional Branching in R
+
+#### Introduction to Conditional Branching
+
+Conditional branching in R allows you to control the flow of execution based on conditions. It's a fundamental concept in programming that lets you execute certain sections of code while skipping others, depending on whether specified conditions are `TRUE` or `FALSE`. This section will explain how to use conditional statements in R, such as `if`, `else`, and `else if`, along with practical examples.
+
+#### The `if` Statement
+
+The `if` statement is the simplest form of conditional branching. It evaluates a condition and, if that condition is `TRUE`, it executes a block of code.
+
+##### Syntax:
+
+```{r, eval=FALSE}
+if (condition) {
+  # Code to execute if the condition is TRUE
+}
+```
+
+##### Example:
+
+Here, we check if a number is positive.
+
+```{r}
+number <- 5
+
+if (number > 0) {
+  print("The number is positive.")
+}
+```
+
+#### The `else` Statement
+
+The `else` statement is used together with an `if` statement to execute code when the `if` condition is not `TRUE`.
+
+##### Syntax:
+
+```{r, eval=FALSE}
+if (condition) {
+  # Code to execute if the condition is TRUE
+} else {
+  # Code to execute if the condition is FALSE
+}
+```
+
+##### Example:
+
+Expanding on the previous example, we also handle the case when the number is not positive.
+
+```{r}
+number <- -3
+
+if (number > 0) {
+  print("The number is positive.")
+} else {
+  print("The number is not positive.")
+}
+```
+
+#### The `else if` Statement
+
+The `else if` statement allows you to check multiple conditions. If the condition for `if` is `FALSE`, it checks the condition for `else if`, and so on.
+
+##### Syntax:
+
+```{r, eval=FALSE}
+if (condition1) {
+  # Code to execute if condition1 is TRUE
+} else if (condition2) {
+  # Code to execute if condition1 is FALSE and condition2 is TRUE
+} else {
+  # Code to execute if none of the above conditions are TRUE
+}
+```
+
+##### Example:
+
+Here, we classify a number as positive, negative, or zero.
+
+```{r}
+number <- 0
+
+if (number > 0) {
+  print("The number is positive.")
+} else if (number < 0) {
+  print("The number is negative.")
+} else {
+  print("The number is zero.")
+}
+```
+
+#### The `switch` Statement
+
+The `switch` statement is a multi-way branch used when you want to compare the same variable (or expression) with many different possible values and execute different pieces of code for each value.
+
+##### Syntax:
+
+```{r, eval=FALSE}
+switch(EXPR, 
+       "case1" = {# Code for case 1},
+       "case2" = {# Code for case 2},
+       # ...,
+       {# Default case code}
+)
+```
+
+##### Example:
+
+The following example shows how `switch` can be used to print different messages based on the value of a character variable.
+
+```{r}
+day <- "Tue"
+
+switch(day,
+       "Mon" = {print("Start of the work week")},
+       "Tue" = {print("Second day of the work week")},
+       "Wed" = {print("Middle of the work week")},
+       "Thu" = {print("Approaching the end")},
+       "Fri" = {print("Last day of the work week")},
+       {print("It must be the weekend")}
+)
+```
+
+## Creating Functions in R
+
+### Introduction
+
+Functions in R are crucial for efficient and organized code, allowing for repetitive tasks to be encapsulated into single, callable entities. This chapter demonstrates how to craft your own functions, enabling the automation of tasks and making your code more modular and readable.
+
+### Basic Function Structure
+
+A function is defined using the `function` keyword, followed by parentheses containing any arguments, and a body enclosed in curly braces.
+
+#### Example: Simple Addition Function
+
+```{r}
+add_two_numbers <- function(a, b) {
+  result <- a + b
+  return(result)
+}
+
+# Using the function
+print(add_two_numbers(5, 3))
+```
+
+### Function Arguments and Return Values
+
+Functions can take arguments and return results. R functions return the result of the last line in the function body by default, but the `return()` function can be used for clarity or early returns.
+
+#### Example: Greeting Function
+
+```{r}
+greet_person <- function(name) {
+  greeting <- paste("Hello,", name)
+  return(greeting)
+}
+
+# Using the function
+print(greet_person("Alice"))
+```
+
+### Default Argument Values
+
+You can specify default values for arguments, making them optional.
+
+#### Example: Power Function
+
+```{r}
+raise_to_power <- function(base, exponent = 2) {
+  result <- base ^ exponent
+  return(result)
+}
+
+# Using the function with default exponent
+print(raise_to_power(4))
+# Specifying both arguments
+print(raise_to_power(4, 3))
+```
+
+### Returning Multiple Values
+
+Functions in R can return multiple values using a list.
+
+#### Example: Statistics Function
+
+```{r}
+calculate_stats <- function(numbers) {
+  mean_val <- mean(numbers)
+  sum_val <- sum(numbers)
+  return(list(mean = mean_val, sum = sum_val))
+}
+
+# Using the function
+stats <- calculate_stats(c(1, 2, 3, 4, 5))
+print(stats)
+```
+
+### Anonymous Functions
+
+For short, one-time operations, anonymous functions can be used.
+
+#### Example: Doubling Numbers
+
+```{r}
+numbers <- 1:5
+doubled_numbers <- sapply(numbers, function(x) x * 2)
+print(doubled_numbers)
+```
+
+### Scope and Environment
+
+Variables defined inside a function are local to that function.
+
+#### Example: Increment Function
+
+```{r}
+increment <- function(x) {
+  y <- x + 1
+  return(y)
+}
+
+incremented_value <- increment(5)
+print(incremented_value)
+# Trying to print 'y' here would result in an error because 'y' is not defined in this scope.
+```

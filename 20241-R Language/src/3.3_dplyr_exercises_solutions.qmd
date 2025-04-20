@@ -1,0 +1,419 @@
+---
+title: "3.3_dplyr Exercises Solutions"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+### Business Examples using the Superstore Dataset
+
+```{r}
+# use a separate cell to load the library to accommodate for the eval=FALSE
+library(dplyr)
+library(readr)
+
+file_path <- "data/superstore.csv"
+superstore <- read_csv(file_path, show_col_types = FALSE)
+```
+
+#### 1. Filter the Superstore dataset for "Furniture" sales in the "West" region.
+
+```{r}
+furniture_sales_west <- superstore %>%
+  filter(Category == "Furniture", Region == "West")
+
+print(furniture_sales_west)
+```
+
+#### 2. Select the "Customer Name", "State", and "Sales" columns and arrange them in descending order of sales.
+
+```{r}
+furniture_sales_west_selected <- furniture_sales_west %>%
+  select(`Customer Name`, `State`, `Sales`) %>%
+  arrange(desc(Sales))
+
+print(furniture_sales_west_selected)
+```
+
+#### 3. Calculate the average profit per sub-category and arrange the results in ascending order.
+
+Here, we are considering the entire Superstore dataset, not just the "Furniture" category or "West" region:
+
+```{r}
+average_profit_per_sub_category <- superstore %>%
+  group_by(`Sub-Category`) %>%
+  summarise(Average_Profit = mean(Profit)) %>%
+  arrange(Average_Profit)
+
+print(average_profit_per_sub_category)
+```
+
+#### 4. Identify Highest Selling Products in Furniture Category
+
+**Question:** What are the top 5 highest selling products in the Furniture category?
+
+```{r}
+library(dplyr)
+
+# Filter for Furniture category
+furniture_sales <- superstore %>%
+  filter(`Category` == "Furniture")
+
+# Find top 5 products by Sales in Furniture category
+top_furniture_products <- furniture_sales %>%
+  group_by(`Product Name`) %>%
+  summarise(Total_Sales = sum(`Sales`)) %>%
+  arrange(desc(Total_Sales)) %>%
+  slice_head(n = 5)
+
+print(top_furniture_products)
+```
+
+#### 5. Yearly Sales Trend for Technology in the East Region
+
+**Question:** What is the yearly sales trend for Technology products in the East region?
+
+To solve this question we need to use `lubridate` package.
+
+`lubridate` is an R package that makes it easier to work with dates and times. It provides functions to parse various date-time formats, extract parts of dates or times, and perform calculations with date-time objects. With `lubridate`, you can add or subtract time periods from dates, handle time zones, and efficiently compare dates. Its functions are designed to simplify common use cases for date-time data and integrate well with the `tidyverse` set of packages. It is a go-to choice in R for date-time manipulation due to its user-friendly and intuitive syntax.
+
+```{r}
+library(lubridate)
+
+# Filter for Technology category and East region
+tech_sales_east <- superstore %>%
+  filter(`Category` == "Technology", `Region` == "East")
+
+# Convert Order Date to Date type and extract the year
+tech_sales_east <- tech_sales_east %>%
+  mutate(Year = year(mdy(`Order Date`)))
+
+# Calculate yearly sales trend for Technology in East region
+yearly_sales_trend <- tech_sales_east %>%
+  group_by(Year) %>%
+  summarise(Total_Sales = sum(`Sales`)) %>%
+  arrange(Year)
+
+print(yearly_sales_trend)
+```
+
+#### 6. Average Discount Impact on Profits Across Segments
+
+**Question:** How does the average discount given affect profits across different customer segments?
+
+```{r}
+# Calculate average discount and profit per segment
+discount_impact <- superstore %>%
+  group_by(`Segment`) %>%
+  summarise(Average_Discount = mean(`Discount`), 
+            Average_Profit = mean(`Profit`))
+
+print(discount_impact)
+```
+
+#### 7. State-wise Profitability for Office Supplies
+
+**Question:** Which states are the most and least profitable for Office Supplies?
+
+```{r}
+# Filter for Office Supplies category
+office_supplies_sales <- superstore %>%
+  filter(`Category` == "Office Supplies")
+
+# Calculate profit by state for Office Supplies
+state_profitability <- office_supplies_sales %>%
+  group_by(`State`) %>%
+  summarise(Total_Profit = sum(`Profit`)) %>%
+  arrange(desc(Total_Profit))
+
+# View the most profitable states
+most_profitable_states <- head(state_profitability, n = 5)
+print(most_profitable_states)
+
+# View the least profitable states
+least_profitable_states <- tail(state_profitability, n = 5)
+
+print(least_profitable_states)
+
+# Piping it all together
+superstore %>% 
+  filter(`Category` == "Office Supplies") %>%
+  group_by(`State`) %>%
+  summarise(Total_Profit = sum(`Profit`)) %>%
+  arrange(desc(Total_Profit))%>% head(state_profitability, n = 5)
+```
+
+#### 8. Create a new column that represents the sales as a percentage of total sales within each category.
+
+For this, we will first calculate the total sales within the "Furniture" category and then compute the percentage for each sale.
+
+```{r}
+library(dplyr)
+
+modified_superstore <- superstore %>%
+  group_by(Category) %>%
+  mutate(TotalSales = sum(Sales), # Calculate total sales per category
+         SalesPercentage = (Sales / TotalSales) * 100) %>% 
+  ungroup()  # Remove grouping
+
+View(modified_superstore)
+```
+
+The code adds a column that shows sales as a percentage of the total sales within each category using **`dplyr`** from the **`tidyverse`**.
+
+When you use **`mutate()`** on a grouped data frame in **`dplyr`**, it will preserve the grouping. However, this does not mean the data is permanently grouped within the resultant data frame. Instead, the grouping metadata is kept so that further **`dplyr`** operations can take advantage of it.
+
+The **`ungroup()`** function is used to explicitly remove this grouping metadata from the data frame. While it's not always necessary to include **`ungroup()`** at the end of your operation, it can be a good practice when you want to ensure that the returned data frame doesn't carry any group structure, especially before performing operations that should not be influenced by the previous grouping.
+
+If you don't call **`ungroup()`**, the returned data frame will still contain the grouping information, which might affect how subsequent functions work with the data frame. For example, if you pass this data frame to another **`summarise()`** call without removing the grouping, it will perform the summarisation by the existing groups.
+
+However, when you just print the data frame or write it to a file, it will appear ungrouped. The grouping only affects how **`dplyr`** handles the data for further operations. If no further grouped operations are intended, then whether you ungroup the data or not may not have any visible impact on the output, but it's generally a good practice to ungroup a data frame if you've finished with group-specific operations to avoid unexpected results in subsequent analyses.
+
+#### 9. Correlation between Sales and Profit in Sub-Categories
+
+**Question:** Is there a correlation between sales and profit within each sub-category?
+
+```{r}
+# Calculate correlation between Sales and Profit for each Sub-Category
+sales_profit_correlation <- superstore %>%
+  group_by(`Sub-Category`) %>%
+  summarise(Correlation = cor(`Sales`, `Profit`))
+
+print(sales_profit_correlation)
+```
+
+Before running the above examples, make sure to have the necessary libraries loaded (`dplyr`, `lubridate` for date operations) and that your data is properly formatted (e.g., `Order Date` is in the correct date format). The examples provided assume that the data types and formats are correct and that the Superstore dataset is named `superstore` in your R environment.
+
+### More Business Questions
+
+Presented below are additional business-oriented questions that require a combination of data manipulation and analysis skills.
+
+These questions require that you apply `dplyr` verbs creatively and think critically about business strategies and outcomes.
+
+### 1- Customer Segmentation Analysis
+
+**Question:** How do sales and profits differ among different customer segments (Consumer, Corporate, Home Office)?
+
+Which segment is the most profitable, and why might that be the case?
+
+**Solution and Explanation:**
+
+To analyze sales and profits across different customer segments, we group the data by the `Segment` column and then summarize it to calculate total sales, total profit, and average profit for each segment. This provides insights into which customer segment is most profitable and hints at possible reasons behind the differences in profitability.
+
+```{r}
+# Load necessary library
+library(dplyr)
+
+# Analyze sales and profits by customer segment
+customer_segment_analysis <- superstore %>%
+  group_by(Segment) %>%
+  summarise(Total_Sales = sum(Sales), Total_Profit = sum(Profit), 
+            Average_Profit = mean(Profit)) %>%
+  mutate(
+    Total_Sales = round(Total_Sales, 2),
+    Total_Profit = round(Total_Profit, 2),
+    Average_Profit = round(Average_Profit, 2)
+  ) %>%
+  arrange(desc(Total_Profit))
+
+# View the results
+print(customer_segment_analysis)
+```
+
+------------------------------------------------------------------------
+
+### 2- Product Performance Evaluation
+
+**Question:** Identify the top 5 and bottom 5 products based on profit margins. Discuss potential reasons for their performance and suggest strategies for improving sales of the less profitable products.
+
+**Solution and Explanation:**
+
+To identify products by profitability, we first calculate the profit margin for each product. Then, we rank these products to find the top 5 and bottom 5 based on their profit margins. This analysis can reveal which products are performing well and which are not, providing a basis for strategic adjustments.
+
+```{r}
+# Calculate profit margin and identify top and bottom 5 products
+product_performance_evaluation <- superstore %>%
+  mutate(Profit_Margin = Profit / Sales) %>%
+  arrange(desc(Profit_Margin)) %>%
+  mutate(Rank = row_number()) %>%
+  filter(Rank <= 5 | Rank > (n() - 5))
+
+# View the results
+print(product_performance_evaluation)
+```
+
+------------------------------------------------------------------------
+
+### 3- Regional Sales Analysis
+
+**Question:** Compare the total sales and profits across different regions. Are there regions that underperform? What strategies could be implemented to boost sales in those regions?
+
+**Solution and Explanation:**
+
+This analysis involves grouping the data by region and summarizing it to calculate total sales and profits for each region. By comparing these figures, we can identify which regions might be underperforming and consider strategies to improve their performance.
+
+```{r}
+# Analyze sales and profits by region
+regional_sales_analysis <- superstore %>%
+  group_by(Region) %>%
+  summarise(Total_Sales = sum(Sales), `Total Profit` = sum(Profit)) %>%
+  arrange(desc(`Total Profit`))
+
+# View the results
+print(regional_sales_analysis)
+```
+
+------------------------------------------------------------------------
+
+### 4- Time Series Analysis
+
+**Question:** How have sales and profits trended over time? Is there seasonality in sales? Identify the peak and low sales periods throughout the year.
+
+**Solution and Explanation:**
+
+For this analysis, we first need to convert the `Order Date` to a Date type. We then group the data by month and year to analyze trends and seasonality in sales and profits over time.
+
+```{r}
+# Convert Order Date to Date type and perform time series analysis
+time_series_analysis <- superstore %>%
+  mutate(`Order Date` = as.Date(`Order Date`, format = "%m/%d/%Y")) %>%
+  arrange(`Order Date`) %>%
+  group_by(Month = format(`Order Date`, "%Y-%m")) %>%
+  summarise(Total_Sales = sum(Sales), `Total Profit` = sum(Profit))
+
+print(time_series_analysis)
+View(time_series_analysis)
+```
+
+------------------------------------------------------------------------
+
+### 5- Discount Impact Analysis
+
+**Question:** Analyze the impact of discounts on sales volume and profitability. Is there a discount threshold that maximizes profit without significantly hurting sales?
+
+**Solution and Explanation:**
+
+To explore the relationship between discounts, sales, and profitability, we group the data by discount level. Then, we calculate the average sales and profit for each discount level to understand how discounts affect profitability and sales volume.
+
+```{r}
+# Analyze the impact of discounts on sales and profit
+discount_impact_analysis <- superstore %>%
+  group_by(Discount) %>%
+  summarise(Average_Sales = mean(Sales), Average_Profit = mean(Profit)) %>%
+  arrange(Discount)
+
+# View the results
+print(discount_impact_analysis)
+```
+
+### 6- Shipping Mode Analysis
+
+**Question:** Examine how different shipping modes (Standard Class, Second Class, First Class, Same Day) affect sales and profits. Is there a correlation between ship mode and product category or segment?
+
+**Solution and Explanation:**
+
+This analysis looks at sales and profits across different shipping modes and explores potential correlations with product categories or customer segments. Understanding these relationships can help in optimizing shipping strategies for better profitability.
+
+```{r}
+# Analyze sales and profits by shipping mode
+shipping_mode_analysis <- superstore %>%
+  group_by(`Ship Mode`) %>%
+  summarise(Total_Sales = sum(Sales), `Total Profit` = sum(Profit)) %>%
+  arrange(desc(`Total Profit`))
+
+# View the results
+print(shipping_mode_analysis)
+```
+
+------------------------------------------------------------------------
+
+### 7- Product Category Analysis
+
+**Question:** Within each product category (Furniture, Office Supplies, Technology), identify the most and least profitable sub-categories. Discuss possible reasons and suggest adjustments to product offerings or marketing strategies.
+
+**Solution and Explanation:**
+
+By breaking down sales and profits within each product category to the sub-category level, we can identify high and low performers. This detailed view provides insights for targeted strategies to enhance product offerings and marketing efforts.
+
+```{r}
+# Analyze profitability by product category and sub-category
+product_category_analysis <- superstore %>%
+  group_by(Category, `Sub-Category`) %>%
+  summarise(Total_Sales = sum(Sales), `Total Profit` = sum(Profit)) %>%
+  arrange(Category, desc(`Total Profit`))
+
+# View the results
+print(product_category_analysis)
+```
+
+------------------------------------------------------------------------
+
+### 8- Customer Loyalty and Order Size
+
+**Question:** Who are the top 10 most loyal customers by number of orders and by total sales? Analyze their purchasing patterns to determine what drives their loyalty.
+
+**Solution and Explanation:**
+
+Identifying and analyzing the top 10 most loyal customers by both order frequency and sales volume offers valuable insights into customer loyalty drivers. This understanding can inform strategies to enhance customer retention and increase order size.
+
+```{r}
+# Identify top 10 loyal customers by order frequency and total sales
+customer_loyalty_analysis <- superstore %>%
+  group_by(`Customer ID`, `Customer Name`) %>%
+  summarise(Total_Orders = n(), Total_Sales = sum(Sales)) %>%
+  arrange(desc(Total_Orders), desc(Total_Sales)) %>%
+  slice_head(n = 10)
+
+# View the results
+print(customer_loyalty_analysis)
+```
+
+------------------------------------------------------------------------
+
+### 9- Market Penetration and Expansion
+
+**Question:** Identify cities and states with low sales volume. What could be potential reasons for low penetration in these areas? Propose strategies for market expansion.
+
+**Solution and Explanation:**
+
+Focusing on areas with low sales volume helps in pinpointing under-served markets. Analyzing these areas can reveal opportunities for market penetration and expansion strategies.
+
+```{r}
+# Identify areas with low sales volume
+market_penetration_analysis <- superstore %>%
+  group_by(State, City) %>%
+  summarise(Total_Sales = sum(Sales)) %>%
+  arrange(Total_Sales) %>%
+  slice_head(n = 10)
+
+# View the results
+print(market_penetration_analysis)
+```
+
+------------------------------------------------------------------------
+
+### 10- Profit Efficiency by State or Region
+
+**Question:** Which states or regions have the highest and lowest profit margins? Analyze factors that might contribute to these disparities and suggest ways to increase efficiency.
+
+**Solution and Explanation:**
+
+This analysis ranks states or regions by profit margin to highlight areas of operational efficiency and inefficiency. Understanding these disparities can guide strategic decisions to improve profit margins across different markets.
+
+```{r}
+# Calculate and compare profit efficiency by state or region
+profit_efficiency_analysis <- superstore %>%
+  group_by(Region) %>%
+  summarise(Total_Sales = sum(Sales), `Total Profit` = sum(Profit), 
+            Profit_Margin = `Total Profit` / Total_Sales) %>%
+  arrange(desc(Profit_Margin))
+
+# View the results
+print(profit_efficiency_analysis)
+
+```

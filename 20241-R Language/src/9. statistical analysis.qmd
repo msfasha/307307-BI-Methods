@@ -1,0 +1,268 @@
+---
+title: "Statistical Analysis"
+format: html
+editor: visual
+---
+
+Here’s a comprehensive tutorial for performing core inferential statistical analysis in R using your apartment prices dataset. This includes t-tests, chi-square tests, and regression analysis to make sense of the data.
+
+------------------------------------------------------------------------
+
+### **R Statistical Analysis Tutorial**
+
+#### **1. Importing and Exploring the Dataset**
+
+Begin by loading and understanding the data.
+
+```{R}
+# Load necessary libraries
+library(tidyverse)
+
+# Read the dataset
+data <- read.csv("data/
+```
+
+```{R}
+
+```
+
+```{apartment_prices.csv")}
+
+# View the first few rows
+head(data)
+
+# Summary statistics
+summary(data)
+
+# Check for missing values
+colSums(is.na(data))
+```
+
+------------------------------------------------------------------------
+
+#### **2. Descriptive Statistics**
+
+Compute measures of central tendency and dispersion for key variables.
+
+```{R}
+# Descriptive statistics
+mean(data$Price)
+median(data$Price)
+sd(data$Price)
+var(data$Price)
+```
+
+------------------------------------------------------------------------
+
+#### **3. Visualizing the Data**
+
+Explore distributions and relationships.
+
+```{R}
+# Histogram of Prices
+ggplot(data, aes(x = Price)) +
+  geom_histogram(binwidth = 10000, fill = "blue", color = "black") +
+  theme_minimal() +
+  labs(title = "Distribution of Apartment Prices", x = "Price", y = "Frequency")
+
+# Boxplot of Prices by City
+ggplot(data, aes(x = City, y = Price)) +
+  geom_boxplot(fill = "orange") +
+  theme_minimal() +
+  labs(title = "Boxplot of Apartment Prices by City", x = "City", y = "Price")
+
+# Scatterplot of Price vs Square Area
+ggplot(data, aes(x = Square_Area, y = Price)) +
+  geom_point(color = "blue") +
+  theme_minimal() +
+  labs(title = "Price vs Square Area", x = "Square Area", y = "Price")
+```
+
+------------------------------------------------------------------------
+
+#### **4. T-Tests**
+
+Perform a t-test to compare mean apartment prices between two cities (e.g., Amman vs. Aqaba).
+
+```{R}
+# Subset data for two cities
+amman <- data %>% filter(City == "Amman") %>% pull(Price)
+aqaba <- data %>% filter(City == "Aqaba") %>% pull(Price)
+
+# Two-sample t-test
+t_test <- t.test(amman, aqaba, var.equal = TRUE)
+print(t_test)
+```
+
+**Interpretation:** - If the p-value is \<0.05, the difference in mean prices between the two cities is statistically significant.
+
+#### **5. ANOVA Test**
+
+The ANOVA test examines if the mean apartment prices significantly differ across the three cities: Amman, Aqaba, and Irbid
+
+```{R}
+# Perform ANOVA
+anova_model <- aov(Price ~ City, data = data)
+summary(anova_model)
+```
+
+-   **Degrees of Freedom (Df):** The ANOVA test compares the variability between groups (cities) to the variability within groups (residuals).
+
+    -   **City Df = 2:** Indicates three cities are being compared.
+
+    -   **Residuals Df = 497:** Refers to the remaining observations.
+
+-   **Sum of Squares (Sum Sq):**
+
+    -   Variability due to cities: 3.106×10103.106 \times 10^{10}3.106×1010.
+
+    -   Residual variability: 1.718×10111.718 \times 10^{11}1.718×1011.
+
+-   **F-Value:** 44.9444.9444.94, which is the ratio of the mean square between groups to the mean square within groups. A high F-value suggests substantial variability between group means relative to within-group variability.
+
+-   **P-Value:** **\< 2e-16**, which is highly significant. This confirms that at least one city's mean price differs significantly from the others.
+
+The Tukey test identifies which specific city pairs have significant differences in mean prices.
+
+```{R}
+# Perform Tukey's post-hoc test if ANOVA is significant
+tukey_test <- TukeyHSD(anova_model)
+print(tukey_test)
+```
+
+**Key Findings:**
+
+-   **Aqaba vs. Amman:** Mean price in Aqaba is significantly lower than in Amman by **11,976 JDs** (p<0.001p < 0.001p\<0.001).
+
+-   **Irbid vs. Amman:** Mean price in Irbid is significantly lower than in Amman by **18,789 JDs** (p<0.001p < 0.001p\<0.001).
+
+-   **Irbid vs. Aqaba:** Mean price in Irbid is significantly lower than in Aqaba by **6,813 JDs** (p=0.003p = 0.003p=0.003).
+
+#### **Interpretation:**
+
+1.  **Overall ANOVA:** Apartment prices vary significantly between cities.
+
+2.  **Pairwise Comparisons:**
+
+    -   Amman has the highest mean apartment prices.
+
+    -   Aqaba prices are significantly higher than those in Irbid.
+
+    -   Irbid has the lowest apartment prices among the three cities.
+
+### Insights
+
+-   **Amman:** Premium city with significantly higher apartment prices.
+
+-   **Aqaba:** Mid-range city with prices lower than Amman but higher than Irbid.
+
+-   **Irbid:** Most affordable city, with significantly lower apartment prices compared to both Amman and Aqaba.
+
+This analysis provides critical insights for stakeholders aiming to understand regional price variations in the apartment market. It can be seamlessly integrated into a Quarto document to highlight key urban differences in property economics.
+
+------------------------------------------------------------------------
+
+#### **6. Chi-Square Test**
+
+Test for independence between categorical variables, such as city and number of rooms.
+
+```{R}
+# Create a contingency table
+room_city_table <- table(data$City, data$Num_Rooms)
+
+# Perform chi-square test
+chi_sq_test <- chisq.test(room_city_table)
+print(chi_sq_test)
+```
+
+**Interpretation:** - A significant p-value (\<0.05) suggests a relationship between the city and the number of rooms.
+
+------------------------------------------------------------------------
+
+#### **7. Correlation Analysis**
+
+Analyze the relationship between numeric variables.
+
+```{R}
+# Correlation matrix
+cor_matrix <- cor(data %>% select(Square_Area, Num_Rooms, Age_of_Building, Floor_Level, Price))
+print(cor_matrix)
+
+# Visualize correlations
+library(corrplot)
+corrplot(cor_matrix, method = "circle")
+```
+
+**Use Case:** - High correlation values indicate strong relationships, useful for regression analysis.
+
+------------------------------------------------------------------------
+
+#### **8. Regression Analysis**
+
+##### **8.1 Simple Linear Regression**
+
+Predict apartment prices based on square area.
+
+```{R}
+# Simple linear regression
+lm_model <- lm(Price ~ Square_Area, data = data)
+summary(lm_model)
+
+# Visualization
+ggplot(data, aes(x = Square_Area, y = Price)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "red") +
+  theme_minimal() +
+  labs(title = "Linear Regression: Price vs Square Area", x = "Square Area", y = "Price")
+```
+
+##### **8.2 Multiple Linear Regression**
+
+Incorporate additional predictors to improve the model.
+
+```{R}
+# Multiple linear regression
+mlm_model <- lm(Price ~ Square_Area + Num_Rooms + Age_of_Building + Floor_Level, data = data)
+summary(mlm_model)
+
+# Residual diagnostics
+par(mfrow = c(2, 2))
+plot(mlm_model)
+```
+
+**Evaluation Metrics:** - Check ( R\^2 ) for model fit. - Residual plots should show no patterns (indicating good fit).
+
+------------------------------------------------------------------------
+
+#### **9. Prediction and Model Evaluation**
+
+Split the data into training and testing sets for better evaluation.
+
+```{R}
+# Split data into training and testing sets
+set.seed(123)
+train_indices <- sample(1:nrow(data), size = 0.7 * nrow(data))
+train <- data[train_indices, ]
+test <- data[-train_indices, ]
+
+# Train model on training data
+train_model <- lm(Price ~ Square_Area + Num_Rooms + Age_of_Building + Floor_Level, data = train)
+
+# Predict on testing data
+predictions <- predict(train_model, test)
+
+# Evaluate model performance
+rmse <- sqrt(mean((test$Price - predictions)^2))
+print(paste("Root Mean Squared Error:", rmse))
+```
+
+------------------------------------------------------------------------
+
+### **10. Conclusion**
+
+-   **T-Tests:** Compared prices between cities, showing statistical significance of differences.
+-   **Chi-Square Test:** Explored the relationship between city and room counts.
+-   **Regression Analysis:** Identified predictors of price and assessed model accuracy.
+-   **Visualization:** Highlighted trends in price, area, and city distributions.
+
+This unified analysis provides actionable insights into your apartment price dataset and can be directly incorporated into a Quarto document.

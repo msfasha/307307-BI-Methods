@@ -1,0 +1,354 @@
+---
+title: "7 Time Series Analysis"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+#### **1. Introduction**
+
+**Explanation:**
+
+-   Time series data is a sequence of data points recorded at successive points in time, typically with uniform intervals.
+
+-   Common examples include daily stock prices, monthly sales data, or yearly climate records.
+
+**Key Concepts:**
+
+-   **Univariate vs. Multivariate Time Series:** Focus on a single variable or multiple variables over time.
+
+-   **Stationarity:** A time series is stationary if its statistical properties (mean, variance) are constant over time.
+
+We'll explore key concepts in time series analysis using the famous `AirPassengers` dataset, which contains monthly totals of international airline passengers from 1949 to 1960.
+
+## Loading the Data
+
+Let's start by loading the dataset and taking a quick look at it:
+
+```{r}
+# Load a sample time series dataset
+data("AirPassengers")
+ts_data <- AirPassengers
+print(ts_data)
+
+# Plot the time series
+plot(ts_data, main="AirPassengers Data", ylab="Number of Passengers", xlab="Year")
+```
+
+The plot shows the monthly totals of international airline passengers from 1949 to 1960, based on the `AirPassengers` dataset. Here's what this plot tells us:
+
+1.  **Upward Trend**: The overall trend of the data is upward, indicating that the number of air passengers increased steadily over the 11-year period. This suggests a growing popularity or accessibility of air travel during this time.
+
+2.  **Seasonality**: The plot also exhibits a clear seasonal pattern. You can observe recurring fluctuations that seem to happen annually. For instance, there are regular peaks and troughs, with higher passenger counts typically seen in certain months (likely during holiday seasons or vacation times) and lower counts in others.
+
+3.  **Increasing Variance**: Another key observation is that the variability in passenger numbers increases over time. The amplitude of the peaks and troughs gets larger as we move forward in time. This suggests that not only is the number of passengers increasing, but the extent of fluctuation (possibly due to seasonality) is also becoming more pronounced.
+
+4.  **Non-Stationarity**: Given the clear trend and increasing variance, this time series is non-stationary. Non-stationarity is indicated by the changing mean and variance over time. For many time series models (like ARIMA), we would need to make the series stationary through techniques such as differencing.
+
+This plot serves as a foundational step in time series analysis by allowing us to visually assess the basic characteristics of the data, such as trends, seasonality, and variance, which will guide further analysis and modeling.
+
+#### **2. Time Series Decomposition**
+
+**Explanation:**
+
+-   Decomposition involves breaking down a time series into its components: trend, seasonal, and residual.
+
+**Key Concepts:**
+
+-   **Trend:** Long-term movement in the data.
+
+-   **Seasonality:** Regular pattern repeating over time.
+
+-   **Residuals:** Random noise or unexplained variation.
+
+**Sample Code:**
+
+```{r}
+# Decompose the time series
+decomposed_ts <- decompose(ts_data)
+
+# Plot the decomposed components
+plot(decomposed_ts)
+```
+
+The provided plot represents the decomposition of the `AirPassengers` time series into its constituent components: **Trend**, **Seasonality**, and **Random (Irregular)** components. This decomposition is based on an additive model, which assumes that the time series is the sum of these three components.
+
+a\. Observed Time Series
+
+The top panel shows the original `AirPassengers` time series, which we have already examined. It exhibits a clear upward trend, seasonal fluctuations, and increasing variability over time.
+
+b\. Trend Component
+
+The second panel illustrates the **Trend** component of the time series. This represents the long-term progression of the data, capturing the underlying direction in which the data is moving. In this case, the trend component confirms a steady and continuous increase in the number of air passengers over the years, reflecting a growing demand for air travel.
+
+c\. Seasonal Component
+
+The third panel depicts the **Seasonal** component. This captures the repeating patterns or cycles observed at regular intervals (in this case, annually). The seasonal component shows consistent peaks and troughs each year, which are likely associated with periods of high and low travel demand (such as holidays or vacation seasons). The magnitude of these seasonal variations remains relatively stable over time, although the overall passenger numbers increase.
+
+d\. Random (Irregular) Component
+
+The bottom panel presents the **Random (Irregular)** component, which represents the residuals or noise in the data after removing the trend and seasonal components. This component captures the random fluctuations that cannot be attributed to either the trend or the seasonality. It shows the short-term irregularities in the data, which are less predictable and could be due to various factors such as economic conditions, weather disruptions, or other unforeseen events.
+
+### Interpretation
+
+The decomposition of the time series into these components provides a clearer understanding of the underlying patterns in the data. The trend component reveals the long-term growth in air passenger numbers, the seasonal component highlights the regular, predictable fluctuations within each year, and the random component captures the irregular variations that do not follow a systematic pattern.
+
+This decomposition is crucial for time series analysis as it allows us to isolate and understand each component separately. By examining the trend and seasonality independently, we can better forecast future values and identify any anomalies or irregularities in the data.
+
+This analysis underscores the importance of breaking down a time series into its fundamental parts, providing a more comprehensive view of the data and aiding in the development of more accurate and reliable models for forecasting.
+
+#### **3. Autoregressive (AR) and Moving Average (MA) Models**
+
+**Explanation:**
+
+-   **Autoregressive (AR) Model:** An AR model predicts future values based on a linear combination of past values. For example, in an AR(1) model, the current value is influenced by the immediately preceding value.
+
+-   **Moving Average (MA) Model:** An MA model predicts future values based on past forecast errors. For example, an MA(1) model uses the error from the previous time step to make predictions.
+
+**Key Concepts:**\
+$AR(1)\ Model: Y_t = \phi_1 Y_{t-1} + \epsilon_t$\
+$MA(1)\ Model: Y_t = \theta_1 \epsilon_{t-1} + \epsilon_t$\
+$Mixed\ ARMA\ Models: Y_t = \phi_1 Y_{t-1} + \theta_1 \epsilon_{t-1} + \epsilon_t$
+
+```{r}
+# Simulate AR(1) and MA(1) processes
+set.seed(123)
+ar_process <- arima.sim(n=100, list(ar=0.5))
+ma_process <- arima.sim(n=100, list(ma=0.5))
+
+# Plotting
+par(mfrow=c(1,2))
+plot(ar_process, main="AR(1) Process")
+plot(ma_process, main="MA(1) Process")
+```
+
+#### **4. Stationarity and Differencing**
+
+**Explanation:**
+
+-   A time series is stationary if its statistical properties (mean, variance, autocorrelation) are constant over time.
+
+-   The visual inspection and decomposition of the previous plots clearly show that the data has non-stationary components (trend and seasonality).
+
+-   Stationary time series are easier to model. It is a crucial assumption for many time series models.
+
+-   In practice, these components need to be removed or adjusted for, usually by differencing the data or applying transformations, before applying time series models like ARIMA.
+
+**Key Concepts:**
+
+-   **Differencing:** Subtracting the previous observation from the current one to remove trends or seasonality.
+
+-   **Augmented Dickey-Fuller Test (ADF):** A statistical test to check stationarity.
+
+**Differencing to Achieve Stationarity**
+
+Differencing is a common method to remove trends and make a series stationary.
+
+When you apply `diff(AirPassengers, differences = 1)`, you are calculating the difference between each consecutive observation in the time series. Specifically, for a time series xtx_txt​, the first difference is defined as:
+
+`diff1[t] = x[t] - x[t-1]`
+
+This operation transforms the original time series by subtracting the previous time point's value from the current time point's value. The result is a new time series (`diff1`) that represents the change (or difference) between each consecutive pair of observations.
+
+### Example Calculation
+
+If you had the following time series:
+
+-   x1=112
+
+-   x2=118
+
+-   x3=132
+
+The first differences would be:
+
+-   `diff1[2] = x[2] - x[1] = 118 - 112 = 6`
+
+-   `diff1[3] = x[3] - x[2] = 132 - 118 = 14`
+
+And so on for the rest of the series.
+
+### Purpose of Differencing
+
+The main purpose of differencing is to remove trends or other forms of non-stationarity from a time series. For example, if a series shows a consistent upward trend, first differencing will produce a series where the trend is removed, making it more stationary and suitable for time series modeling techniques like ARIMA.
+
+```{r}
+# First differencing
+diff1 <- diff(AirPassengers, differences = 1)
+
+plot(diff1, main="First Difference of Air Passengers")
+
+# adf null hypothesis: dataset is non-stationary
+print(adf.test(diff1))
+```
+
+**In the Context of `diff1`**
+
+After applying `diff(AirPassengers, differences = 1)`, `diff1` contains the series of differences between each month's passenger count and the previous month's count.
+
+This new series can be used to analyze the stationary properties of the data, as differencing is one of the methods to make a non-stationary series stationary.
+
+#### **5. Autocorrelation and Partial Autocorrelation**
+
+**Explanation:**
+
+-   Autocorrelation measures the correlation between observations at different lags.
+
+-   Partial autocorrelation controls for correlations at intermediate lags.
+
+**Key Concepts:**
+
+-   **ACF (Autocorrelation Function):** Shows correlation of the time series with its own lags.
+
+-   **PACF (Partial Autocorrelation Function):** Shows correlation of the time series with its own lags, removing the effect of shorter lags.
+
+**Sample Code:**
+
+```{r}
+acf(AirPassengers, main="ACF of Air Passengers")
+```
+
+### Partial Autocorrelation Function (PACF)
+
+The PACF controls for the values of the intermediate lags.
+
+```{r}
+pacf(AirPassengers, main="PACF of Air Passengers")
+```
+
+The ACF and PACF plots are crucial for determining the appropriate lags in ARIMA models.
+
+## **6. Time Series Modeling: ARIMA**
+
+**Explanation:**
+
+-   ARIMA (AutoRegressive Integrated Moving Average) is a popular model for forecasting time series data.
+-   It combines AR, differencing (I), and MA components to model time series data.
+
+**Key Concepts:**
+
+-   **AR (AutoRegressive) Part:** Regression of the variable against its own lagged values.
+
+-   **I (Integrated) Part:** Differencing to make the time series stationary.
+
+-   **MA (Moving Average) Part:** Modeling the error term as a linear combination of error terms at previous time points.
+
+#### Fitting an ARIMA Model
+
+```{r}
+# Fit an ARIMA model
+library(forecast)
+arima_model <- auto.arima(ts_data)
+
+# Summary of the model
+summary(arima_model)
+```
+
+**Key Points in the Output:**
+
+1.  **Model Specification:**
+
+    -   **ARIMA(2,1,1)(0,1,0)\[12\]:**
+
+        -   **(2,1,1):** Refers to the non-seasonal part of the model:
+
+            -   **2:** Two autoregressive (AR) terms.
+
+            -   **1:** First differencing (to make the series stationary).
+
+            -   **1:** One moving average (MA) term.
+
+        -   **(0,1,0)\[12\]:** Refers to the seasonal part of the model:
+
+            -   **0:** No seasonal autoregressive terms.
+
+            -   **1:** Seasonal differencing (to remove seasonality).
+
+            -   **0:** No seasonal moving average terms.
+
+            -   **\[12\]:** Seasonal period of 12 (likely monthly data).
+
+2.  **Coefficients:**
+
+    -   **ar1 (0.5960) and ar2 (0.2143):** Coefficients for the first and second autoregressive terms. These values suggest the extent to which the previous two time points contribute to predicting the current value.
+
+    -   **ma1 (-0.9819):** Coefficient for the moving average term, indicating the relationship with past forecast errors.
+
+    -   **s.e.:** Standard errors of the coefficients, used to assess the significance of each term.
+
+3.  **Model Fit Statistics:**
+
+    -   **sigma\^2:** Estimate of the residual variance (132.3), indicating the average squared deviation of the model's residuals.
+
+    -   **log likelihood (-504.92):** A measure of how well the model fits the data. Higher values (less negative) indicate a better fit.
+
+    -   **AIC (1017.85), AICc (1018.17), BIC (1029.35):** These are criteria used to compare models:
+
+        -   **AIC (Akaike Information Criterion):** Balances model fit and complexity.
+
+        -   **AICc:** A version of AIC corrected for small sample sizes.
+
+        -   **BIC (Bayesian Information Criterion):** Similar to AIC but penalizes more complex models more strongly.
+
+4.  **Training Set Error Measures:**
+
+    -   **ME (1.3423):** Mean error, indicating the average of the forecast errors.
+
+    -   **RMSE (10.84619):** Root mean square error, showing the average magnitude of the errors. It's more sensitive to large errors than MAE.
+
+    -   **MAE (7.86754):** Mean absolute error, indicating the average magnitude of the forecast errors, without considering direction.
+
+    -   **MPE (0.420698):** Mean percentage error, giving the average of the forecast errors as a percentage of the actual values.
+
+    -   **MAPE (2.800458):** Mean absolute percentage error, showing the average of the absolute forecast errors as a percentage of the actual values.
+
+    -   **MASE (0.245628):** Mean absolute scaled error, a relative measure of forecast accuracy.
+
+    -   **ACF1 (-0.00124847):** The first autocorrelation of residuals, which should ideally be close to zero for a well-fitted model.
+
+### **Interpretation:**
+
+-   **Fit Quality:** The relatively low AIC, AICc, and BIC values suggest a reasonable model fit, though you might compare these with other models to ensure the best one is selected.
+
+-   **Residuals:** The low ACF1 value close to zero indicates that the residuals are likely not autocorrelated, which is desirable, as it suggests that the model has accounted for the time dependence in the data.
+
+-   **Error Measures:** The error measures (RMSE, MAE, etc.) provide insights into how well the model forecasts the data. Lower values generally indicate better predictive accuracy.
+
+This output suggests that the ARIMA(2,1,1)(0,1,0)\[12\] model is a good fit for your data, with the residuals behaving as expected and the error measures indicating reasonable accuracy. However, always consider testing other models or validating the model on a separate dataset for robust conclusions.
+
+#### **7. Model Evaluation**
+
+**Explanation:**
+
+Evaluating the accuracy of the time series model using metrics like Mean Absolute Error (MAE), Root Mean Square Error (RMSE), and Akaike Information Criterion (AIC).
+
+**Key Concepts:**
+
+-   **AIC/BIC:** Information criteria for model selection.
+
+-   **Residual Analysis:** Checking if residuals are white noise.
+
+**Sample Code:**
+
+```{r}
+# Plot the residuals
+checkresiduals(arima_model)
+
+# Calculate forecast accuracy
+accuracy(forecast_ts)
+```
+
+#### **8. Forecasting with ARIMA**
+
+Use the ARIMA model to forecast future values:
+
+```{r}
+# Forecasting for the next 12 months
+forecast <- forecast::forecast(arima_model, h = 12)
+plot(forecast, main="12-Month Forecast")
+```

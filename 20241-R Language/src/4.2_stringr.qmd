@@ -1,0 +1,127 @@
+---
+title: "4.3 stringr Package"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+### **Creating New Variables with extract()**:
+
+```{r}
+# extract info from hiring email using regex
+library(dplyr)
+library(tidyr) 
+library(stringr)
+```
+
+### Sample emails
+
+```{r}
+emails <- c( "Dear Alice, Welcome to our company! We are excited to have you on board. Your EmpNo: 12345; Salary: $55000; Appointment Date: 2023-06-01. Please reach out if you have any questions.",
+             "Hello Bob, Congratulations on your new position! Employee Number - 67890 | Salary - $65000 | Start Date: 2023/07/15. We look forward to working with you.", 
+             "Hi Carol, We're thrilled to welcome you to the team! Emp#: 54321 | Pay: 75000 USD | Hired on: 2023.08.20. Let us know if you need any assistance." )
+```
+
+### Function to extract employee details
+
+```{r}
+library(stringr)
+library(dplyr)
+
+extract_details_tidyr <- function(email) {
+  emp_id <- str_extract(email, "(?<=EmpNo: |Employee Number - |Emp#: )\\d+")
+  salary <- str_extract(email, "(?<=Salary: \\$|Salary - \\$|Pay: |Pay: \\$|Pay - \\$)\\d+")
+  date <- str_extract(email, "(?<=Appointment Date: |Start Date: |Hired on: )\\d{4}[-/.]\\d{2}[-/.]\\d{2}")
+
+  data.frame(EmployeeID = emp_id, Salary = salary, AppointmentDate = date, stringsAsFactors = FALSE)
+}
+
+# Apply the function to all emails
+results <- lapply(emails, extract_details_tidyr)
+
+# Combine the results into a single data frame
+final_results <- bind_rows(results)
+print(final_results)
+
+```
+
+The function is designed to extract specific details (Employee ID, Salary, and Appointment Date) from a series of emails, which contain this information in different formats. These details are then organized into a data frame for easier analysis.
+
+### Function Breakdown:
+
+#### 1. **Defining the Function:**
+
+``` r
+extract_details_tidyr <- function(email)
+```
+
+The function `extract_details_tidyr` takes a single argument `email`, which is expected to be a string (or character vector) containing the content of an email.
+
+#### 2. **Extracting Employee ID:**
+
+``` r
+emp_id <- str_extract(email, "(?<=EmpNo: |Employee Number - |Emp#: )\\d+")
+```
+
+-   **`str_extract`:** This function from the `stringr` package is used to find and return the first match of a pattern in a string.
+-   **Regex Explanation:**
+    -   `(?<=EmpNo: |Employee Number - |Emp#: )`: This is a "lookbehind" assertion, meaning it looks for the text that follows any of these prefixes: `EmpNo:`, `Employee Number -`, or `Emp#:`.
+    -   `\\d+`: This matches one or more digits, representing the Employee ID.
+-   This line extracts the numeric Employee ID based on different possible prefixes found in the email.
+
+#### 3. **Extracting Salary:**
+
+``` r
+salary <- str_extract(email, "(?<=Salary: \\$|Salary - \\$|Pay: |Pay: \\$|Pay - \\$)\\d+")
+```
+
+-   **Regex Explanation:**
+    -   `(?<=Salary: \\$|Salary - \\$|Pay: |Pay: \\$|Pay - \\$)`: This is another lookbehind assertion, searching for different possible ways the salary could be introduced in the text.
+    -   `\\d+`: Matches the salary amount, which is a number.
+-   This line extracts the numeric salary amount from the email after identifying the correct prefix (like `Salary: $`, `Pay:`, etc.).
+
+#### 4. **Extracting Appointment Date:**
+
+``` r
+date <- str_extract(email, "(?<=Appointment Date: |Start Date: |Hired on: )\\d{4}[-/.]\\d{2}[-/.]\\d{2}")
+```
+
+-   **Regex Explanation:**
+    -   `(?<=Appointment Date: |Start Date: |Hired on: )`: This is a lookbehind assertion for the possible date prefixes.
+    -   `\\d{4}[-/.]\\d{2}[-/.]\\d{2}`: This pattern matches a date in the format `YYYY-MM-DD`, `YYYY/MM/DD`, or `YYYY.MM.DD`.
+-   This line identifies and extracts the date of appointment/start from the email text.
+
+#### 5. **Creating a Data Frame:**
+
+``` r
+data.frame(EmployeeID = emp_id, Salary = salary, AppointmentDate = date, stringsAsFactors = FALSE)
+```
+
+-   This line takes the extracted Employee ID, Salary, and Appointment Date and combines them into a data frame.
+-   **`stringsAsFactors = FALSE`:** Ensures that the extracted values remain as character strings instead of being converted into factors (a categorical data type in R).
+
+#### 6. **Applying the Function to All Emails:**
+
+``` r
+results <- lapply(emails, extract_details_tidyr)
+```
+
+-   **`lapply`:** This function applies the `extract_details_tidyr` function to each element in the `emails` vector, which contains all the emails.
+-   **`results`:** This stores the output of applying the function to each email, resulting in a list of data frames.
+
+#### 7. **Combining Results:**
+
+``` r
+final_results <- bind_rows(results)
+```
+
+-   **`bind_rows`:** This function from the `dplyr` package combines the list of data frames into a single data frame where each row corresponds to one email's extracted details.
+
+### Output:
+
+The final output is a data frame with three columns: `EmployeeID`, `Salary`, and `AppointmentDate`. Each row corresponds to the extracted information from one email.

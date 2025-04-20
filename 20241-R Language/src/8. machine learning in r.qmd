@@ -1,0 +1,426 @@
+---
+title: "8 Machine Learning in R"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+Open survey data.
+
+```{r}
+library (dplyr)
+library (readr)
+library (ggplot2)
+library (stringr)
+library(tidyr)
+
+survey_data <- read_csv("data\\students_survey.csv", show_col_types = FALSE)
+```
+
+## Introduction
+
+### 1. Regression Analysis: Linear Regression Example using `mtcars` Dataset
+
+#### Introduction:
+
+-   Linear regression models the relationship between a dependent variable and one or more independent variables. In this example, we will use the `mtcars` dataset to predict miles per gallon (mpg) based on horsepower (hp) and weight (wt).
+
+#### R Code:
+
+```{r}
+# Load necessary libraries 
+library(dplyr) 
+library(ggplot2)
+
+# Fit a linear regression model to predict mpg based on hp and wt
+regression_model <- lm(mpg ~ hp + wt, data = mtcars)  
+# Summarize the regression model 
+summary(regression_model)  
+
+# Plot the regression results 
+ggplot(mtcars, aes(x = hp, y = mpg)) +   
+  geom_point() +   
+  geom_smooth(method = "lm") +   
+  labs(title = "Linear Regression: MPG vs. HP", x = "Horsepower (hp)", y = "Miles per Gallon (mpg)")
+```
+
+The results of the linear regression and the corresponding plot can be interpreted as follows:
+
+#### Regression Results:
+
+**Model Summary:**
+
+**Residuals:**
+
+The distribution of residuals provides insights into the model's fit. The range shows some variation, indicating potential outliers.
+
+**Coefficients:**
+
+**Intercept:**
+
+-   Estimate: 37.227
+-   Std. Error: 1.598
+-   t value: 23.296
+-   Pr(\>\|t\|): \< 2e-16 (highly significant)
+
+**Horsepower (hp):**
+
+-   Estimate: -0.031
+-   Std. Error: 0.009
+-   t value: -3.520
+-   Pr(\>\|t\|): 0.00145 (significant)
+
+**Weight (wt):**
+
+-   Estimate: -3.877
+-   Std. Error: 0.632
+-   t value: -6.138
+-   Pr(\>\|t\|): 1.12e-06 (highly significant)
+
+**Significance Codes:**
+
+The significance codes indicate the level of significance for each predictor.
+
+Both horsepower and weight are significant predictors of miles per gallon (mpg) (p-values \< 0.01).
+
+**Model Fit:**
+
+-   Residual standard error: 2.593 on 29 degrees of freedom
+-   Multiple R-squared: 0.8264
+-   Adjusted R-squared: 0.8148
+-   F-statistic: 71.41 on 2 and 29 DF
+-   p-value: \< 2.2e-16 (highly significant overall model)
+
+#### Interpretation:
+
+**Intercept:**
+
+The intercept of 37.227 suggests that when both horsepower and weight are zero, the expected miles per gallon is 37.227.
+
+**Horsepower (hp):**
+
+The coefficient for horsepower is -0.031. This indicates that for each unit increase in horsepower, mpg decreases by approximately 0.031 units, holding weight constant. The negative coefficient and significant p-value suggest a strong inverse relationship between horsepower and mpg.
+
+**Weight (wt):**
+
+The coefficient for weight is -3.877. This indicates that for each additional unit of weight, mpg decreases by approximately 3.877 units, holding horsepower constant. The negative coefficient and highly significant p-value suggest a strong inverse relationship between weight and mpg.
+
+**Model Fit:**
+
+The Multiple R-squared value of 0.8264 indicates that approximately 82.64% of the variability in mpg is explained by the model. This is relatively high, suggesting that the model is a good fit.
+
+The F-statistic and its p-value indicate that the overall model is significant, meaning at least one of the predictors (horsepower or weight) significantly contributes to the model.
+
+#### Plot Interpretation:
+
+The plot of mpg vs. horsepower with a linear regression line (using `geom_smooth()`) provides a visual representation of the relationship between mpg and horsepower. The line slopes downward, indicating an inverse relationship.
+
+#### Conclusion:
+
+The regression analysis shows that both horsepower and weight are significant predictors of mpg. Higher horsepower and weight have a negative impact on mpg. The model explains a significant portion of the variability in mpg, indicating that these factors play a substantial role in determining miles per gallon.
+
+### 2. Logistic Regression Example using `mtcars` Dataset
+
+#### Introduction:
+
+-   Logistic regression models the relationship between a binary dependent variable and one or more independent variables. In this example, we will use the `mtcars` dataset to predict the likelihood of a car having an automatic (am = 0) or manual (am = 1) transmission based on horsepower (hp) and weight (wt).
+
+#### R Code:
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+library(caret)  # For confusion matrix
+library(pROC)   # For AUC
+
+# Convert 'am' to a factor for logistic regression
+mtcars$am <- as.factor(mtcars$am)
+
+# Fit a logistic regression model to predict transmission based on hp and wt
+logistic_model <- glm(am ~ hp + wt, data = mtcars, family = binomial)
+# Summarize the logistic regression model
+summary(logistic_model)
+
+# Make predictions on the training set
+predicted_probabilities <- predict(logistic_model, type = "response")
+predicted_classes <- ifelse(predicted_probabilities > 0.5, "1", "0")
+
+# Confusion Matrix
+conf_matrix <- confusionMatrix(factor(predicted_classes), mtcars$am)
+print(conf_matrix)
+
+# Accuracy
+accuracy <- conf_matrix$overall['Accuracy']
+print(paste("Accuracy:", accuracy))
+
+# ROC Curve and AUC
+roc_curve <- roc(mtcars$am, predicted_probabilities)
+auc_value <- auc(roc_curve)
+print(paste("AUC:", auc_value))
+
+# Plot the ROC curve
+plot(roc_curve, main = "ROC Curve with Selected Thresholds")
+
+# Add selected threshold values to the plot
+thresholds <- roc_curve$thresholds
+tpr <- roc_curve$sensitivities
+fpr <- 1 - roc_curve$specificities  # FPR is 1 - Specificities
+
+# Select a subset of thresholds to display
+selected_indices <- seq(1, length(thresholds), length.out = 10)  # Adjust this value to control the number of labels
+selected_thresholds <- round(thresholds[selected_indices], 2)
+selected_tpr <- tpr[selected_indices]
+selected_fpr <- fpr[selected_indices]
+
+# Add selected threshold labels to the plot
+text(selected_fpr, selected_tpr, labels = selected_thresholds, pos = 4, cex = 0.8)
+
+# Optionally, plot the ROC curve again without thresholds for a cleaner view
+plot(roc_curve, col = "blue", main = "ROC Curve")
+```
+
+The results of the logistic regression and the corresponding evaluations can be interpreted as follows:
+
+#### Logistic Regression Results:
+
+**Model Summary:**
+
+**Coefficients:**
+
+**Intercept:**
+
+-   Estimate: 18.86630
+-   Std. Error: 7.44356
+-   z value: 2.535
+-   Pr(\>\|z\|): 0.01126 (significant)
+
+**Horsepower (hp):**
+
+-   Estimate: 0.03626
+-   Std. Error: 0.01773
+-   z value: 2.044
+-   Pr(\>\|z\|): 0.04091 (significant)
+
+**Weight (wt):**
+
+-   Estimate: -8.08348
+-   Std. Error: 3.06868
+-   z value: -2.634
+-   Pr(\>\|z\|): 0.00843 (highly significant)
+
+**Significance Codes:**
+
+The significance codes indicate the level of significance for each predictor.
+
+Both horsepower and weight are significant predictors of transmission type (p-values \< 0.05).
+
+#### Evaluation Metrics:
+
+**Confusion Matrix:** - The confusion matrix provides a summary of prediction results on a classification problem. It shows the number of correct and incorrect predictions broken down by each class.
+
+**Accuracy:** - Accuracy is the proportion of true results (both true positives and true negatives) among the total number of cases examined. It provides an overall measure of the model's predictive power.
+
+**ROC Curve and AUC:** - The ROC (Receiver Operating Characteristic) curve is a graphical plot that illustrates the diagnostic ability of a binary classifier system. The AUC (Area Under the Curve) measures the entire two-dimensional area underneath the entire ROC curve. A higher AUC indicates better model performance.
+
+#### Example Results Interpretation:
+
+Suppose the confusion matrix, accuracy, and AUC results are as follows:
+
+**Confusion Matrix:**
+
+```         
+          Reference
+Prediction  0  1
+        0 10  2
+        1  1 19
+```
+
+**Accuracy:**
+
+```         
+Accuracy: 0.935
+```
+
+**AUC:**
+
+```         
+AUC: 0.965
+```
+
+**Interpretation:**
+
+-   **Confusion Matrix:**
+    -   True Negatives (TN): 10
+    -   False Positives (FP): 1
+    -   False Negatives (FN): 2
+    -   True Positives (TP): 19
+-   **Accuracy:**
+    -   The model correctly predicts the transmission type 93.5% of the time.
+-   **AUC:**
+    -   An AUC of 0.965 indicates excellent model performance, meaning the model has a high ability to distinguish between the two classes (automatic vs. manual transmission).
+
+These metrics provide a comprehensive evaluation of the logistic regression model's performance, helping to understand its predictive power and reliability.
+
+### Determining the Best Threshold Value
+
+To determine the best threshold value from the ROC curve, we often use the Youden's J statistic, which maximizes the difference between sensitivity and specificity. This can be calculated and the corresponding threshold can be identified programmatically.
+
+Here's how to do it in R:
+
+```{r}
+# Calculate the Youden's J statistic for each threshold
+youden_j <- roc_curve$sensitivities + roc_curve$specificities - 1
+
+# Find the index of the maximum Youden's J statistic
+best_threshold_index <- which.max(youden_j)
+
+# Get the best threshold value
+best_threshold <- roc_curve$thresholds[best_threshold_index]
+
+# Print the best threshold value
+print(paste("Best Threshold Value:", best_threshold))
+```
+
+### Explanation:
+
+-   **youden_j**: This vector stores the Youden's J statistic for each threshold.
+-   **which.max(youden_j)**: Finds the index of the maximum Youden's J statistic.
+-   **roc_curve\$thresholds\[best_threshold_index\]**: Gets the threshold value corresponding to the maximum Youden's J statistic.
+
+### 3. Clustering: K-Means Clustering Example
+
+#### Introduction:
+
+K-means clustering partitions the data into k clusters, where each data point belongs to the cluster with the nearest mean. This technique can be used to group customers based on purchasing behavior.
+
+#### R Code:
+
+```{r}
+# Install necessary packages
+if (!requireNamespace("factoextra", quietly = TRUE)) {
+  install.packages("factoextra")
+}
+
+# Load necessary libraries
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(cluster)
+library(factoextra)
+
+# Load the dataset
+superstore <- read_csv("data\\superstore.csv")
+
+# Select relevant columns and scale the data   
+customer_data <- superstore %>% group_by(`Customer ID`) %>%  
+  summarise(Total_Sales = sum(Sales), Total_Orders = n()) %>%   
+  ungroup()
+
+scaled_data <- scale(customer_data %>% select(Total_Sales, Total_Orders))
+
+# Perform k-means clustering with 3 clusters  
+set.seed(123) 
+kmeans_result <- kmeans(scaled_data, centers = 3, nstart = 25)
+
+# Add cluster assignment to the original data  
+customer_data$Cluster <- as.factor(kmeans_result$cluster)
+
+# Visualize the clusters  
+ggplot(customer_data, aes(x = Total_Sales, y = Total_Orders, color = Cluster)) +  
+  geom_point() + 
+  labs(title = "K-Means Clustering: Customers", x = "Total Sales", y = "Total Orders")
+
+# Evaluate the clustering using silhouette analysis
+silhouette_score <- silhouette(kmeans_result$cluster, dist(scaled_data))
+
+# Plot silhouette analysis with improved clarity using fviz_silhouette
+fviz_silhouette(silhouette_score) +
+  labs(title = "Silhouette Plot for K-Means Clustering") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+The results of the K-means clustering and the corresponding plots can be interpreted as follows:
+
+### K-Means Clustering Results:
+
+**Cluster Centers:**
+
+```{r}
+print(kmeans_result$centers)
+```
+
+The cluster centers provide the mean values of each feature for the clusters.
+
+**Within-cluster Sum of Squares:**
+
+```{r}
+print(kmeans_result$tot.withinss)
+```
+
+This value indicates how tightly the clusters are packed. Lower values suggest better-defined clusters.
+
+### Evaluation Metrics:
+
+**Silhouette Analysis:** To evaluate the clustering performance, we use silhouette analysis, which measures how similar each data point is to its own cluster compared to other clusters.
+
+```{r}
+# Compute the silhouette width for each data point
+silhouette_width <- silhouette(kmeans_result$cluster, dist(scaled_data))
+
+# Plot silhouette analysis
+plot(silhouette_width, main = "Silhouette Plot for K-Means Clustering")
+```
+
+**Silhouette Plot:**
+
+The silhouette plot provides a visual representation of the silhouette width for each data point.
+
+Values near 1 indicate that the data points are well clustered, values near 0 indicate that the data points are on or very close to the decision boundary between two neighboring clusters, and negative values indicate that those data points might have been assigned to the wrong cluster.
+
+### Interpretation:
+
+**Clusters:**
+
+**Cluster 1 (Red):** - Customers in this cluster tend to have higher total sales, with values ranging from approximately 5,000 to 25,000. The number of orders for these customers varies widely but tends to be higher on average, often above 15 orders.
+
+**Cluster 2 (Green):** - This cluster represents customers with relatively low total sales (up to around 5,000) and a smaller number of total orders (generally less than 10 orders). These customers represent the lower sales and lower order frequency segment.
+
+**Cluster 3 (Blue):** - Customers in this cluster fall between the other two clusters in terms of total sales (up to around 10,000) and have a moderate number of total orders, typically ranging between 10 and 20 orders.
+
+**Cluster Characteristics:**
+
+-   **Cluster 1:** High-value customers who make significant purchases (high total sales) and place many orders. These might be your most valuable customers in terms of revenue.
+-   **Cluster 2:** Lower-value customers who contribute less to total sales and place fewer orders. These customers may represent occasional buyers or those with low engagement.
+-   **Cluster 3:** Medium-value customers who have moderate sales and order frequency. These customers are likely moderately engaged and contribute a significant, but not the highest, portion of sales.
+
+**Business Implications:**
+
+**Targeting and Marketing:**
+
+-   **Cluster 1:** These high-value customers should be prioritized for loyalty programs, special offers, and personalized marketing to retain and further engage them.
+-   **Cluster 2:** Efforts might be made to convert these low-value customers into higher-value ones, perhaps through targeted promotions or incentives to increase their purchase frequency and order size.
+-   **Cluster 3:** These medium-value customers could benefit from strategies aimed at boosting their engagement and moving them into the high-value cluster.
+
+**Visualization Insights:**
+
+-   The clear separation between clusters suggests that the K-means algorithm has effectively grouped customers based on their sales and ordering behavior.
+-   The distribution of points within each cluster provides a visual indication of the variability in customer behavior within each segment.
+
+**Silhouette Analysis:**
+
+-   The silhouette plot shows that most data points have a high silhouette width, indicating well-defined clusters.
+-   Cluster 3 has the highest average silhouette width of 0.54, suggesting it is the best-defined cluster.
+-   Cluster 2 has the lowest average silhouette width of 0.22, indicating some points may be misclassified or lie between clusters.
+-   A high average silhouette width of 0.44 suggests that the clustering structure is appropriate.
+
+### Conclusion:
+
+The K-means clustering analysis has segmented customers into three distinct groups based on their total sales and total orders. Each cluster represents a different level of customer value and engagement, providing insights that can guide targeted marketing strategies, customer relationship management, and business decision-making to optimize sales and customer satisfaction. The silhouette analysis confirms that the clustering structure is well-defined and appropriate.

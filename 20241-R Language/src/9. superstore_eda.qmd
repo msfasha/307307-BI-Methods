@@ -1,0 +1,863 @@
+---
+title: "1.7 EDA"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+#### Overview of the Superstore Dataset
+
+The Superstore dataset is a widely-used fictional dataset created by Tableau, designed to simulate sales data from a retail store. The dataset contains a comprehensive set of records capturing various aspects of sales transactions, customer information, and product details.
+
+#### Fields/Columns in the Dataset
+
+The Superstore dataset consists of several fields/columns, each representing a different aspect of the sales transactions and related information. Here is an overview of the key fields/columns present in the dataset:
+
+1.  **Row ID**: Unique identifier for each row in the dataset.
+2.  **Order ID**: Unique identifier for each sales order.
+3.  **Order Date**: Date when the order was placed.
+4.  **Ship Date**: Date when the order was shipped.
+5.  **Ship Mode**: Shipping method used for the order (e.g., Standard, Express).
+6.  **Customer ID**: Unique identifier for each customer.
+7.  **Customer Name**: Name of the customer.
+8.  **Segment**: Market segment to which the customer belongs (e.g., Consumer, Corporate, Home Office).
+9.  **Country**: Country where the order was placed.
+10. **City**: City where the order was placed.
+11. **State**: State or province where the order was placed.
+12. **Postal Code**: Postal code of the location where the order was placed.
+13. **Region**: Geographic region where the order was placed.
+14. **Product ID**: Unique identifier for each product.
+15. **Category**: Category to which the product belongs (e.g., Furniture, Office Supplies, Technology).
+16. **Sub-Category**: Sub-category of the product (e.g., Chairs, Phones, Accessories).
+17. **Product Name**: Name of the product.
+18. **Sales**: Total sales amount for the order.
+19. **Quantity**: Number of units sold.
+20. **Discount**: Discount applied to the order.
+21. **Profit**: Profit generated from the order.
+
+Understanding the meaning and significance of each field/column in the Superstore dataset is essential for performing effective exploratory data analysis and deriving meaningful insights from the data.
+
+**Loading and Inspecting the Data**
+
+```{r}
+# Load necessary libraries
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+file_path <- "data//superstore.csv"
+superstore <- read_csv(file_path, show_col_types = FALSE)
+```
+
+```{r}
+# Load necessary library
+library(dplyr)
+library(tidyr)
+
+# Assuming the dataset is loaded into a variable named `superstore`
+# You can load your dataset using read.csv or other appropriate function
+# superstore <- read.csv("path_to_your_dataset.csv")
+
+# Group by Category and count unique Sub-Category
+subcategory_counts <- superstore %>%
+  group_by(Category) %>%
+  summarise(Subcategory_Count = n_distinct(`Sub-Category`))
+
+# Print the result
+print(subcategory_counts)
+
+# Group by Category and summarize the Sub-Category as a list
+subcategories_by_category <- superstore %>%
+  group_by(Category) %>%
+  summarise(Subcategories = list(unique(`Sub-Category`)))
+
+# Print the result
+print(subcategories_by_category)
+
+subcategories_unnested <- subcategories_by_category %>%
+  unnest(Subcategories)
+
+# Print the result
+print(subcategories_unnested)
+```
+
+**Central Tendency: Average Sales by Category**
+
+**Business Context:** Understanding which product category on average generates the most sales could inform inventory and marketing strategies.
+
+```{r}
+library(dplyr)  
+average_sales_by_category <- superstore %>% group_by(`Category`) %>% summarise(Average_Sales = mean(`Sales`))  
+print(average_sales_by_category)
+
+library(ggplot2) 
+total_sales <- sum(superstore$Sales) 
+sales_by_category <- superstore %>% group_by(Category) %>% summarise(Total_Sales = sum(Sales)) 
+ggplot(sales_by_category, aes(x=Category, y=Total_Sales)) +   geom_bar(stat="identity") + ggtitle("Total Sales by Category")
+```
+
+**Dispersion: Standard Deviation of Sales in Each Region**
+
+**Business Context:** Measuring the variability of sales in each region can help assess the consistency of sales performance geographically.
+
+```{r}
+sales_dispersion_by_region <- superstore %>% group_by(`Region`) %>% summarise(Sales_Standard_Deviation = sd(`Sales`))  
+print(sales_dispersion_by_region)
+```
+
+**Shape: Skewness of Profit Distribution**
+
+**Business Context:** Assessing the skewness of profit distribution to understand the asymmetry and identify outliers or anomalies in profitability.
+
+```{r}
+library(e1071)  
+profit_distribution_shape <- superstore %>% summarise(Skewness_of_Profit = skewness(`Profit`))  
+print(profit_distribution_shape)
+```
+
+**Position: 95th Percentile of Sales**
+
+**Business Context:** Identifying the 95th percentile of sales helps in understanding the upper end of sales values, which can inform the setting of sales targets.
+
+```{r}
+sales_position_percentile <- superstore %>% summarise(Sales_95th_Percentile = quantile(`Sales`, 0.95))  
+print(sales_position_percentile)
+```
+
+**Association: Correlation between Discount and Profit**
+
+**Business Context:** Exploring the correlation between discounts and profit to see if higher discounts are related to higher or lower profits.
+
+```{r}
+discount_profit_association <- superstore %>% summarise(Correlation = cor(`Discount`, `Profit`))  
+print(discount_profit_association)
+```
+
+**Range of Data: Range of Quantity Sold**
+
+**Business Context:** Knowing the range of quantities sold per transaction can help with stock management and forecasting demand.
+
+```{r}
+quantity_range <- superstore %>%   summarise(Min_Quantity = min(`Quantity`), Max_Quantity = max(`Quantity`))  
+print(quantity_range)
+```
+
+**Frequency Distribution: Most Common Product Sub-Categories**
+
+**Business Context:** Identifying the most common product sub-categories sold can inform which products are most popular and may require more marketing focus.
+
+```{r}
+library(dplyr)  
+sub_category_frequency <- superstore %>% count(`Sub-Category`) %>% arrange(desc(n))  
+print(sub_category_frequency)
+```
+
+**Data Table Usage: Top 10 Profitable Sales Transactions**
+
+**Business Context:** Listing the top 10 most profitable sales transactions to understand which deals have been the most successful.
+
+```{r}
+top_profitable_sales <- superstore %>%  
+  arrange(desc(`Profit`)) %>%   slice_head(n = 10)  
+
+str(superstore)
+```
+
+These examples are designed to be directly applicable to the Superstore dataset and serve as a practical application of statistical concepts for business analysis. Remember to load your Superstore data into an R data frame named `superstore` for these examples to work correctly.
+
+**How many products categories do we have?**
+
+```{r}
+# Count unique product categories
+unique_categories <- superstore %>%
+  summarise(Unique_Categories = n_distinct(Category))
+
+# Print the result
+print(unique_categories)
+```
+
+**Create a bar chart that shows products sales by product category.**
+
+```{r}
+# Aggregate sales by category
+sales_by_category <- superstore %>%
+  group_by(Category) %>%
+  summarise(Total_Sales = sum(Sales, na.rm = TRUE))
+
+# Create a bar chart with ggplot2
+ggplot(sales_by_category, aes(x = reorder(Category, -Total_Sales), y = Total_Sales, fill = Category)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(Total_Sales, 2)), vjust = -0.5, size = 3) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Total Sales by Category", x = "Category", y = "Total Sales") +
+  theme_minimal() +
+  theme(legend.position = "none")  # Remove the legend as it is redundant
+```
+
+### Explanation
+
+1.  **Aggregating Sales by Category**: The `group_by()` function groups the data by `Category`, and `summarise()` calculates the total sales for each category. The `na.rm = TRUE` argument ensures that any missing values in the `Sales` column are ignored.
+2.  **Creating the Bar Chart**:
+    -   `ggplot()` initializes the plot with the data and aesthetic mappings.
+    -   `geom_bar(stat = "identity")` creates a bar chart.
+    -   `geom_text(aes(label = round(Total_Sales, 2)), vjust = -0.5, size = 3)` adds text labels on top of each bar showing the total sales, rounded to two decimal places.
+    -   `scale_fill_brewer(palette = "Set2")` uses a color palette from the `RColorBrewer` package for better visual appeal.
+    -   `labs()` adds titles and labels for the axes.
+    -   `theme_minimal()` applies a minimal theme for a clean look.
+    -   `theme(legend.position = "none")` removes the legend as it is not needed for this chart.
+
+**How many products sub category do we have?**
+
+```{r}
+# Count unique product categories
+unique_sub_categories <- superstore %>%
+  summarise(Unique_Sub_Categories = n_distinct(`Sub-Category`))
+
+# Print the result
+print(unique_sub_categories)
+```
+
+**Create a bar chart that shows products sales by product sub-category.**
+
+```{r}
+# Aggregate sales by category
+top_sales_by_sub_category <- superstore %>%
+  group_by(`Sub-Category`) %>%
+  summarise(Total_Sales = sum(Sales, na.rm = TRUE)) %>%
+  arrange(desc(Total_Sales)) %>%
+  top_n(5, Total_Sales)
+
+library(scales)
+# Create a bar chart with ggplot2
+ggplot(top_sales_by_sub_category, aes(x = reorder(`Sub-Category`, -Total_Sales), y = Total_Sales, fill = `Sub-Category`)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = scales::dollar(Total_Sales)), vjust = -0.5, size = 3) +
+  scale_y_continuous(labels = dollar_format()) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Total Sales by Sub Category", x = "Sub Category", y = "Total Sales") +
+  theme_minimal() +
+  theme(legend.position = "none")  # Remove the legend as it is redundant
+```
+
+**How many unique product lines does the data include?**
+
+```{r}
+# Load necessary libraries
+library(readr)
+library(dplyr)
+
+# Count unique product lines
+unique_products <- superstore %>%
+  summarise(Unique_Product_Lines = n_distinct(`Product Name`))
+
+# Print the result
+print(unique_products)
+```
+
+**Create a bar chart that shows the top 10 selling products?**
+
+```{r}
+# Aggregate number of sales by product and sort to get top 10 products
+top_products_by_quantity <- superstore %>%
+  group_by(`Product Name`) %>%
+  summarise(Total_Quantity = sum(Quantity, na.rm = TRUE)) %>%
+  arrange(desc(Total_Quantity)) %>%
+  top_n(10, Total_Quantity)
+
+# Show the result as bar chart
+ggplot(top_products_by_quantity, aes(x = reorder(`Product Name`, Total_Quantity), y = Total_Quantity)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_text(aes(label = Total_Quantity), vjust = -0.5, size = 3) +
+  coord_flip() + # Flip coordinates for better readability
+  labs(title = "Top 10 Products by Quantity Sold", x = "Product Name", y = "Total Quantity Sold") +
+  theme_minimal()
+```
+
+#### Calculate the average profit per sub-category and arrange the results in ascending order.
+
+Here, we are considering the entire superstore dataset, not just the "Furniture" category or "West" region:
+
+```{r}
+average_profit_per_sub_category <- superstore %>%
+  group_by(`Sub-Category`) %>%
+  summarise(Average_Profit = mean(Profit)) %>%
+  arrange(desc(Average_Profit))
+
+print(average_profit_per_sub_category)
+```
+
+#### What are the top 5 highest selling products in the Furniture category?
+
+```{r}
+library(dplyr)
+
+# Filter for Furniture category
+furniture_sales <- superstore %>%
+  filter(`Category` == "Furniture")
+
+# Find top 5 products by Sales in Furniture category
+top_furniture_products <- furniture_sales %>%
+  group_by(`Product Name`) %>%
+  summarise(Total_Sales = sum(`Sales`)) %>%
+  arrange(desc(Total_Sales)) %>%
+  slice_head(n = 5)
+
+print(top_furniture_products)
+```
+
+#### What is the yearly sales trend for Technology products in the East region?
+
+To solve this question we need to use `lubridate` package.
+
+`lubridate` is an R package that makes it easier to work with dates and times. It provides functions to parse various date-time formats, extract parts of dates or times, and perform calculations with date-time objects. With `lubridate`, you can add or subtract time periods from dates, handle time zones, and efficiently compare dates. Its functions are designed to simplify common use cases for date-time data and integrate well with the `tidyverse` set of packages. It is a go-to choice in R for date-time manipulation due to its user-friendly and intuitive syntax.
+
+```{r}
+library(lubridate)
+
+# Filter for Technology category and East region
+tech_sales_east <- superstore %>%
+  filter(`Category` == "Technology", `Region` == "East")
+
+# Convert Order Date to Date type and extract the year
+tech_sales_east <- tech_sales_east %>%
+  mutate(Year = year(mdy(`Order Date`)))
+
+# Calculate yearly sales trend for Technology in East region
+yearly_sales_trend <- tech_sales_east %>%
+  group_by(Year) %>%
+  summarise(Total_Sales = sum(`Sales`)) %>%
+  arrange(Year)
+
+# Plotting the line plot
+ggplot(yearly_sales_trend, aes(x = Year, y = Total_Sales)) +
+  geom_line(color = "blue") +
+  geom_point(color = "blue") +
+  labs(title = "Yearly Sales Trend for Technology in East Region",
+       x = "Year",
+       y = "Total Sales") +
+  theme_minimal() +
+  scale_x_continuous(breaks = yearly_sales_trend$Year) +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### How does the average discount given affect profits across different customer segments?
+
+```{r}
+# Calculate average discount and profit per segment
+discount_impact <- superstore %>%
+  group_by(`Segment`) %>%
+  summarise(Average_Discount = mean(`Discount`), 
+            Average_Profit = mean(`Profit`))
+
+print(discount_impact)
+
+library(ggplot2)
+
+ggplot(discount_impact, aes(x = Average_Discount, y = Average_Profit, label = Segment)) +
+  geom_point(aes(color = Segment), size = 4) +
+  geom_text(vjust = -1) +
+  labs(title = "Relationship between Average Discount and Profit by Segment",
+       x = "Average Discount",
+       y = "Average Profit") +
+  theme_minimal() +
+  scale_color_brewer(palette = "Dark2") +
+  scale_x_continuous(limits = c(0, 0.3)) + # Using scale_x_continuous for more options
+  scale_y_continuous(limits = c(25, 35))
+  # or use  xlim(0.14, 0.16) + ylim(25, 35) # Setting explicit x-axis limits
+
+
+ggplot(discount_impact, aes(x = Average_Discount, y = Average_Profit, label = Segment)) +
+  geom_point(aes(size = Average_Profit, color = Segment), alpha = 0.5) +
+  geom_text(vjust = 1.5) +
+  labs(title = "Bubble Chart of Discount Impact on Profit by Segment",
+       x = "Average Discount",
+       y = "Average Profit") +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set2") +
+  guides(size = guide_legend(title = "Average Profit"))
+
+# Bar Chart
+ggplot(discount_impact, aes(x = Segment, y = Average_Profit, fill = Segment)) +
+  geom_bar(stat = "identity") +
+  geom_bar(aes(y = -Average_Discount), stat = "identity") +
+  labs(title = "Stacked Bar Chart of Average Discount and Profit by Segment",
+       x = "Segment",
+       y = "Value",
+       fill = "Metric") +
+  scale_y_continuous(labels = abs) +
+  theme_minimal()
+```
+
+#### Which states are the most and least profitable for Office Supplies?
+
+```{r}
+# Filter for Office Supplies category
+office_supplies_sales <- superstore %>%
+  filter(`Category` == "Office Supplies")
+
+# Calculate profit by state for Office Supplies
+state_profitability <- office_supplies_sales %>%
+  group_by(`State`) %>%
+  summarise(Total_Profit = sum(`Profit`)) %>%
+  arrange(desc(Total_Profit))
+
+# View the most profitable states
+most_profitable_states <- head(state_profitability, n = 5)
+print(most_profitable_states)
+
+# View the least profitable states
+least_profitable_states <- tail(state_profitability, n = 5)
+print(least_profitable_states)
+
+# Piping it all together
+superstore %>% 
+  filter(`Category` == "Office Supplies") %>%
+  group_by(`State`) %>%
+  summarise(Total_Profit = sum(`Profit`)) %>%
+  arrange(desc(Total_Profit))%>% head(state_profitability, n = 5)
+```
+
+#### Create a new column that represents the sales as a percentage of total sales within each category.
+
+For this, we will first calculate the total sales within the "Furniture" category and then compute the percentage for each sale.
+
+```{r}
+library(dplyr)
+
+modified_superstore <- superstore %>%
+  group_by(Category) %>%
+  mutate(TotalSales = sum(Sales), # Calculate total sales per category
+         SalesPercentage = (Sales / TotalSales) * 100) %>% 
+  ungroup()  # Remove grouping
+
+modified_superstore
+```
+
+The code adds a column that shows sales as a percentage of the total sales within each category using **`dplyr`** from the **`tidyverse`**.
+
+When you use **`mutate()`** on a grouped data frame in **`dplyr`**, it will preserve the grouping. However, this does not mean the data is permanently grouped within the resultant data frame. Instead, the grouping metadata is kept so that further **`dplyr`** operations can take advantage of it.
+
+The **`ungroup()`** function is used to explicitly remove this grouping metadata from the data frame. While it's not always necessary to include **`ungroup()`** at the end of your operation, it can be a good practice when you want to ensure that the returned data frame doesn't carry any group structure, especially before performing operations that should not be influenced by the previous grouping.
+
+If you don't call **`ungroup()`**, the returned data frame will still contain the grouping information, which might affect how subsequent functions work with the data frame. For example, if you pass this data frame to another **`summarise()`** call without removing the grouping, it will perform the summarisation by the existing groups.
+
+However, when you just print the data frame or write it to a file, it will appear ungrouped. The grouping only affects how **`dplyr`** handles the data for further operations. If no further grouped operations are intended, then whether you ungroup the data or not may not have any visible impact on the output, but it's generally a good practice to ungroup a data frame if you've finished with group-specific operations to avoid unexpected results in subsequent analyses.
+
+#### Correlation between Sales and Profit in Sub-Categories
+
+**Question:** Is there a correlation between sales and profit within each sub-category?
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Assuming superstore is already loaded as a dataframe
+# Calculate correlation between Sales and Profit for each Sub-Category
+sales_profit_correlation <- superstore %>%
+  group_by(`Sub-Category`) %>%
+  summarise(Correlation = cor(`Sales`, `Profit`))
+
+# Print the resulting table
+print(sales_profit_correlation)
+
+# Plotting the heat map
+ggplot(sales_profit_correlation, aes(x = `Sub-Category`, y = 1, fill = Correlation)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "red", high = "blue", mid = "white", 
+                       midpoint = 0, limit = c(-1, 1), space = "Lab", 
+                       name = "Correlation") +
+  labs(title = "Correlation between Sales and Profit by Sub-Category",
+       x = "Sub-Category", y = "") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),  # Remove y-axis text
+        axis.ticks.y = element_blank(),  # Remove y-axis ticks
+        plot.title = element_text(hjust = 0.5),  # Center the plot title
+        axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis text
+
+```
+
+Before running the above examples, make sure to have the necessary libraries loaded (`dplyr`, `lubridate` for date operations) and that your data is properly formatted (e.g., `Order Date` is in the correct date format). The examples provided assume that the data types and formats are correct and that the Superstore dataset is named `superstore` in your R environment.
+
+### Customer Segmentation Analysis
+
+**Question:** How do sales and profits differ among different customer segments (Consumer, Corporate, Home Office)?
+
+Which segment is the most profitable, and why might that be the case?
+
+**Solution and Explanation:**
+
+To analyze sales and profits across different customer segments, we group the data by the `Segment` column and then summarize it to calculate total sales, total profit, and average profit for each segment. This provides insights into which customer segment is most profitable and hints at possible reasons behind the differences in profitability.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
+
+# Assuming superstore is already loaded as a dataframe
+# Analyze sales and profits by customer segment
+customer_segment_analysis <- superstore %>%
+  group_by(Segment) %>%
+  summarise(Total_Sales = sum(Sales), Total_Profit = sum(Profit), 
+            Average_Profit = mean(Profit)) %>%
+  mutate(
+    Total_Sales = round(Total_Sales, 2),
+    Total_Profit = round(Total_Profit, 2),
+    Average_Profit = round(Average_Profit, 2)
+  ) %>%
+  arrange(desc(Total_Profit))
+
+# View the results
+print(customer_segment_analysis)
+
+# Bar chart for Total Sales and Total Profit
+bar_chart <- ggplot(customer_segment_analysis, aes(x = Segment)) +
+  geom_bar(aes(y = Total_Sales, fill = "Total Sales"), stat = "identity", position = "dodge") +
+  geom_bar(aes(y = Total_Profit, fill = "Total Profit"), stat = "identity", position = "dodge") +
+  scale_fill_manual("", values = c("Total Sales" = "blue", "Total Profit" = "green")) +
+  labs(title = "Total Sales and Total Profit by Customer Segment",
+       x = "Customer Segment",
+       y = "Amount") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels
+
+# Scatter plot for Average Profit with point size representing Total Sales
+scatter_plot <- ggplot(customer_segment_analysis, aes(x = Segment, y = Average_Profit)) +
+  geom_point(aes(size = Total_Sales), color = "red") +
+  scale_size_continuous(name = "Total Sales") +
+  labs(title = "Average Profit by Customer Segment",
+       x = "Customer Segment",
+       y = "Average Profit") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels
+
+# Arrange the two plots vertically to avoid overlap
+grid.arrange(bar_chart, scatter_plot, ncol = 1)
+```
+
+------------------------------------------------------------------------
+
+### Product Performance Evaluation
+
+**Question:** Identify the top 5 and bottom 5 products based on profit margins. Discuss potential reasons for their performance and suggest strategies for improving sales of the less profitable products.
+
+**Solution and Explanation:**
+
+To identify products by profitability, we first calculate the profit margin for each product. Then, we rank these products to find the top 5 and bottom 5 based on their profit margins. This analysis can reveal which products are performing well and which are not, providing a basis for strategic adjustments.
+
+```{r}
+# Calculate profit margin and identify top and bottom 5 products
+product_performance_evaluation <- superstore %>%
+  mutate(Profit_Margin = Profit / Sales) %>%
+  arrange(desc(Profit_Margin)) %>%
+  mutate(Rank = row_number()) %>%
+  filter(Rank <= 5 | Rank > (n() - 5))
+
+# View the results
+print(product_performance_evaluation)
+```
+
+------------------------------------------------------------------------
+
+### Regional Sales Analysis
+
+**Question:** Compare the total sales and profits across different regions. Are there regions that underperform? What strategies could be implemented to boost sales in those regions?
+
+**Solution and Explanation:**
+
+This analysis involves grouping the data by region and summarizing it to calculate total sales and profits for each region. By comparing these figures, we can identify which regions might be underperforming and consider strategies to improve their performance.
+
+```{r}
+# Analyze sales and profits by region
+regional_sales_analysis <- superstore %>%
+  group_by(Region) %>%
+  summarise(Total_Sales = sum(Sales), `Total Profit` = sum(Profit)) %>%
+  arrange(desc(`Total Profit`))
+
+# View the results
+print(regional_sales_analysis)
+```
+
+------------------------------------------------------------------------
+
+### Time Series Analysis
+
+**Question:** How have sales and profits trended over time? Is there seasonality in sales? Identify the peak and low sales periods throughout the year.
+
+**Solution and Explanation:**
+
+For this analysis, we first need to convert the `Order Date` to a Date type. We then group the data by month and year to analyze trends and seasonality in sales and profits over time.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Assuming superstore is already loaded as a dataframe
+# Convert Order Date to Date type and perform time series analysis
+time_series_analysis <- superstore %>%
+  mutate(`Order Date` = as.Date(`Order Date`, format = "%m/%d/%Y")) %>%
+  arrange(`Order Date`) %>%
+  group_by(Month = format(`Order Date`, "%Y-%m")) %>%
+  summarise(Total_Sales = sum(Sales), Total_Profit = sum(Profit))
+
+print(time_series_analysis)
+
+# Convert Month to Date type for proper time series plotting
+time_series_analysis$Month <- as.Date(paste0(time_series_analysis$Month, "-01"))
+
+# Create the line plot
+ggplot(time_series_analysis, aes(x = Month)) +
+  geom_line(aes(y = Total_Sales, color = "Total Sales"), size = 1) +
+  geom_line(aes(y = Total_Profit, color = "Total Profit"), size = 1) +
+  scale_color_manual("", values = c("Total Sales" = "blue", "Total Profit" = "green")) +
+  labs(title = "Time Series Analysis of Total Sales and Total Profit",
+       x = "Month",
+       y = "Amount") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+
+```
+
+------------------------------------------------------------------------
+
+### Discount Impact Analysis
+
+**Question:** Analyze the impact of discounts on sales volume and profitability. Is there a discount threshold that maximizes profit without significantly hurting sales?
+
+**Solution and Explanation:**
+
+To explore the relationship between discounts, sales, and profitability, we group the data by discount level. Then, we calculate the average sales and profit for each discount level to understand how discounts affect profitability and sales volume.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Assuming superstore is already loaded as a dataframe
+# Analyze the impact of discounts on sales and profit
+discount_impact_analysis <- superstore %>%
+  group_by(Discount) %>%
+  summarise(Average_Sales = mean(Sales), Average_Profit = mean(Profit)) %>%
+  arrange(Discount)
+
+# View the results
+print(discount_impact_analysis)
+
+# Create the line plot
+ggplot(discount_impact_analysis, aes(x = Discount)) +
+  geom_line(aes(y = Average_Sales, color = "Average Sales"), size = 1) +
+  geom_line(aes(y = Average_Profit, color = "Average Profit"), size = 1) +
+  scale_color_manual("", values = c("Average Sales" = "blue", "Average Profit" = "green")) +
+  labs(title = "Impact of Discounts on Average Sales and Profit",
+       x = "Discount",
+       y = "Amount") +
+  theme_minimal()
+
+# Optionally, if you prefer a scatter plot with smoother lines
+ggplot(discount_impact_analysis, aes(x = Discount)) +
+  geom_point(aes(y = Average_Sales, color = "Average Sales")) +
+  geom_smooth(aes(y = Average_Sales, color = "Average Sales"), method = "loess", se = FALSE) +
+  geom_point(aes(y = Average_Profit, color = "Average Profit")) +
+  geom_smooth(aes(y = Average_Profit, color = "Average Profit"), method = "loess", se = FALSE) +
+  scale_color_manual("", values = c("Average Sales" = "blue", "Average Profit" = "green")) +
+  labs(title = "Impact of Discounts on Average Sales and Profit",
+       x = "Discount",
+       y = "Amount") +
+  theme_minimal()
+
+```
+
+### Shipping Mode Analysis
+
+**Question:** Examine how different shipping modes (Standard Class, Second Class, First Class, Same Day) affect sales and profits. Is there a correlation between ship mode and product category or segment?
+
+**Solution and Explanation:**
+
+This analysis looks at sales and profits across different shipping modes and explores potential correlations with product categories or customer segments. Understanding these relationships can help in optimizing shipping strategies for better profitability.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Assuming superstore is already loaded as a dataframe
+# Analyze sales and profits by shipping mode
+shipping_mode_analysis <- superstore %>%
+  group_by(`Ship Mode`) %>%
+  summarise(Total_Sales = sum(Sales), `Total Profit` = sum(Profit)) %>%
+  arrange(desc(`Total Profit`))
+
+# View the results
+print(shipping_mode_analysis)
+
+# Create the bar chart
+ggplot(shipping_mode_analysis, aes(x = reorder(`Ship Mode`, -`Total Profit`))) +
+  geom_bar(aes(y = Total_Sales, fill = "Total Sales"), stat = "identity", position = "dodge") +
+  geom_bar(aes(y = `Total Profit`, fill = "Total Profit"), stat = "identity", position = "dodge") +
+  scale_fill_manual("", values = c("Total Sales" = "blue", "Total Profit" = "green")) +
+  labs(title = "Total Sales and Total Profit by Shipping Mode",
+       x = "Shipping Mode",
+       y = "Amount") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+
+```
+
+------------------------------------------------------------------------
+
+### Product Category Analysis
+
+**Question:** Within each product category (Furniture, Office Supplies, Technology), identify the most and least profitable sub-categories. Discuss possible reasons and suggest adjustments to product offerings or marketing strategies.
+
+**Solution and Explanation:**
+
+By breaking down sales and profits within each product category to the sub-category level, we can identify high and low performers. This detailed view provides insights for targeted strategies to enhance product offerings and marketing efforts.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Assuming superstore is already loaded as a dataframe
+# Analyze profitability by product category and sub-category
+product_category_analysis <- superstore %>%
+  group_by(Category, `Sub-Category`) %>%
+  summarise(Total_Sales = sum(Sales), `Total Profit` = sum(Profit)) %>%
+  arrange(Category, desc(`Total Profit`))
+
+# View the results
+print(product_category_analysis)
+
+# Create the faceted bar chart
+ggplot(product_category_analysis, aes(x = reorder(`Sub-Category`, -`Total Profit`))) +
+  geom_bar(aes(y = Total_Sales, fill = "Total Sales"), stat = "identity", position = "dodge") +
+  geom_bar(aes(y = `Total Profit`, fill = "Total Profit"), stat = "identity", position = "dodge") +
+  scale_fill_manual("", values = c("Total Sales" = "blue", "Total Profit" = "green")) +
+  labs(title = "Total Sales and Total Profit by Product Category and Sub-Category",
+       x = "Sub-Category",
+       y = "Amount") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  facet_wrap(~ Category, scales = "free_x")  # Create a facet for each category
+
+```
+
+------------------------------------------------------------------------
+
+### Customer Loyalty and Order Size
+
+**Question:** Who are the top 10 most loyal customers by number of orders and by total sales? Analyze their purchasing patterns to determine what drives their loyalty.
+
+**Solution and Explanation:**
+
+Identifying and analyzing the top 10 most loyal customers by both order frequency and sales volume offers valuable insights into customer loyalty drivers. This understanding can inform strategies to enhance customer retention and increase order size.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Assuming superstore is already loaded as a dataframe
+# Identify top 10 loyal customers by order frequency and total sales
+customer_loyalty_analysis <- superstore %>%
+  group_by(`Customer ID`, `Customer Name`) %>%
+  summarise(Total_Orders = n(), Total_Sales = sum(Sales)) %>%
+  arrange(desc(Total_Orders), desc(Total_Sales)) %>%
+  ungroup() %>%
+  slice_head(n = 10)
+
+# View the results
+print(customer_loyalty_analysis)
+
+# Create the bar chart
+ggplot(customer_loyalty_analysis, aes(x = reorder(`Customer Name`, -Total_Sales), y = Total_Sales)) +
+  geom_bar(stat = "identity", aes(fill = Total_Orders), color = "black") +
+  scale_fill_gradient(low = "lightblue", high = "blue") +
+  labs(title = "Top 10 Loyal Customers by Order Frequency and Total Sales",
+       x = "Customer Name",
+       y = "Total Sales",
+       fill = "Total Orders") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+```
+
+------------------------------------------------------------------------
+
+### Market Penetration and Expansion
+
+**Question:** Identify cities and states with low sales volume. What could be potential reasons for low penetration in these areas? Propose strategies for market expansion.
+
+**Solution and Explanation:**
+
+Focusing on areas with low sales volume helps in pinpointing under-served markets. Analyzing these areas can reveal opportunities for market penetration and expansion strategies.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Assuming superstore is already loaded as a dataframe
+# Identify areas with low sales volume
+market_penetration_analysis <- superstore %>%
+  group_by(State, City) %>%
+  summarise(Total_Sales = sum(Sales)) %>%
+  arrange(Total_Sales) %>%
+  ungroup() %>%
+  slice_head(n = 10)
+
+# View the results
+print(market_penetration_analysis)
+
+# Create the bar chart
+ggplot(market_penetration_analysis, aes(x = reorder(paste(City, State, sep = ", "), -Total_Sales), y = Total_Sales)) +
+  geom_bar(stat = "identity", fill = "blue", color = "black") +
+  labs(title = "Bottom 10 Cities by Total Sales",
+       x = "City, State",
+       y = "Total Sales") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+```
+
+------------------------------------------------------------------------
+
+### Profit Efficiency by State or Region
+
+**Question:** Which states or regions have the highest and lowest profit margins? Analyze factors that might contribute to these disparities and suggest ways to increase efficiency.
+
+**Solution and Explanation:**
+
+This analysis ranks states or regions by profit margin to highlight areas of operational efficiency and inefficiency. Understanding these disparities can guide strategic decisions to improve profit margins across different markets.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Assuming superstore is already loaded as a dataframe
+# Calculate and compare profit efficiency by region
+profit_efficiency_analysis <- superstore %>%
+  group_by(Region) %>%
+  summarise(Total_Sales = sum(Sales), Total_Profit = sum(Profit), 
+            Profit_Margin = Total_Profit / Total_Sales) %>%
+  arrange(desc(Profit_Margin))
+
+# View the results
+print(profit_efficiency_analysis)
+
+# Create the bar chart
+ggplot(profit_efficiency_analysis, aes(x = reorder(Region, -Profit_Margin), y = Profit_Margin)) +
+  geom_bar(stat = "identity", fill = "steelblue", color = "black") +
+  labs(title = "Profit Efficiency by Region",
+       x = "Region",
+       y = "Profit Margin") +
+  theme_minimal() +
+  geom_text(aes(label = scales::percent(Profit_Margin)), vjust = -0.5, color = "black")  # Add percentage labels above bars
+
+```

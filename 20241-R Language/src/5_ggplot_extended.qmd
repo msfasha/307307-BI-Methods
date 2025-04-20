@@ -1,0 +1,180 @@
+---
+title: "5_Basic Plotting in R"
+format: html
+editor: visual
+include-before: |
+  <div style="text-align: center;">
+    <img src="images/department_logo.png" width="169" />
+    <img src="images/ioa_logo.png" width="122" />
+    <img src="images/petra_logo.png" width="52" />
+  </div>
+---
+
+------------------------------------------------------------------------
+
+### Default Stats
+
+The table below explicitly sets the `stat` for each `geom` type in `ggplot2`, reinforcing the understanding that even when the default behavior is assumed, you can be explicit in your code to enhance readability and ensure clarity for others reviewing your visualizations.
+
+| Geometry Type | Default Statistic | Description | Example Code with Explicit `stat` |
+|----------------|----------------|---------------------|--------------------|
+| `geom_bar` | `count` | Counts the number of cases at each x level. Useful for categorical data. | `ggplot(mtcars, aes(x = factor(cyl))) + geom_bar(stat = "count")` |
+| `geom_histogram` | `bin` | Bins the x values and counts the number of cases in each bin. Used for continuous data. | `ggplot(mtcars, aes(x = mpg)) + geom_histogram(stat = "bin", binwidth = 5)` |
+| `geom_boxplot` | `boxplot` | Computes quartiles, median, and outliers for a boxplot. | `ggplot(mtcars, aes(x = factor(cyl), y = mpg)) + geom_boxplot(stat = "boxplot")` |
+| `geom_line` | `identity` | Connects points in the order they appear in the data. Does not aggregate data. | `ggplot(mtcars, aes(x = wt, y = mpg)) + geom_line(stat = "identity")` |
+| `geom_point` | `identity` | Plots points. Uses the raw data without any statistical transformation. | `ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point(stat = "identity")` |
+| `geom_density` | `density` | Computes a kernel density estimate, which is useful for visualizing the distribution shape of a dataset. | `ggplot(mtcars, aes(x = mpg)) + geom_density(stat = "density")` |
+| `geom_area` | `identity` | Stacks areas on the plot, similar to `geom_line` but filled. | `ggplot(mtcars, aes(x = wt, y = mpg)) + geom_area(stat = "identity")` |
+| `geom_col` | `identity` | Similar to `geom_bar`, but specifically for pre-summarized data. | `ggplot(mtcars, aes(x = factor(cyl), y = mpg)) + geom_col(stat = "identity")` |
+| `geom_smooth` | `smooth` | Adds a smoothed conditional mean. Uses methods like loess or linear model. | `ggplot(mtcars, aes(x = wt, y = mpg)) + geom_smooth(stat = "smooth")` |
+| `geom_tile` | `identity` | Used to create heatmaps by filling grid squares according to data values. | `ggplot(mtcars, aes(x = factor(gear), y = factor(cyl))) + geom_tile(stat = "identity")` |
+| `geom_violin` | `ydensity` | Creates violin plots, which are useful for comparing distributions. | `ggplot(mtcars, aes(x = factor(cyl), y = mpg)) + geom_violin(stat = "ydensity")` |
+| `geom_jitter` | `identity` | Similar to `geom_point`, but points are adjusted slightly (jittered) to reduce overlap. | `ggplot(mtcars, aes(x = wt, y = mpg)) + geom_jitter(stat = "identity")` |
+| `geom_text` or `geom_label` | `identity` | Adds text directly to the plot, positioned according to the data coordinates. | `ggplot(mtcars, aes(x = wt, y = mpg, label = row.names(mtcars))) + geom_text(stat = "identity")` |
+
+## Self Study Material
+
+### Plotting Data Using Base Functions in R
+
+We present below code examples for plotting different aspects of the `mtcars` dataset using base R plotting functions. Each example highlights a different type of plot:
+
+### 1. Scatter Plot
+
+```{r}
+plot(mtcars$mpg, mtcars$wt,
+     main = "Scatter Plot of MPG vs Weight",
+     xlab = "Miles Per Gallon (MPG)",
+     ylab = "Weight (1000 lbs)",
+     pch = 19, col = "blue")
+```
+
+### 2. Line Plot
+
+```{r}
+plot(mtcars$mpg, type = "l",
+     main = "Line Plot of Miles Per Gallon",
+     xlab = "Index",
+     ylab = "Miles Per Gallon (MPG)",
+     col = "red")
+```
+
+### 3. Point Plot
+
+```{r}
+plot(mtcars$mpg,
+     main = "Point Plot of Miles Per Gallon",
+     xlab = "Index",
+     ylab = "Miles Per Gallon (MPG)",
+     pch = 20, col = "green")
+```
+
+### 4. Bar Plot
+
+```{r}
+barplot(table(mtcars$cyl),
+        main = "Bar Plot of Cylinder Counts",
+        xlab = "Number of Cylinders",
+        ylab = "Frequency",
+        col = "purple")
+```
+
+### 5. Histogram
+
+```{r}
+hist(mtcars$mpg,
+     main = "Histogram of Miles Per Gallon",
+     xlab = "Miles Per Gallon (MPG)",
+     col = "orange")
+```
+
+### 6. Heatmap
+
+```{r}
+# Compute correlation matrix first
+cor_matrix <- cor(mtcars)
+# Plot heatmap
+image(1:nrow(cor_matrix), 1:ncol(cor_matrix), cor_matrix,
+      main = "Heatmap of Correlation Matrix",
+      xlab = "Variables", ylab = "Variables", axes = FALSE,
+      col = heat.colors(length(cor_matrix)))
+axis(1, at = 1:ncol(cor_matrix), labels = names(mtcars), las = 2)
+axis(2, at = 1:nrow(cor_matrix), labels = names(mtcars), las = 2)
+```
+
+### 7. Stacked Bar Plot
+
+```{r}
+# Counts of cars by gear and carb
+gear_carb <- table(mtcars$gear, mtcars$carb)
+# Stacked bar plot
+barplot(gear_carb,
+        main = "Stacked Bar Plot of Gears by Carb Count",
+        xlab = "Gears",
+        ylab = "Count",
+        col = rainbow(nrow(gear_carb)),
+        legend = rownames(gear_carb))
+```
+
+### 8. Box Plots
+
+```{r}
+# Basic boxplot of MPG by number of cylinders
+boxplot(mpg ~ cyl, data = mtcars,
+        main = "MPG by Number of Cylinders",
+        xlab = "Number of Cylinders",
+        ylab = "Miles Per Gallon (MPG)",
+        col = "lightblue")
+
+# Horizontal boxplot of MPG by number of cylinders
+boxplot(mpg ~ cyl, data = mtcars,
+        horizontal = TRUE,
+        main = "Horizontal Boxplot of MPG by Cylinder Count",
+        xlab = "Miles Per Gallon (MPG)",
+        ylab = "Number of Cylinders",
+        col = "salmon")
+```
+
+### 9. QQPlots
+
+`qqnorm()` and `qqline()` are functions in base R used together to create Q-Q (quantile-quantile) plots. These plots are used to compare the distribution of a dataset against a theoretical distribution, usually the normal distribution, to assess if the data are approximately normally distributed. Here's how you can use these functions with the `mtcars` dataset to check the normality of variables like `mpg` (miles per gallon).
+
+#### Example 1: Checking Normality of `mpg`
+
+#### Step-by-Step Code
+
+```{r}
+# Normal Q-Q plot for 'mpg' in mtcars
+qqnorm(mtcars$mpg, main = "Normal Q-Q Plot for MPG")
+qqline(mtcars$mpg, col = "red")  # Adds a reference line
+```
+
+**Explanation**:
+
+\- `qqnorm(mtcars$mpg)`: This generates the Q-Q plot. The y-axis displays the quantiles of `mpg` data, while the x-axis shows the theoretical quantiles of the normal distribution.
+
+Points following a straight line suggest normal distribution.
+
+\- `qqline(mtcars$mpg, col = "red")`: This function adds a straight line to the plot, which represents the ideal normal distribution.
+
+If the data points closely follow this line, it further indicates that the data are normally distributed.
+
+#### Example 2: Checking Normality of `wt` (weight)
+
+#### Step-by-Step Code
+
+```{r}
+# Normal Q-Q plot for 'wt' in mtcars
+qqnorm(mtcars$wt, main = "Normal Q-Q Plot for Car Weight")
+qqline(mtcars$wt, col = "blue")  # Adds a reference line
+```
+
+**Explanation**:
+
+\- `qqnorm(mtcars$wt)`: Generates the Q-Q plot for the `wt` variable, which reflects the car weight.
+
+\- `qqline(mtcars$wt, col = "blue")`: Adds a blue reference line to the plot to help visually assess how closely the data points match a normal distribution.
+
+### General Tips
+
+-   **Interpreting Q-Q Plots**: In a Q-Q plot, if the points deviate substantially from the line (especially in the tails), it suggests deviations from normality such as skewness or kurtosis.
+-   **Why Check for Normality**: Many statistical tests assume normality in the data distribution, so checking for normality can help validate the assumptions of these tests.
